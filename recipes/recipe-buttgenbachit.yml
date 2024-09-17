@@ -1,0 +1,16 @@
+# https://www.mineralienatlas.de/lexikon/index.php/MineralData?lang=en&language=english&mineral=Buttgenbachit
+name: buttgenbachit
+description: My personal flavor of Bazzite Stable.
+base-image: ghcr.io/ublue-os/bazzite
+image-version: stable
+
+modules:
+  - from-file: common-modules.yml
+  - from-file: common-bazzite.yml
+
+  - type: rpm-ostree
+    install:
+      - goverlay
+      - mangohud
+
+  - type: signing

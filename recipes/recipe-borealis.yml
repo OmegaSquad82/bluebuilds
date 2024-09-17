@@ -1,0 +1,14 @@
+# https://en.wikipedia.org/wiki/Aurora_Borealis
+name: borealis
+description: My personal flavor of Aurora for Developers.
+base-image: ghcr.io/ublue-os/aurora-dx
+image-version: 40
+
+modules:
+  - from-file: common-modules.yml
+
+  - type: rpm-ostree
+    install:
+      - tlp
+
+  - type: signing

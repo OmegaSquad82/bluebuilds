@@ -1,0 +1,26 @@
+# https://www.ecosia.org/search?tt=mzl&q=Cornus%20sericea%20Flaviramea
+name: flaviramea
+description: My personal flavor of Fedora Sway Atomic.
+base-image: ghcr.io/ublue-os/sericea-main
+image-version: 40
+
+modules:
+  - from-file: common-modules.yml
+
+  - type: bling
+    install:
+      - ublue-update # https://github.com/ublue-os/ublue-update
+
+  - type: brew
+    nofile-limits: true # increase nofile limits
+    brew-analytics: false # disable telemetry
+
+  - type: rpm-ostree
+    install:
+      - gdisk
+      - tlp
+    remove:
+      - firefox
+      - firefox-langpacks
+
+  - type: signing
