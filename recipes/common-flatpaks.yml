@@ -1,0 +1,16 @@
+modules:
+  - type: default-flatpaks
+    notify: true
+    system:
+      install:
+        - com.discordapp.Discord
+        - com.synology.SynologyDrive
+        - com.vscodium.codium
+        - io.github.dvlv.boxbuddyrs
+        - io.github.flattool.Warehouse
+        - md.obsidian.Obsidian
+        - org.keepassxc.KeePassXC
+        - org.libreoffice.LibreOffice
+        - org.mozilla.firefox
+        - org.signal.Signal
+      remove:

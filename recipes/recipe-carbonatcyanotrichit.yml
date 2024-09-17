@@ -1,0 +1,16 @@
+# https://www.mineralienatlas.de/lexikon/index.php/MineralData?lang=en&language=english&mineral=Carbonatcyanotrichit
+name: carbonatcyanotrichit
+description: My personal flavor of Bazzite Deck Stable.
+base-image: ghcr.io/ublue-os/bazzite-deck
+image-version: stable
+
+modules:
+  - from-file: common-modules.yml
+  - from-file: common-bazzite.yml
+
+  - type: rpm-ostree
+    install:
+      - goverlay
+      - mangohud
+
+  - type: signing
