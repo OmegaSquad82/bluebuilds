@@ -3,5 +3,7 @@ modules:
     install:
       - byobu
       - kitty
+      - htop
       - neovim
       - powertop
+      - tlp

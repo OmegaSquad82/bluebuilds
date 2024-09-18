@@ -7,20 +7,19 @@ image-version: 40
 modules:
   - from-file: common-modules.yml
 
-  - type: bling
+  - type: rpm-ostree
     install:
-      - ublue-update # https://github.com/ublue-os/ublue-update
+      - gdisk
+    remove:
+      - firefox
+      - firefox-langpacks
 
   - type: brew
     nofile-limits: true # increase nofile limits
     brew-analytics: false # disable telemetry
 
-  - type: rpm-ostree
+  - type: bling
     install:
-      - gdisk
-      - tlp
-    remove:
-      - firefox
-      - firefox-langpacks
+      - ublue-update # https://github.com/ublue-os/ublue-update
 
   - type: signing

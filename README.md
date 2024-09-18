@@ -2,7 +2,58 @@
 
 See the [BlueBuild docs](https://blue-build.org/how-to/setup/) for quick setup instructions for setting up your own repository based on this template.
 
-After setup, it is recommended you update this README to describe your custom image.
+## Images
+
+All images are built with a selection of common packages and flatpaks. ZRAM Swap is pre-configured to use system default compression (likely LZ4) and from 2xRAM up to 32 GiB as Swap space and Virtual Memory settings have been configured for much more swapping.
+
+### Aubertit
+
+It is a flavor of Bazzite for ASUS Laptops with a NVIDIA card.
+
+### Borealis
+
+An opinionated descendant of Aurora for my usual desktop and tinkering workflows.
+
+### Buttgenbachit
+
+Bazzite Stable with additional goverlay and mangohud for desktop gaming.
+
+### Carbonatcyanotrichit
+
+Bazzite Deck Stable for my Steam Deck clone.
+
+### Flaviramea
+
+My netbook still exists and is dear to me, so it runs Sway, now.
+
+## Customizations
+
+### Bazzite
+
+The Tailscaled service is disabled.
+
+### Flatpaks
+
+- BoxBuddy
+- Codium
+- Discord
+- KeepassXC
+- LibreOffice
+- Mozilla Firefox
+- Obsidian
+- OpenRGB
+- Signal
+- SynologyDrive
+- Warehouse
+
+### Packages
+
+- byobu
+- kitty
+- htop
+- neovim
+- powertop
+- tlp
 
 ## Installation
 
