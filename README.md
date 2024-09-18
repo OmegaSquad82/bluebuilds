@@ -4,7 +4,7 @@ See the [BlueBuild docs](https://blue-build.org/how-to/setup/) for quick setup i
 
 ## Images
 
-All images are built with a selection of common packages and flatpaks. ZRAM Swap is pre-configured to use system default compression (likely LZ4) and from 2xRAM up to 32 GiB as Swap space and Virtual Memory settings have been configured for much more swapping.
+All images are built with a selection of common packages and flatpaks. ZRAM is pre-configured to use system default compression (likely LZ4) and from 2xRAM up to 32 GiB as Swap space and Virtual Memory settings have been configured for much more and low latency swapping.
 
 ### Aubertit
 
@@ -16,7 +16,7 @@ An opinionated descendant of Aurora for my usual desktop and tinkering workflows
 
 ### Buttgenbachit
 
-Bazzite Stable with additional goverlay and mangohud for desktop gaming.
+Bazzite Stable for desktop gaming.
 
 ### Carbonatcyanotrichit
 
@@ -30,7 +30,7 @@ My netbook still exists and is dear to me, so it runs Sway, now.
 
 ### Bazzite
 
-The Tailscaled service is disabled.
+Both _goverlay_ and _mangohud_ packages are installed on top and the _tailscaled_ service is disabled.
 
 ### Flatpaks
 

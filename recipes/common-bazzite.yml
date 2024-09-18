@@ -1,4 +1,8 @@
 modules:
+  - type: rpm-ostree
+    install:
+      - goverlay
+      - mangohud
   - type: systemd
     system:
       disabled:

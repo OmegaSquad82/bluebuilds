@@ -15,15 +15,15 @@ jobs:
       packages: read
       id-token: write
     strategy:
-        fail-fast: false   
-        matrix:
-            package:
-            - aubertit
-            - borealis
-            - buttgenbachit
-            - carbonatcyanotrichit
-            - flaviramea
-            # - template
+      fail-fast: false
+      matrix:
+        package:
+          - aubertit
+          - borealis
+          - buttgenbachit
+          - carbonatcyanotrichit
+          - flaviramea
+        # - template
     steps:
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@0.24.0
