@@ -21,16 +21,18 @@ jobs:
       fail-fast: false
       matrix:
         recipe:
-          - name: aubertit
-            file: recipe-aubertit.yml
-          - name: borealis
-            file: recipe-borealis.yml
-          - name: buttgenbachit
-            file: recipe-buttgenbachit.yml
-          - name: carbonatcyanotrichit
-            file: recipe-carbonatcyanotrichit.yml
-          - name: flaviramea
-            file: recipe-flaviramea.yml
+         # - name: aubertit
+         #   file: recipe-aubertit.yml
+         # - name: borealis
+         #   file: recipe-borealis.yml
+         # - name: buttgenbachit
+         #   file: recipe-buttgenbachit.yml
+         # - name: carbonatcyanotrichit
+         #   file: recipe-carbonatcyanotrichit.yml
+         # - name: flaviramea
+         #   file: recipe-flaviramea.yml
+           - name: recipe
+             file: recipe.yml
     steps:
       - name: Build Custom Image
         uses: blue-build/github-action@v1.6
