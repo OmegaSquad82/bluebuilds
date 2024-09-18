@@ -12,5 +12,6 @@ modules:
         - org.keepassxc.KeePassXC
         - org.libreoffice.LibreOffice
         - org.mozilla.firefox
+        - org.openrgb.OpenRGB
         - org.signal.Signal
       remove:

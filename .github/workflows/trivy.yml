@@ -1,0 +1,42 @@
+name: bluevuln
+on:
+  schedule:
+    - cron:
+        "55 06 * * *" # build at 06:55 UTC every day
+        # (50 minutes after custom image build was triggered)
+  registry_package:
+  workflow_dispatch:
+jobs:
+  trivy:
+    name: Scan Custom Image
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: read
+      id-token: write
+    strategy:
+      fail-fast: false
+      matrix:
+        package:
+          - aubertit
+          - borealis
+          - buttgenbachit
+          - carbonatcyanotrichit
+          - flaviramea
+        # - template
+    steps:
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@0.24.0
+        with:
+          image-ref: "ghcr.io/${{ github.repository_owner }}/${{ matrix.package }}:latest"
+          format: "sarif"
+          output: "trivy-results.sarif"
+          severity: "CRITICAL,HIGH,MEDIUM"
+        env:
+          TRIVY_USERNAME: ${{ github.actor }}
+          TRIVY_PASSWORD: ${{ github.token }}
+
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: "trivy-results.sarif"

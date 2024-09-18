@@ -7,10 +7,4 @@ image-version: stable
 modules:
   - from-file: common-modules.yml
   - from-file: common-bazzite.yml
-
-  - type: rpm-ostree
-    install:
-      - goverlay
-      - mangohud
-
   - type: signing

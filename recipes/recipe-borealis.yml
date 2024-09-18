@@ -6,9 +6,4 @@ image-version: 40
 
 modules:
   - from-file: common-modules.yml
-
-  - type: rpm-ostree
-    install:
-      - tlp
-
   - type: signing

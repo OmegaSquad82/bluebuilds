@@ -14,45 +14,25 @@ jobs:
     name: Build Custom Image
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: read
       packages: write
       id-token: write
     strategy:
       fail-fast: false
       matrix:
         recipe:
-          - name: aubertit
-            file: recipe-aubertit.yml
-          - name: borealis
-            file: recipe-borealis.yml
-          - name: buttgenbachit
-            file: recipe-buttgenbachit.yml
-          - name: carbonatcyanotrichit
-            file: recipe-carbonatcyanotrichit.yml
-          - name: flaviramea
-            file: recipe-flaviramea.yml
+          - recipe-aubertit.yml
+          - recipe-borealis.yml
+          - recipe-buttgenbachit.yml
+          - recipe-carbonatcyanotrichit.yml
+          - recipe-flaviramea.yml
+          # - recipe.yml
     steps:
       - name: Build Custom Image
         uses: blue-build/github-action@v1.6
         with:
-          recipe: ${{ matrix.recipe.file }}
+          recipe: ${{ matrix.recipe }}
           cosign_private_key: ${{ secrets.SIGNING_SECRET }}
           registry_token: ${{ github.token }}
           pr_event_number: ${{ github.event.number }}
           maximize_build_space: true
-
-      - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@0.24.0
-        with:
-          image-ref: "${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ matrix.recipe.name }}"
-          format: "sarif"
-          output: "trivy-results.sarif"
-          severity: "CRITICAL,HIGH,MEDIUM"
-        env:
-          TRIVY_USERNAME: ${{ github.actor }}
-          TRIVY_PASSWORD: ${{ github.token }}
-
-      - name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v3
-        with:
-          sarif_file: "trivy-results.sarif"
