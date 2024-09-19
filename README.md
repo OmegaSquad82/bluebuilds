@@ -4,11 +4,11 @@ See the [BlueBuild docs](https://blue-build.org/how-to/setup/) for quick setup i
 
 ## Images
 
-All images are built with a selection of common packages and flatpaks. ZRAM is pre-configured to use system default compression (likely LZ4) and from 2xRAM up to 32 GiB as Swap space and Virtual Memory settings have been configured for much more and low latency swapping.
+All images are built with a selection of common packages and flatpaks. ZRAM is pre-configured to use system default compression (likely LZ4) and from 2xRAM up to 32 GiB as Swap space and Virtual Memory settings have been configured for both more and low latency swapping.
 
 ### Aubertit
 
-It is a flavor of Bazzite for ASUS Laptops with a NVIDIA card.
+It is a flavor of Bazzite for ASUS Laptops with some NVIDIA GPU.
 
 ### Borealis
 
@@ -16,7 +16,7 @@ An opinionated descendant of Aurora for my usual desktop and tinkering workflows
 
 ### Buttgenbachit
 
-Bazzite Stable for desktop gaming.
+Bazzite Stable NVIDIA for desktop gaming.
 
 ### Carbonatcyanotrichit
 
@@ -24,7 +24,7 @@ Bazzite Deck Stable for my Steam Deck clone.
 
 ### Flaviramea
 
-My netbook still exists and is dear to me, so it runs Sway, now.
+My netbook still exists and is dear to me and so it is running Sway, now.
 
 ## Customizations
 

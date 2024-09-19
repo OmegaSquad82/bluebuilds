@@ -1,0 +1,30 @@
+#!/bin/bash
+set -euox pipefail
+
+if [ "$EUID" -ne 0 ]; then
+	echo "Please run as root"
+	exit
+fi
+
+outdir=./iso-output
+mkdir -p "$outdir"
+image_tag=latest
+variant=Kinoite
+version=40
+IMAGES=()
+here="$PWD"
+cd recipes
+IMAGES+=(recipe-*.yml)
+cd "$here"
+for image in "${IMAGES[@]}"; do
+	image="${image#recipe-}"
+	image="${image%.yml}"
+	podman run --rm --privileged --volume "$outdir":/build-container-installer/build --security-opt label=disable --pull=newer \
+		ghcr.io/jasonn3/build-container-installer:latest \
+		IMAGE_REPO=ghcr.io/omegasquad82 \
+		IMAGE_NAME="$image" \
+		IMAGE_TAG="$image_tag" \
+		VARIANT="$variant" \
+		VERSION="$version" \
+		ISO_NAME="$image-$image_tag-f$version-$(date -I)".iso
+done
