@@ -19,6 +19,7 @@ cd "$here"
 for image in "${IMAGES[@]}"; do
 	image="${image#recipe-}"
 	image="${image%.yml}"
+	#docker run --rm --privileged --volume "$outdir":/build-container-installer/build --pull=always \
 	podman run --rm --privileged --volume "$outdir":/build-container-installer/build --security-opt label=disable --pull=newer \
 		ghcr.io/jasonn3/build-container-installer:latest \
 		IMAGE_REPO=ghcr.io/omegasquad82 \
@@ -26,5 +27,5 @@ for image in "${IMAGES[@]}"; do
 		IMAGE_TAG="$image_tag" \
 		VARIANT="$variant" \
 		VERSION="$version" \
-		ISO_NAME="$image-$image_tag-f$version-$(date -I)".iso
+		ISO_NAME="$outdir/$image-$image_tag-f$version-$(date -I)".iso
 done
