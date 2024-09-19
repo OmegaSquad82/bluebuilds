@@ -1,0 +1,5 @@
+modules:
+  - type: systemd
+    user:
+      enabled:
+        - podman.service

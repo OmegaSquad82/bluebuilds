@@ -6,20 +6,12 @@ image-version: 40
 
 modules:
   - from-file: common-modules.yml
-
+  - from-file: common-podman.yml
   - type: rpm-ostree
-    install:
-      - gdisk
     remove:
       - firefox
       - firefox-langpacks
-
   - type: brew
-    nofile-limits: true # increase nofile limits
-    brew-analytics: false # disable telemetry
-
-  - type: bling
-    install:
-      - ublue-update # https://github.com/ublue-os/ublue-update
-
+    nofile-limits: true
+    brew-analytics: false
   - type: signing

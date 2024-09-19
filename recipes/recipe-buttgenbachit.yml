@@ -1,10 +1,11 @@
 # https://www.mineralienatlas.de/lexikon/index.php/MineralData?lang=en&language=english&mineral=Buttgenbachit
 name: buttgenbachit
-description: My personal flavor of Bazzite Stable.
-base-image: ghcr.io/ublue-os/bazzite
+description: My personal flavor of Bazzite NVIDIA Stable.
+base-image: ghcr.io/ublue-os/bazzite-nvidia
 image-version: stable
 
 modules:
   - from-file: common-modules.yml
   - from-file: common-bazzite.yml
+  - from-file: common-podman.yml
   - type: signing
