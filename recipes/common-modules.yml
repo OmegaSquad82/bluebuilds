@@ -8,6 +8,6 @@ modules:
   - from-file: common-flatpaks.yml
 
   - type: systemd
-    system:
+    user:
       enabled:
         - sshd.service
