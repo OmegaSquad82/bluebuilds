@@ -30,7 +30,11 @@ My netbook still exists and is dear to me and so it is running Sway, now.
 
 ### Bazzite
 
-Both _goverlay_ and _mangohud_ packages are installed on top and the _tailscaled_ service is disabled.
+Both _goverlay_ and _mangohud_ packages are installed on top and the `tailscaled.service` is disabled.
+
+### Podman
+
+The `podman.service` is enabled on Borealis, Buttgenbachit and Flaviramea.
 
 ### Flatpaks
 
@@ -50,7 +54,6 @@ Both _goverlay_ and _mangohud_ packages are installed on top and the _tailscaled
 
 - byobu
 - kitty
-- htop
 - neovim
 - powertop
 - tlp
