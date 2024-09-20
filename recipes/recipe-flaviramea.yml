@@ -6,8 +6,13 @@ image-version: 40
 
 modules:
   - from-file: common-modules.yml
-  - from-file: common-podman.yml
+  - from-file: configs/podman.yml
   - type: rpm-ostree
+    install:
+      - phoronix-test-suite
+      - bison
+      - flex
+      - openssl-devel
     remove:
       - firefox
       - firefox-langpacks

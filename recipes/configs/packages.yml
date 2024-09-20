@@ -5,3 +5,4 @@ modules:
       - kitty
       - neovim
       - powertop
+      - powerstat

@@ -4,6 +4,6 @@ modules:
       - source: system
         destination: /
 
-  - from-file: common-flatpaks.yml
-  - from-file: common-packages.yml
-  - from-file: common-sshd.yml
+  - from-file: configs/flatpaks.yml
+  - from-file: configs/packages.yml
+  - from-file: configs/sshd.yml
