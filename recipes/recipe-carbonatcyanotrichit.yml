@@ -6,5 +6,5 @@ image-version: stable
 
 modules:
   - from-file: common-modules.yml
-  - from-file: common-bazzite.yml
+  - from-file: configs/bazzite.yml
   - type: signing
