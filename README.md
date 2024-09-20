@@ -4,7 +4,7 @@ See the [BlueBuild docs](https://blue-build.org/how-to/setup/) for quick setup i
 
 ## Images
 
-All images are built with a selection of common packages and flatpaks. ZRAM is pre-configured to use system default compression (likely LZ4) and from 2xRAM up to 32 GiB as Swap space and Virtual Memory settings have been configured for both more and low latency swapping.
+All images are built with a selection of common packages and flatpaks. ZRAM is pre-configured to use system default compression (likely LZ4) and from 2xRAM up to 32 GiB as Swap space and Virtual Memory settings have been configured for both increased amount of and low latency swapping. The latency improvements come at a price of a higher likelyhood of page faults because readahead has been deactivated.
 
 ### Aubertit
 
@@ -56,7 +56,32 @@ The `podman.service` is enabled on Borealis, Buttgenbachit and Flaviramea.
 - kitty
 - neovim
 - powertop
-- tlp
+- powerstat
+
+### swap on zram
+
+Let's have a look into some articles I've read over time. I did not do any measurements on my own, just rough observations while using my systems, especially the low memory (4 GiB) netbook I'm using for roughly seven years, and generally fare well with these settings, now. By default Fedora is using the [systemd-zram-generator](https://github.com/systemd/zram-generator). The Flaviramea image comes with _phoronix-test-suite_ pre-installed, along with prerequisites for running `phoronix-test-suite benchmark build-linux-kernel`.
+
+#### Blogs
+
+- [Free vs. Available Memory in Linux; August 30, 2024 by Hayden James, in Blog Linux](https://linuxblog.io/free-vs-available-memory-in-linux/)
+- [Linux Performance: Almost Always Add Swap Space – Part 2: ZRAM; September 25, 2023 by Hayden James, in Blog Linux](https://haydenjames.io/linux-performance-almost-always-add-swap-part2-zram/)
+- [Tuning ZRAM in Fedora for Better Performance and Get Rid of OOM Crashes; Tue, Dec 12, 2023](https://blog.guillaumea.fr/post/tuning_zram_fedora_for_better_performance/)
+
+#### Documentation
+
+- [Virtual Memory](https://www.kernel.org/doc/html/latest/admin-guide/sysctl/vm.html)
+- [zram: Compressed RAM-based block devices](https://docs.kernel.org/admin-guide/blockdev/zram.html)
+- [Timed Linux Kernel Compilation](https://openbenchmarking.org/test/pts/build-linux-kernel)
+
+#### Github
+
+- [Zram can be configured more optimally by using lz4 instead of zstd1 #1570](https://github.com/ublue-os/bazzite/issues/1570)
+
+#### Wikis
+
+- [Arch Wiki - Zram](https://wiki.archlinux.org/title/Zram)
+- [Fedora Wiki - Changes/Scale ZRAM to full memory size](https://fedoraproject.org/wiki/Changes/Scale_ZRAM_to_full_memory_size)
 
 ## Installation
 
