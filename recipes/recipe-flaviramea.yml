@@ -7,12 +7,5 @@ image-version: 40
 modules:
   - from-file: common-modules.yml
   - from-file: configs/podman.yml
-  - type: rpm-ostree
-    install:
-    remove:
-      - firefox
-      - firefox-langpacks
-  - type: brew
-    nofile-limits: true
-    brew-analytics: false
+  - from-file: configs/brew.yml
   - type: signing
