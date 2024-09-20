@@ -1,0 +1,4 @@
+modules:
+  - type: brew
+    nofile-limits: true
+    brew-analytics: false
