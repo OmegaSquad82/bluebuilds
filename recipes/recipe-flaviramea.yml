@@ -9,7 +9,6 @@ modules:
   - from-file: configs/podman.yml
   - type: rpm-ostree
     install:
-      - openssl-devel
     remove:
       - firefox
       - firefox-langpacks
