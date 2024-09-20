@@ -4,10 +4,6 @@ modules:
       - source: system
         destination: /
 
-  - from-file: common-packages.yml
   - from-file: common-flatpaks.yml
-
-  - type: systemd
-    user:
-      enabled:
-        - sshd.service
+  - from-file: common-packages.yml
+  - from-file: common-sshd.yml
