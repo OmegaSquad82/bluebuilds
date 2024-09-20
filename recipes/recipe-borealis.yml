@@ -6,5 +6,5 @@ image-version: 40
 
 modules:
   - from-file: common-modules.yml
-  - from-file: common-podman.yaml
+  - from-file: common-podman.yml
   - type: signing
