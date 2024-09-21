@@ -47,12 +47,12 @@ The `podman.service` is enabled on Borealis, Buttgenbachit and Flaviramea.
 - SynologyDrive
 - Warehouse
 
-#### Bazzite
+#### Bazzite images
 
 - Discord
 - OpenRGB
 
-#### Select
+#### Select images
 
 - AusweisApp2
 - BoxBuddy
@@ -84,9 +84,7 @@ Let's have a look into some articles I've read over time. I did not do any measu
 - [Virtual Memory](https://www.kernel.org/doc/html/latest/admin-guide/sysctl/vm.html)
 - [zram: Compressed RAM-based block devices](https://docs.kernel.org/admin-guide/blockdev/zram.html)
 - [Phoronix Test Suite](https://github.com/phoronix-test-suite/phoronix-test-suite/blob/master/documentation/phoronix-test-suite.md)
-- [Chess Test Suite](https://openbenchmarking.org/suite/pts/chess)
-  - [Stockfish](https://openbenchmarking.org/test/pts/stockfish)
-  - [system/stockfish](https://openbenchmarking.org/test/system/stockfish)
+- [OpenBenchmarking](https://openbenchmarking.org/features)
 
 #### Github
 
