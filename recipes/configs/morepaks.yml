@@ -1,0 +1,11 @@
+modules:
+  - type: default-flatpaks
+    notify: true
+    system:
+      install:
+        - com.vscodium.codium
+        - de.bund.ausweisapp.ausweisapp2
+        - io.github.dvlv.boxbuddyrs
+        - io.github.nroduit.Weasis
+        - md.obsidian.Obsidian
+        - org.fedoraproject.MediaWriter

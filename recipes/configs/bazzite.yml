@@ -1,4 +1,10 @@
 modules:
+  - type: default-flatpaks
+    notify: true
+    user:
+      install:
+        - com.discordapp.Discord
+        - org.openrgb.OpenRGB
   - type: rpm-ostree
     install:
       - goverlay

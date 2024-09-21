@@ -38,17 +38,28 @@ The `podman.service` is enabled on Borealis, Buttgenbachit and Flaviramea.
 
 ### Flatpaks
 
-- BoxBuddy
-- Codium
-- Discord
+#### All images
+
 - KeepassXC
 - LibreOffice
 - Mozilla Firefox
-- Obsidian
-- OpenRGB
 - Signal
 - SynologyDrive
 - Warehouse
+
+#### Bazzite images
+
+- Discord
+- OpenRGB
+
+#### Select images
+
+- AusweisApp2
+- BoxBuddy
+- Codium
+- MediaWriter
+- Obsidian
+- Weasis
 
 ### Packages
 
@@ -60,7 +71,7 @@ The `podman.service` is enabled on Borealis, Buttgenbachit and Flaviramea.
 
 ### swap on zram
 
-Let's have a look into some articles I've read over time. I did not do any measurements on my own, just rough observations while using my systems, especially the low memory (4 GiB) netbook I'm using for roughly seven years, and generally fare well with these settings, now. By default Fedora is using the [systemd-zram-generator](https://github.com/systemd/zram-generator). The Flaviramea image comes with _phoronix-test-suite_ pre-installed, along with prerequisites for running `phoronix-test-suite benchmark build-linux-kernel`.
+Let's have a look into some articles I've read over time. I did not do any measurements on my own, just rough observations while using my systems, especially the low memory (4 GiB) netbook I'm using for roughly seven years, and generally fare well with these settings, now. By default Fedora is using the [systemd-zram-generator](https://github.com/systemd/zram-generator).
 
 #### Blogs
 
@@ -72,7 +83,8 @@ Let's have a look into some articles I've read over time. I did not do any measu
 
 - [Virtual Memory](https://www.kernel.org/doc/html/latest/admin-guide/sysctl/vm.html)
 - [zram: Compressed RAM-based block devices](https://docs.kernel.org/admin-guide/blockdev/zram.html)
-- [Timed Linux Kernel Compilation](https://openbenchmarking.org/test/pts/build-linux-kernel)
+- [Phoronix Test Suite](https://github.com/phoronix-test-suite/phoronix-test-suite/blob/master/documentation/phoronix-test-suite.md)
+- [OpenBenchmarking](https://openbenchmarking.org/features)
 
 #### Github
 
