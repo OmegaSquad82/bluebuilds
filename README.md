@@ -30,7 +30,7 @@ My netbook still exists and is dear to me and so it is running Sway, now.
 
 ### Bazzite
 
-Both _goverlay_ and _mangohud_ packages are installed on top and the `tailscaled.service` is disabled.
+The `tailscaled.service` is disabled on Aubertit, Buttgenbachit and Carbonatcyanotrichit.
 
 ### Podman
 
@@ -59,6 +59,7 @@ The `podman.service` is enabled on Borealis, Buttgenbachit and Flaviramea.
 - Codium
 - MediaWriter
 - Obsidian
+- Ptyxis
 - Weasis
 
 ### Packages
