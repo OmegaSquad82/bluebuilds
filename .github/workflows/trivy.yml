@@ -9,7 +9,7 @@ on:
 jobs:
   trivy:
     name: Scan Custom Image
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     permissions:
       contents: write
       packages: read
