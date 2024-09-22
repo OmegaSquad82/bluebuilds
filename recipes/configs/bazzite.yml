@@ -5,10 +5,6 @@ modules:
       install:
         - com.discordapp.Discord
         - org.openrgb.OpenRGB
-  - type: rpm-ostree
-    install:
-      - goverlay
-      - mangohud
   - type: systemd
     system:
       disabled:
