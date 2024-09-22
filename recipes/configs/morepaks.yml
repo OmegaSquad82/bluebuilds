@@ -3,6 +3,7 @@ modules:
     notify: true
     system:
       install:
+        - app.devsuite.Ptyxis
         - com.vscodium.codium
         - de.bund.ausweisapp.ausweisapp2
         - io.github.dvlv.boxbuddyrs
