@@ -37,7 +37,7 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ github.token }}
-      - run: echo "IMAGE_REF=${REGISTRY}:${OWNER@L}/${{ matrix.package }}" >> ${GITHUB_ENV}
+      - run: echo "IMAGE_REF=${REGISTRY}://${OWNER@L}/${{ matrix.package }}" >> ${GITHUB_ENV}
       - run: docker pull ${{ env.IMAGE_REF }}
       - name: Build Custom Image
         uses: blue-build/github-action@v1.6
