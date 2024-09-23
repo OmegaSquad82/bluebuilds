@@ -27,17 +27,17 @@ jobs:
           - flaviramea
         # - template
     steps:
-      - uses: actions/checkout@v4
       - uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ github.token }}
-      - run: docker pull ${{ env.PROJECT }}/${{ matrix.package }}
+      - run: echo "REPOSITORY=${PROJECT@L}" >> ${GITHUB_ENV}
+      - run: docker pull ${{ env.REPOSITORY }}/${{ matrix.package }}
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@0.20.0
         with:
-          image-ref: ${{ env.PROJECT }}/${{ matrix.package }}
+          image-ref: ${{ env.REPOSITORY }}/${{ matrix.package }}
           format: sarif
           output: trivy-results.sarif
           severity: CRITICAL,HIGH,MEDIUM
