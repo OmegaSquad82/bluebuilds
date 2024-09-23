@@ -1,4 +1,3 @@
-# https://www.mineralienatlas.de/lexikon/index.php/MineralData?lang=en&language=english&mineral=Aubertit
 name: aubertit
 description: My personal flavor of Bazzite Stable for ASUS Laptops with NVIDIA cards.
 base-image: ghcr.io/ublue-os/bazzite-asus-nvidia

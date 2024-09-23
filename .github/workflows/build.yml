@@ -7,15 +7,18 @@ on:
   push:
     paths-ignore:
       - "**.md"
+      - "build-isos"
       - "**/trivy.yml"
   pull_request:
   workflow_dispatch:
+env:
+  REPO_OWNER: ${{ github.repository_owner }}
 jobs:
   bluebuild:
     name: Build Custom Image
     runs-on: ubuntu-24.04
     permissions:
-      contents: read
+      contents: write
       packages: write
       id-token: write
     strategy:
@@ -27,7 +30,6 @@ jobs:
           - buttgenbachit
           - carbonatcyanotrichit
           - flaviramea
-        # - template
     steps:
       - name: Build Custom Image
         uses: blue-build/github-action@v1.6
@@ -37,3 +39,27 @@ jobs:
           registry_token: ${{ github.token }}
           pr_event_number: ${{ github.event.number }}
           maximize_build_space: yes
+
+      - name: Force repository owner to lowercase
+        run: echo "IMAGE_REF=ghcr.io/${REPO_OWNER@L}/${{ matrix.package }}" >> ${GITHUB_ENV}
+
+      - name: Generate SBOM for Custom Image with Trivy
+        uses: aquasecurity/trivy-action@0.24.0
+        with:
+          image-ref: "${{ env.IMAGE_REF }}"
+          scan-type: image
+          format: "github"
+          output: "${{ matrix.package }}-dependency-results.sbom.json"
+          github-pat: ${{ secrets.GITHUB_TOKEN }}
+          severity: "MEDIUM,HIGH,CRITICAL"
+          scanners: "vuln"
+        env:
+          TRIVY_USERNAME: ${{ github.actor }}
+          TRIVY_PASSWORD: ${{ github.token }}
+
+      - name: Upload trivy report as a Github artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.package }}-trivy-sbom-report
+          path: "${{ github.workspace }}/${{ matrix.package }}-dependency-results.sbom.json"
+          retention-days: 21

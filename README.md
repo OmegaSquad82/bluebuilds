@@ -1,4 +1,8 @@
-# OmegaSquad82/BlueBuilds &nbsp; [![bluebuild](https://github.com/OmegaSquad82/bluebuilds/actions/workflows/build.yml/badge.svg)](https://github.com/OmegaSquad82/bluebuilds/actions/workflows/build.yml) [![Dependabot Updates](https://github.com/OmegaSquad82/bluebuilds/actions/workflows/dependabot/dependabot-updates/badge.svg)](https://github.com/OmegaSquad82/bluebuilds/actions/workflows/dependabot/dependabot-updates)
+# OmegaSquad82/BlueBuilds &nbsp;
+
+[![bluebuild](https://github.com/OmegaSquad82/bluebuilds/actions/workflows/build.yml/badge.svg)](https://github.com/OmegaSquad82/bluebuilds/actions/workflows/build.yml)
+[![bluevuln](https://github.com/OmegaSquad82/bluebuilds/actions/workflows/trivy.yml/badge.svg)](https://github.com/OmegaSquad82/bluebuilds/actions/workflows/trivy.yml)
+[![Dependabot Updates](https://github.com/OmegaSquad82/bluebuilds/actions/workflows/dependabot/dependabot-updates/badge.svg)](https://github.com/OmegaSquad82/bluebuilds/actions/workflows/dependabot/dependabot-updates)
 
 See the [BlueBuild docs](https://blue-build.org/how-to/setup/) for quick setup instructions for setting up your own repository based on this template.
 
@@ -6,23 +10,23 @@ See the [BlueBuild docs](https://blue-build.org/how-to/setup/) for quick setup i
 
 All images are built with a selection of common packages and flatpaks. ZRAM is pre-configured to use system default compression (likely LZ4) and from 2xRAM up to 32 GiB as Swap space and Virtual Memory settings have been configured for both increased amount of and low latency swapping. The latency improvements come at a price of a higher likelyhood of page faults because readahead has been deactivated.
 
-### Aubertit
+### [Aubertit](https://www.mineralienatlas.de/lexikon/index.php/MineralData?lang=en&language=english&mineral=Aubertit)
 
 It is a flavor of Bazzite for ASUS Laptops with some NVIDIA GPU.
 
-### Borealis
+### [Borealis](https://en.wikipedia.org/wiki/Aurora_Borealis)
 
 An opinionated descendant of Aurora for my usual desktop and tinkering workflows.
 
-### Buttgenbachit
+### [Buttgenbachit](https://www.mineralienatlas.de/lexikon/index.php/MineralData?lang=en&language=english&mineral=Buttgenbachit)
 
 Bazzite Stable NVIDIA for desktop gaming.
 
-### Carbonatcyanotrichit
+### [Carbonatcyanotrichit](https://www.mineralienatlas.de/lexikon/index.php/MineralData?lang=en&language=english&mineral=Carbonatcyanotrichit)
 
 Bazzite Deck Stable for my Steam Deck clone.
 
-### Flaviramea
+### [Flaviramea](https://www.ecosia.org/search?tt=mzl&q=Cornus%20sericea%20Flaviramea)
 
 My netbook still exists and is dear to me and so it is running Sway, now.
 
@@ -64,6 +68,8 @@ The `podman.service` is enabled on Borealis, Buttgenbachit and Flaviramea.
 
 ### Packages
 
+#### All images
+
 - byobu
 - kitty
 - neovim
@@ -72,7 +78,9 @@ The `podman.service` is enabled on Borealis, Buttgenbachit and Flaviramea.
 
 ### swap on zram
 
-Let's have a look into some articles I've read over time. I did not do any measurements on my own, just rough observations while using my systems, especially the low memory (4 GiB) netbook I'm using for roughly seven years, and generally fare well with these settings, now. By default Fedora is using the [systemd-zram-generator](https://github.com/systemd/zram-generator).
+Let's have a look into some articles I've read over time. I did not do many measurements on my own, just rough observations while using my systems, especially the low memory (4 GiB) netbook I'm using for roughly seven years, and generally fare well with these settings. I'm choosing `lz4` over `zstd` as higher IOPS are - for my use cases - seemingly more important than the compression gain over either lz4 or `lzo-rle`.
+
+By default Fedora is using the [systemd-zram-generator](https://github.com/systemd/zram-generator).
 
 #### Blogs
 

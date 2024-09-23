@@ -1,8 +1,7 @@
-# https://www.ecosia.org/search?tt=mzl&q=Cornus%20sericea%20Flaviramea
 name: flaviramea
 description: My personal flavor of Fedora Sway Atomic.
 base-image: ghcr.io/ublue-os/sericea-main
-image-version: 40
+image-version: latest
 
 modules:
   - from-file: common-modules.yml
