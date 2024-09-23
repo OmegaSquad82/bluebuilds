@@ -5,7 +5,6 @@ on:
         "55 06 * * *" # build at 06:55 UTC every day
         # (50 minutes after custom image build was triggered)
   pull_request:
-  registry_package:
   workflow_dispatch:
 env:
   REPO_OWNER: ${{ github.repository_owner }}
@@ -45,12 +44,12 @@ jobs:
       - name: Generate tarball from image
         run: |
           docker pull ${{ env.IMAGE_REF }}
-          docker save -o vuln-image-${{ matrix.package }}.tar ${{ env.IMAGE_REF }}
+          docker save -o ${{ matrix.package }}-vuln-image.tar ${{ env.IMAGE_REF }}
 
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@0.24.0
         with:
-          input: /github/workspace/vuln-image-${{ matrix.package }}.tar
+          input: /github/workspace/${{ matrix.package }}-vuln-image.tar
           output: ${{ matrix.package }}-trivy-results.sarif
           severity: CRITICAL,HIGH
           format: sarif
