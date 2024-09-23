@@ -7,6 +7,7 @@ on:
   push:
     paths-ignore:
       - "**.md"
+      - "build-isos"
       - "**/trivy.yml"
   pull_request:
   workflow_dispatch:
@@ -27,7 +28,6 @@ jobs:
           - buttgenbachit
           - carbonatcyanotrichit
           - flaviramea
-        # - template
     steps:
       - name: Build Custom Image
         uses: blue-build/github-action@v1.6
