@@ -28,23 +28,24 @@ jobs:
           - flaviramea
         # - template
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
       - uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ github.token }}
       - run: echo "IMAGE_REF=${REGISTRY}:${OWNER@L}/${{ matrix.package }}" >> ${GITHUB_ENV}
-      - run: docker pull ${{ env.IMAGE_REF }}
       - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@0.20.0
+        uses: aquasecurity/trivy-action@master
         with:
-          image-ref: ${{ env.IMAGE_REF }}
+          image-ref: "${{ env.IMAGE_REF }}"
           format: sarif
           output: trivy-results.sarif
           severity: CRITICAL,HIGH,MEDIUM
-        #env:
-        #  TRIVY_USERNAME: ${{ github.actor }}
-        #  TRIVY_PASSWORD: ${{ github.token }}
+        env:
+          TRIVY_USERNAME: ${{ github.actor }}
+          TRIVY_PASSWORD: ${{ github.token }}
       - name: Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v3
         with:
