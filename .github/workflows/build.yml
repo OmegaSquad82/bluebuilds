@@ -10,13 +10,10 @@ on:
       - "**/trivy.yml"
   pull_request:
   workflow_dispatch:
-env:
-  REGISTRY: ghcr.io
-  OWNER: ${{ github.repository_owner }}
 jobs:
   bluebuild:
     name: Build Custom Image
-    runs-on: self-hosted
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
       packages: write
@@ -32,13 +29,6 @@ jobs:
           - flaviramea
         # - template
     steps:
-      - uses: docker/login-action@v3
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ github.token }}
-      - run: echo "IMAGE_REF=${REGISTRY}:${OWNER@L}/${{ matrix.package }}" >> ${GITHUB_ENV}
-      - run: docker pull ${{ env.IMAGE_REF }}
       - name: Build Custom Image
         uses: blue-build/github-action@v1.6
         with:
@@ -46,4 +36,4 @@ jobs:
           cosign_private_key: ${{ secrets.SIGNING_SECRET }}
           registry_token: ${{ github.token }}
           pr_event_number: ${{ github.event.number }}
-          maximize_build_space: false
+          maximize_build_space: yes
