@@ -43,8 +43,8 @@ jobs:
       - name: Force repository owner to lowercase
         run: echo "IMAGE_REF=ghcr.io/${REPO_OWNER@L}/${{ matrix.package }}" >> ${GITHUB_ENV}
 
-      - name: Scan image in a private registry
-        uses: aquasecurity/trivy-action@0.20.0
+      - name: Generate SBOM for Custon Image
+        uses: aquasecurity/trivy-action@0.24.0
         with:
           image-ref: "${{ env.IMAGE_REF }}"
           scan-type: image
@@ -60,6 +60,6 @@ jobs:
       - name: Upload trivy report as a Github artifact
         uses: actions/upload-artifact@v4
         with:
-          name: trivy-sbom-report
+          name: ${{ matrix.package }}-trivy-sbom-report
           path: "${{ github.workspace }}/${{ matrix.package }}-dependency-results.sbom.json"
           retention-days: 21
