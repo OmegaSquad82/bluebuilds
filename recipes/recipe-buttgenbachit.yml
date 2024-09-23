@@ -1,4 +1,3 @@
-# https://www.mineralienatlas.de/lexikon/index.php/MineralData?lang=en&language=english&mineral=Buttgenbachit
 name: buttgenbachit
 description: My personal flavor of Bazzite NVIDIA Stable.
 base-image: ghcr.io/ublue-os/bazzite-nvidia
