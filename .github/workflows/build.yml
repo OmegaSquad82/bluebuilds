@@ -70,9 +70,9 @@ jobs:
           output: ${{ matrix.package }}-trivy-results.sarif
           github-pat: ${{ secrets.GITHUB_TOKEN }}
           image-ref: "${{ env.IMAGE_REF }}"
-          severity: "MEDIUM,HIGH,CRITICAL"
+          severity: MEDIUM,HIGH,CRITICAL
           scan-type: image
-          scanners: "vuln"
+          scanners: vuln
           format: sarif
         env:
           TRIVY_USERNAME: ${{ github.actor }}
