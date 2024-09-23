@@ -1,6 +1,6 @@
 # OmegaSquad82/BlueBuilds &nbsp;
 
-[![bluebuild][def]](https://github.com/OmegaSquad82/bluebuilds/actions/workflows/build.yml)
+[![bluebuild](https://github.com/OmegaSquad82/bluebuilds/actions/workflows/build.yml/badge.svg)](https://github.com/OmegaSquad82/bluebuilds/actions/workflows/build.yml)
 [![bluevuln](https://github.com/OmegaSquad82/bluebuilds/actions/workflows/trivy.yml/badge.svg)](https://github.com/OmegaSquad82/bluebuilds/actions/workflows/trivy.yml)
 [![Dependabot Updates](https://github.com/OmegaSquad82/bluebuilds/actions/workflows/dependabot/dependabot-updates/badge.svg)](https://github.com/OmegaSquad82/bluebuilds/actions/workflows/dependabot/dependabot-updates)
 
@@ -141,5 +141,3 @@ These images are signed with [Sigstore](https://www.sigstore.dev/)'s [cosign](ht
 ```bash
 cosign verify --key cosign.pub ghcr.io/blue-build/template
 ```
-
-[def]: https://github.com/OmegaSquad82/bluebuilds/actions/workflows/build.yml/badge.svg
