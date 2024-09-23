@@ -49,7 +49,7 @@ jobs:
           image-ref: "${{ env.IMAGE_REF }}"
           scan-type: image
           format: "github"
-          output: "dependency-results.sbom.json"
+          output: "${{ matrix.package }}-dependency-results.sbom.json"
           github-pat: ${{ secrets.GITHUB_TOKEN }}
           severity: "MEDIUM,HIGH,CRITICAL"
           scanners: "vuln"
@@ -61,5 +61,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: trivy-sbom-report
-          path: "${{ github.workspace }}/dependency-results.sbom.json"
-          retention-days: 20
+          path: "${{ github.workspace }}/${{ matrix.package }}-dependency-results.sbom.json"
+          retention-days: 21
