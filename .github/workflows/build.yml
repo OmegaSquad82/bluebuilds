@@ -63,3 +63,22 @@ jobs:
           name: ${{ matrix.package }}-trivy-sbom-report
           path: "${{ github.workspace }}/${{ matrix.package }}-dependency-results.sbom.json"
           retention-days: 21
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@0.24.0
+        with:
+          output: ${{ matrix.package }}-trivy-results.sarif
+          github-pat: ${{ secrets.GITHUB_TOKEN }}
+          image-ref: "${{ env.IMAGE_REF }}"
+          severity: "MEDIUM,HIGH,CRITICAL"
+          scan-type: image
+          scanners: "vuln"
+          format: sarif
+        env:
+          TRIVY_USERNAME: ${{ github.actor }}
+          TRIVY_PASSWORD: ${{ github.token }}
+
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: "${{ matrix.package }}-trivy-results.sarif"
