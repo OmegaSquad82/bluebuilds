@@ -26,9 +26,6 @@ jobs:
           - carbonatcyanotrichit
           - flaviramea
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
       - name: Force repository owner to lowercase
         run: echo "IMAGE_REF=ghcr.io/${REPO_OWNER@L}/${{ matrix.package }}" >> ${GITHUB_ENV}
 
