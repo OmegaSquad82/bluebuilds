@@ -48,9 +48,9 @@ jobs:
       - uses: actions/cache/save@v4
         id: cache
         with:
-          path: *.sarif
+          path: ${{ matrix.package }}-trivy-results.sarif
           key: ${{ runner.os }}-${{ github.run_id }}-${{ matrix.package }}
-  upload: 
+  upload:
     needs: scan
     name: Upload SARIF reports
     runs-on: ubuntu-24.04
@@ -62,27 +62,27 @@ jobs:
         - uses: actions/cache/restore@v4
           id: cache
           with:
-            path: *.sarif
+            path: aubertit-trivy-results.sarif
             key: ${{ runner.os }}-${{ github.run_id }}-aubertit
         - uses: actions/cache/restore@v4
           id: cache
           with:
-            path: *.sarif
+            path: borealis-trivy-results.sarif
             key: ${{ runner.os }}-${{ github.run_id }}-borealis
         - uses: actions/cache/restore@v4
           id: cache
           with:
-            path: *.sarif
+            path: buttgenbachit-trivy-results.sarif
             key: ${{ runner.os }}-${{ github.run_id }}-buttgenbachit
         - uses: actions/cache/restore@v4
           id: cache
           with:
-            path: *.sarif
+            path: carbonatcyanotrichit-trivy-results.sarif
             key: ${{ runner.os }}-${{ github.run_id }}-carbonatcyanotrichit
         - uses: actions/cache/restore@v4
           id: cache
           with:
-            path: *.sarif
+            path: flaviramea-trivy-results.sarif
             key: ${{ runner.os }}-${{ github.run_id }}-flaviramea
 
         - name: Upload Trivy scan results to GitHub Security tab
