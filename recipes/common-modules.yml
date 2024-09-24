@@ -3,7 +3,3 @@ modules:
     files:
       - source: system
         destination: /
-
-  - from-file: configs/flatpaks.yml
-  - from-file: configs/packages.yml
-  - from-file: configs/sshd.yml
