@@ -1,4 +1,4 @@
 modules:
   - type: containerfile
     snippets:
-      - COPY --from=ghcr.io/ublue-os/config:latest /files/udev-rules /
+      - COPY --from=ghcr.io/ublue-os/config:latest /files/ublue-os-udev-rules /
