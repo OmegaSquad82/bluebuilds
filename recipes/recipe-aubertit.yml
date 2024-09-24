@@ -4,6 +4,10 @@ base-image: ghcr.io/ublue-os/bazzite-asus-nvidia
 image-version: stable
 
 modules:
-  - from-file: common-modules.yml
+  - from-file: configs/systemfiles.yml
+  - from-file: configs/udevrules.yml
+  - from-file: configs/flatpaks.yml
+  - from-file: configs/packages.yml
   - from-file: configs/bazzite.yml
+  - from-file: configs/sshd.yml
   - type: signing
