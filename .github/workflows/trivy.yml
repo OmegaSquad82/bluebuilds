@@ -9,11 +9,11 @@ on:
 env:
   REPO_OWNER: ${{ github.repository_owner }}
 jobs:
-  trivy:
+  scan:
     name: Scan Custom Image
     runs-on: ubuntu-24.04
     permissions:
-      contents: write
+      contents: read
       packages: read
       id-token: write
     strategy:
@@ -26,9 +26,6 @@ jobs:
           - carbonatcyanotrichit
           - flaviramea
     steps:
-      #- name: Maximize build space
-      #  uses: jlumbroso/free-disk-space@v1.3.1
-
       - name: Checkout code
         uses: actions/checkout@v4
 
@@ -48,8 +45,47 @@ jobs:
         env:
           TRIVY_USERNAME: ${{ github.actor }}
           TRIVY_PASSWORD: ${{ github.token }}
-
-      - name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v3
+      - uses: actions/cache/save@v4
+        id: cache
         with:
-          sarif_file: "${{ matrix.package }}-trivy-results.sarif"
+          path: *.sarif
+          key: ${{ runner.os }}-${{ github.run_id }}-${{ matrix.package }}
+  upload: 
+    needs: scan
+    name: Upload SARIF reports
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+      packages: read
+      id-token: write
+      steps:
+        - uses: actions/cache/restore@v4
+          id: cache
+          with:
+            path: *.sarif
+            key: ${{ runner.os }}-${{ github.run_id }}-aubertit
+        - uses: actions/cache/restore@v4
+          id: cache
+          with:
+            path: *.sarif
+            key: ${{ runner.os }}-${{ github.run_id }}-borealis
+        - uses: actions/cache/restore@v4
+          id: cache
+          with:
+            path: *.sarif
+            key: ${{ runner.os }}-${{ github.run_id }}-buttgenbachit
+        - uses: actions/cache/restore@v4
+          id: cache
+          with:
+            path: *.sarif
+            key: ${{ runner.os }}-${{ github.run_id }}-carbonatcyanotrichit
+        - uses: actions/cache/restore@v4
+          id: cache
+          with:
+            path: *.sarif
+            key: ${{ runner.os }}-${{ github.run_id }}-flaviramea
+
+        - name: Upload Trivy scan results to GitHub Security tab
+          uses: github/codeql-action/upload-sarif@v3
+          with:
+            sarif_file: .
