@@ -46,7 +46,6 @@ jobs:
           TRIVY_USERNAME: ${{ github.actor }}
           TRIVY_PASSWORD: ${{ github.token }}
       - uses: actions/cache/save@v4
-        id: cache
         with:
           path: ${{ matrix.package }}-trivy-results.sarif
           key: ${{ runner.os }}-${{ github.run_id }}-${{ matrix.package }}
@@ -58,34 +57,29 @@ jobs:
       contents: write
       packages: read
       id-token: write
-      steps:
-        - uses: actions/cache/restore@v4
-          id: cache
-          with:
-            path: aubertit-trivy-results.sarif
-            key: ${{ runner.os }}-${{ github.run_id }}-aubertit
-        - uses: actions/cache/restore@v4
-          id: cache
-          with:
-            path: borealis-trivy-results.sarif
-            key: ${{ runner.os }}-${{ github.run_id }}-borealis
-        - uses: actions/cache/restore@v4
-          id: cache
-          with:
-            path: buttgenbachit-trivy-results.sarif
-            key: ${{ runner.os }}-${{ github.run_id }}-buttgenbachit
-        - uses: actions/cache/restore@v4
-          id: cache
-          with:
-            path: carbonatcyanotrichit-trivy-results.sarif
-            key: ${{ runner.os }}-${{ github.run_id }}-carbonatcyanotrichit
-        - uses: actions/cache/restore@v4
-          id: cache
-          with:
-            path: flaviramea-trivy-results.sarif
-            key: ${{ runner.os }}-${{ github.run_id }}-flaviramea
+    steps:
+      - uses: actions/cache/restore@v4
+        with:
+          path: aubertit-trivy-results.sarif
+          key: ${{ runner.os }}-${{ github.run_id }}-aubertit
+      - uses: actions/cache/restore@v4
+        with:
+          path: borealis-trivy-results.sarif
+          key: ${{ runner.os }}-${{ github.run_id }}-borealis
+      - uses: actions/cache/restore@v4
+        with:
+          path: buttgenbachit-trivy-results.sarif
+          key: ${{ runner.os }}-${{ github.run_id }}-buttgenbachit
+      - uses: actions/cache/restore@v4
+        with:
+          path: carbonatcyanotrichit-trivy-results.sarif
+          key: ${{ runner.os }}-${{ github.run_id }}-carbonatcyanotrichit
+      - uses: actions/cache/restore@v4
+        with:
+          path: flaviramea-trivy-results.sarif
+          key: ${{ runner.os }}-${{ github.run_id }}-flaviramea
 
-        - name: Upload Trivy scan results to GitHub Security tab
-          uses: github/codeql-action/upload-sarif@v3
-          with:
-            sarif_file: .
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: .
