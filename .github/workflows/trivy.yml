@@ -9,7 +9,7 @@ on:
 env:
   REPO_OWNER: ${{ github.repository_owner }}
 jobs:
-  trivy:
+  scan:
     name: Scan Custom Image
     runs-on: ubuntu-24.04
     permissions:
@@ -26,9 +26,6 @@ jobs:
           - carbonatcyanotrichit
           - flaviramea
     steps:
-      #- name: Maximize build space
-      #  uses: jlumbroso/free-disk-space@v1.3.1
-
       - name: Checkout code
         uses: actions/checkout@v4
 
@@ -38,7 +35,7 @@ jobs:
       - name: Generate SARIF for Custom Image with Trivy
         uses: aquasecurity/trivy-action@0.24.0
         with:
-          output: ${{ matrix.package }}-trivy-results.sarif
+          output: trivy-results.sarif
           github-pat: ${{ secrets.GITHUB_TOKEN }}
           image-ref: "${{ env.IMAGE_REF }}"
           severity: MEDIUM,HIGH,CRITICAL
@@ -52,4 +49,5 @@ jobs:
       - name: Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v3
         with:
-          sarif_file: "${{ matrix.package }}-trivy-results.sarif"
+          category: ${{ matrix.package }}
+          sarif_file: trivy-results.sarif
