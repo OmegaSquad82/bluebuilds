@@ -9,7 +9,6 @@ on:
       - "**.md"
       - "build-isos"
       - "**/trivy.yml"
-  pull_request:
   workflow_dispatch:
 env:
   REPO_OWNER: ${{ github.repository_owner }}
