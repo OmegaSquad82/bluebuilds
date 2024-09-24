@@ -45,7 +45,7 @@ jobs:
       - uses: actions/cache/save@v4
         with:
           path: ${{ matrix.package }}-trivy-results.sarif
-          key: ${{ runner.os }}-${{ github.run_id }}-${{ matrix.package }}
+          key: ${{ github.run_id }}-${{ runner.os }}-${{ matrix.package }}
   upload:
     needs: scan
     name: Upload SARIF reports
@@ -55,26 +55,29 @@ jobs:
       packages: read
       id-token: write
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - uses: actions/cache/restore@v4
         with:
           path: aubertit-trivy-results.sarif
-          key: ${{ runner.os }}-${{ github.run_id }}-aubertit
+          key: ${{ github.run_id }}-${{ runner.os }}-aubertit
       - uses: actions/cache/restore@v4
         with:
           path: borealis-trivy-results.sarif
-          key: ${{ runner.os }}-${{ github.run_id }}-borealis
+          key: ${{ github.run_id }}-${{ runner.os }}-borealis
       - uses: actions/cache/restore@v4
         with:
           path: buttgenbachit-trivy-results.sarif
-          key: ${{ runner.os }}-${{ github.run_id }}-buttgenbachit
+          key: ${{ github.run_id }}-${{ runner.os }}-buttgenbachit
       - uses: actions/cache/restore@v4
         with:
           path: carbonatcyanotrichit-trivy-results.sarif
-          key: ${{ runner.os }}-${{ github.run_id }}-carbonatcyanotrichit
+          key: ${{ github.run_id }}-${{ runner.os }}-carbonatcyanotrichit
       - uses: actions/cache/restore@v4
         with:
           path: flaviramea-trivy-results.sarif
-          key: ${{ runner.os }}-${{ github.run_id }}-flaviramea
+          key: ${{ github.run_id }}-${{ runner.os }}-flaviramea
 
       - name: Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v3
