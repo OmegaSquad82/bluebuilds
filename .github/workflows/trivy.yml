@@ -2,8 +2,8 @@ name: bluevuln
 on:
   schedule:
     - cron:
-        "55 06 * * *" # build at 06:55 UTC every day
-        # (50 minutes after custom image build was triggered)
+        "55 0,6,12,18 * * *" # build at {0,6,12,18}:55 UTC every day
+        # (50 minutes after custom image build was triggered, then every 6h)
   pull_request:
   workflow_dispatch:
 env:
