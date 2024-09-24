@@ -13,7 +13,7 @@ jobs:
     name: Scan Custom Image
     runs-on: ubuntu-24.04
     permissions:
-      contents: read
+      contents: write
       packages: read
       id-token: write
     strategy:
@@ -26,13 +26,16 @@ jobs:
           - carbonatcyanotrichit
           - flaviramea
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Force repository owner to lowercase
         run: echo "IMAGE_REF=ghcr.io/${REPO_OWNER@L}/${{ matrix.package }}" >> ${GITHUB_ENV}
 
       - name: Generate SARIF for Custom Image with Trivy
         uses: aquasecurity/trivy-action@0.24.0
         with:
-          output: ${{ matrix.package }}-trivy-results.sarif
+          output: trivy-results.sarif
           github-pat: ${{ secrets.GITHUB_TOKEN }}
           image-ref: "${{ env.IMAGE_REF }}"
           severity: MEDIUM,HIGH,CRITICAL
@@ -42,44 +45,9 @@ jobs:
         env:
           TRIVY_USERNAME: ${{ github.actor }}
           TRIVY_PASSWORD: ${{ github.token }}
-      - uses: actions/cache/save@v4
-        with:
-          path: ${{ matrix.package }}-trivy-results.sarif
-          key: ${{ github.run_id }}-${{ runner.os }}-${{ matrix.package }}
-  upload:
-    needs: scan
-    name: Upload SARIF reports
-    runs-on: ubuntu-24.04
-    permissions:
-      contents: write
-      packages: read
-      id-token: write
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - uses: actions/cache/restore@v4
-        with:
-          path: aubertit-trivy-results.sarif
-          key: ${{ github.run_id }}-${{ runner.os }}-aubertit
-      - uses: actions/cache/restore@v4
-        with:
-          path: borealis-trivy-results.sarif
-          key: ${{ github.run_id }}-${{ runner.os }}-borealis
-      - uses: actions/cache/restore@v4
-        with:
-          path: buttgenbachit-trivy-results.sarif
-          key: ${{ github.run_id }}-${{ runner.os }}-buttgenbachit
-      - uses: actions/cache/restore@v4
-        with:
-          path: carbonatcyanotrichit-trivy-results.sarif
-          key: ${{ github.run_id }}-${{ runner.os }}-carbonatcyanotrichit
-      - uses: actions/cache/restore@v4
-        with:
-          path: flaviramea-trivy-results.sarif
-          key: ${{ github.run_id }}-${{ runner.os }}-flaviramea
 
       - name: Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v3
         with:
-          sarif_file: .
+          category: ${{ matrix.package }}
+          sarif_file: trivy-results.sarif
