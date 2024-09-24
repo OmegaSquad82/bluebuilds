@@ -7,4 +7,5 @@ modules:
   - from-file: common-modules.yml
   - from-file: configs/podman.yml
   - from-file: configs/homebrew.yml
+  - from-file: configs/udev.yml
   - type: signing
