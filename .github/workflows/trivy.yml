@@ -9,8 +9,6 @@ on:
       - "**.md"
       - "build-isos"
       - "**/build.yml"
-  pull_request:
-  workflow_dispatch:
 env:
   REPO_OWNER: ${{ github.repository_owner }}
 jobs:
@@ -54,5 +52,5 @@ jobs:
       - name: Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v3
         with:
-          category: ${{ matrix.package }}
+          category: trivy-${{ matrix.package }}
           sarif_file: trivy-results.sarif
