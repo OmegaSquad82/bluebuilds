@@ -4,6 +4,11 @@ on:
     - cron:
         "55 0,6,12,18 * * *" # build at {0,6,12,18}:55 UTC every day
         # (50 minutes after custom image build was triggered, then every 6h)
+  push:
+      paths-ignore:
+      - "**.md"
+      - "build-isos"
+      - "**/build.yml"
   pull_request:
   workflow_dispatch:
 env:
@@ -13,11 +18,11 @@ jobs:
     name: Scan Custom Image
     runs-on: ubuntu-24.04
     permissions:
-      contents: write
+      security-events: write
+      contents: read
       packages: read
-      id-token: write
     strategy:
-      fail-fast: false
+      fail-fast: true
       matrix:
         package:
           - aubertit
