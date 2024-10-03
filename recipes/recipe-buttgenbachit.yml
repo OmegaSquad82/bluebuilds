@@ -1,6 +1,6 @@
 name: buttgenbachit
 description: My personal flavor of Bazzite NVIDIA Stable.
-base-image: ghcr.io/ublue-os/bazzite-nvidia
+base-image: ghcr.io/ublue-os/bazzite-nvidia-open
 image-version: stable
 
 modules:
