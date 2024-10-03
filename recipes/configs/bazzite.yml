@@ -5,7 +5,3 @@ modules:
       install:
         - com.discordapp.Discord
         - org.openrgb.OpenRGB
-  - type: systemd
-    system:
-      disabled:
-        - tailscaled.service
