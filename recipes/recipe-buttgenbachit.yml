@@ -2,7 +2,7 @@ name: buttgenbachit
 description: My personal flavor of Bazzite NVIDIA Stable.
 base-image: ghcr.io/ublue-os/bazzite-nvidia-open
 # image-version: stable # nvidia driver issue
-image-version: stable-40.20240906.0
+image-version: testing
 
 modules:
   - from-file: configs/podman.yml
