@@ -23,10 +23,10 @@ jobs:
       fail-fast: false
       matrix:
         package:
-          - aubertit
-          - borealis
+          #- aubertit
+          #- borealis
           - buttgenbachit
-          - carbonatcyanotrichit
+          #- carbonatcyanotrichit
           - flaviramea
     steps:
       - name: Build Custom Image
