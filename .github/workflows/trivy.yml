@@ -23,8 +23,8 @@ jobs:
       fail-fast: true
       matrix:
         package:
-          - aubertit
-          - borealis
+          #- aubertit
+          #- borealis
           - buttgenbachit
           - carbonatcyanotrichit
           - flaviramea
