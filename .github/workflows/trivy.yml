@@ -35,6 +35,9 @@ jobs:
       - name: Force repository owner to lowercase
         run: echo "IMAGE_REF=ghcr.io/${REPO_OWNER@L}/${{ matrix.package }}" >> ${GITHUB_ENV}
 
+      - name: Wait up to 10m to compensate for rate limiting
+        run: sleep $((RANDOM % 600))
+
       - name: Generate SARIF for Custom Image with Trivy
         uses: aquasecurity/trivy-action@0.28.0
         with:
