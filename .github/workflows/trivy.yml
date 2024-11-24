@@ -39,7 +39,7 @@ jobs:
         run: sleep $((RANDOM % 600))
 
       - name: Generate SARIF for Custom Image with Trivy
-        uses: aquasecurity/trivy-action@0.28.0
+        uses: aquasecurity/trivy-action@0.29.0
         with:
           output: trivy-results.sarif
           github-pat: ${{ secrets.GITHUB_TOKEN }}
