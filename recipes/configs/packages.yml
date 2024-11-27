@@ -6,7 +6,10 @@ modules:
       - golang
       - htop
       - kitty
+      - make
       - neovim
+      - pdfgrep
       - powertop
       - powerstat
+      - ruby
       - rust
