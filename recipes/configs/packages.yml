@@ -3,6 +3,7 @@ modules:
     install:
       - byobu
       - cargo
+      - golang
       - htop
       - kitty
       - neovim

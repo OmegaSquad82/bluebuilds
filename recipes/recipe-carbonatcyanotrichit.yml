@@ -10,8 +10,9 @@ modules:
   - from-file: configs/bazzite.yml
   - from-file: configs/flatpaks.yml
 
-  - from-file: configs/systemfiles.yml
   - from-file: configs/udevrules.yml
+  - from-file: configs/systemfiles.yml
+  - from-file: configs/zram-generator.yml
 
   - from-file: configs/packages.yml
   - type: signing
