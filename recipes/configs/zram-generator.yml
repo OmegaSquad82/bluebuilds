@@ -1,4 +1,11 @@
 modules:
+  - type: rpm-ostree
+    install:
+      - cargo
+      - golang
+      - make
+      - ruby
+      - rust
   - type: script
     scripts:
       - setup-zram.sh
