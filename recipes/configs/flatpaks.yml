@@ -5,6 +5,7 @@ modules:
       install:
         - com.synology.SynologyDrive
         - io.github.flattool.Warehouse
+        - io.github.ungoogled_software.ungoogled_chromium
         - org.keepassxc.KeePassXC
         - org.libreoffice.LibreOffice
         - org.mozilla.firefox
