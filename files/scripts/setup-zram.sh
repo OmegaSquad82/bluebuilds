@@ -3,9 +3,9 @@
 set -euo pipefail
 
 # https://crates.io/crates/zram-generator
-SYSTEMD_UTIL_DIR := $pkg-config --variable=systemdutildir systemd)
-SYSTEMD_SYSTEM_UNIT_DIR := $pkg-config --variable=systemdsystemunitdir systemd)
-SYSTEMD_SYSTEM_GENERATOR_DIR := $pkg-config --variable=systemdsystemgeneratordir systemd)
+SYSTEMD_UTIL_DIR=$(pkg-config --variable=systemdutildir systemd)
+SYSTEMD_SYSTEM_UNIT_DIR=$(pkg-config --variable=systemdsystemunitdir systemd)
+SYSTEMD_SYSTEM_GENERATOR_DIR=$(pkg-config --variable=systemdsystemgeneratordir systemd)
 
 export SYSTEMD_UTIL_DIR
 export SYSTEMD_SYSTEM_UNIT_DIR
