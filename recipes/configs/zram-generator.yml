@@ -4,7 +4,7 @@ modules:
       - cargo
       - golang
       - make
-      - ruby
+      - rubygem-ronn-ng
       - rust
   - type: script
     scripts:
