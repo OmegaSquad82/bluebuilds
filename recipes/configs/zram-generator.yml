@@ -3,6 +3,7 @@ modules:
     install:
       - cargo
       - golang
+      - shfmt
       - make
       - rubygem-ronn-ng
       - rust
