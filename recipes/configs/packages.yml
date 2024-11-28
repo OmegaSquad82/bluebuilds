@@ -2,10 +2,9 @@ modules:
   - type: rpm-ostree
     install:
       - byobu
-      - cargo
       - htop
       - kitty
       - neovim
+      - pdfgrep
       - powertop
       - powerstat
-      - rust

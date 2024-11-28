@@ -12,8 +12,9 @@ modules:
   - from-file: configs/flatpaks.yml
   - from-file: configs/morepaks.yml
 
-  - from-file: configs/systemfiles.yml
   - from-file: configs/udevrules.yml
+  - from-file: configs/systemfiles.yml
+  - from-file: configs/zram-generator.yml
 
   - from-file: configs/packages.yml
   - type: signing
