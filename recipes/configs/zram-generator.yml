@@ -1,8 +1,11 @@
 modules:
+  - type: rpm-ostree
+    install:
+      - gcc
   - type: script
     scripts:
       - setup-zram.sh
-  # - type: systemd
-  #   system:
-  #     enabled:
-  #       - zram-recompression.timer
+  - type: systemd
+    system:
+      enabled:
+        - systemd-zram-recompression.timer
