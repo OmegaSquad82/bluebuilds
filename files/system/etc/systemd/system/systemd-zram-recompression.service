@@ -5,4 +5,4 @@ Documentation=https://docs.kernel.org/admin-guide/blockdev/zram.html #recompress
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-ExecStart=/usr/sbin/zram-recompress
+ExecStart=/usr/sbin/recompress-zram

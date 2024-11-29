@@ -5,7 +5,7 @@ Description=Control timing to recompress pages in zram devices
 OnBootSec=10min
 OnUnitActiveSec=15min
 RandomizedDelaySec=5min
-Unit=systemd-zram-recompression.service
+Unit=systemd-recompress-zramion.service
 
 [Install]
 WantedBy=multi-user.target
