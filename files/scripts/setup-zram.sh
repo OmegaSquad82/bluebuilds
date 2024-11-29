@@ -6,8 +6,12 @@ set -euo pipefail
 # https://www.rust-lang.org/
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
-# verify installation
 . "$HOME"/.cargo/env
+
+rustup toolchain install stable
+rustup default stable
+
+# verify installation
 rustup --version
 rustc --version
 cargo --version
