@@ -1,8 +1,8 @@
 [Unit]
 Description=Recompress all idle, then all huge pages in zram devices
-Documentation=https://docs.kernel.org/admin-guide/blockdev/zram.html #recompression
+Documentation="https://docs.kernel.org/admin-guide/blockdev/zram.html#recompression"
 
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-ExecStart=/usr/sbin/zram-recompress
+ExecStart=/usr/sbin/recompress-zram
