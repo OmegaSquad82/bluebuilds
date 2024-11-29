@@ -4,6 +4,10 @@ base-image: ghcr.io/ublue-os/bazzite
 image-version: stable
 
 modules:
+  - from-file: configs/udevrules.yml
+  - from-file: configs/systemfiles.yml
+  - from-file: configs/zram-generator.yml
+
   - from-file: configs/podman.yml
   - from-file: configs/sshd.yml
   - from-file: configs/tailscale.yml
@@ -12,9 +16,5 @@ modules:
   - from-file: configs/packages.yml
   - from-file: configs/flatpaks.yml
   - from-file: configs/morepaks.yml
-
-  - from-file: configs/udevrules.yml
-  - from-file: configs/systemfiles.yml
-  - from-file: configs/zram-generator.yml
 
   - type: signing
