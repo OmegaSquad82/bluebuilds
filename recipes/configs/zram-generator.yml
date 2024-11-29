@@ -1,12 +1,11 @@
 modules:
   - type: rpm-ostree
     install:
-      - cargo
-      - golang
-      - shfmt
-      - make
-      - rubygem-ronn-ng
-      - rust
+      - gcc
   - type: script
     scripts:
       - setup-zram.sh
+  - type: systemd
+    system:
+      enabled:
+        - systemd-zram-recompression.timer

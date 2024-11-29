@@ -4,14 +4,15 @@ base-image: ghcr.io/ublue-os/aurora-dx
 image-version: latest
 
 modules:
+  - from-file: configs/udevrules.yml
+  - from-file: configs/systemfiles.yml
+  - from-file: configs/zram-generator.yml
+
   - from-file: configs/podman.yml
   - from-file: configs/sshd.yml
 
+  - from-file: configs/packages.yml
   - from-file: configs/flatpaks.yml
   - from-file: configs/morepaks.yml
 
-  - from-file: configs/systemfiles.yml
-  - from-file: configs/udevrules.yml
-
-  - from-file: configs/packages.yml
   - type: signing

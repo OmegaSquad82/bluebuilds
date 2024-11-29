@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# recompress idle, then huge pages
+for device in /sys/block/zram*; do
+    echo type=huge_idle >"$device"/recompress
+done
