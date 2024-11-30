@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+## devhints.io/bash
 set -euo pipefail
 IFS=$'\n\t'
 
@@ -31,11 +32,13 @@ while [[ $# -gt 0 ]]; do
 done
 
 function print_states() {
-    block_state="$(cat /sys/kernel/debug/zram/"$1"/block_state)"
-    function state() {
-        echo "$block_state" | grep -cs "$1" || true
-    }
-    echo -en "block_state=[huge: $(state 'h')\tidle: $(state 'i')\trcmp: $(state 'r')\tnone: $(state 'n')\ttotal: $(state '')]"
+    if [[ -f /sys/kernel/debug/zram/"$1"/block_state ]]; then
+        block_state="$(cat /sys/kernel/debug/zram/"$1"/block_state)"
+        function state() {
+            echo "$block_state" | grep -cs "$1" || true
+        }
+        echo -en "block_state=[huge: $(state 'h')\tidle: $(state 'i')\trcmp: $(state 'r')\tnone: $(state 'n')\ttotal: $(state '')]"
+    fi
 }
 
 export TIMEFORMAT=$'real: %3lR\tuser: %3lU\tsys: %3lS'
@@ -50,13 +53,15 @@ for drive in /dev/zram*; do
 
     $DEBG print_states "$device"
 
-    $DEBG echo -e " λ ${NOOP}echo ${TYPE:-type=idle}\t>$sysblk/recompress"
-    $NOOP echo "${TYPE:-type=idle}" >"$sysblk"/recompress
-
+    if [[ -f "$sysblk"/recompress ]]; then
+        $DEBG echo -e " λ ${NOOP}echo ${TYPE:-type=huge}\t>$sysblk/recompress"
+        $NOOP echo "${TYPE:-type=huge}" >"$sysblk"/recompress
+    fi
     $DEBG print_states "$device"
 
-    $DEBG echo -e " λ ${NOOP}echo\t\t>$sysblk/compact"
-    $NOOP echo >"$sysblk"/compact
-
+    if [[ -f "$sysblk"/compact ]]; then
+        $DEBG echo -e " λ ${NOOP}echo\t\t>$sysblk/compact"
+        $NOOP echo >"$sysblk"/compact
+    fi
     $DEBG zramctl --output-all "$drive"
 done
