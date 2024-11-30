@@ -5,4 +5,5 @@ Documentation="https://docs.kernel.org/admin-guide/blockdev/zram.html#recompress
 [Service]
 Type=oneshot
 RemainAfterExit=yes
+Environment="PARM='type=huge_idle'"
 ExecStart=/usr/sbin/recompress-zram
