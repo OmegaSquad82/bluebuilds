@@ -49,6 +49,3 @@ install -b /root/.cargo/bin/zram-generator "$SYSTEMD_SYSTEM_GENERATOR_DIR"
 # cleanup build toolchain
 rustup self uninstall -y
 rm -rf /root/.cargo/
-
-# set (re)compression algorithms for all configured zram devices
-sed -i 's/^compression-.*/compression-algorithm = lz4 zstd lz4hc (type=huge_idle)/g' /etc/systemd/zram-generator.conf
