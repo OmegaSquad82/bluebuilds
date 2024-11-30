@@ -8,4 +8,4 @@ modules:
   - type: systemd
     system:
       enabled:
-        - systemd-zram-recompression.timer
+        - zram-recompression.timer

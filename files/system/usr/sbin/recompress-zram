@@ -1,7 +1,47 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# recompress idle, then huge pages
+traperr() {
+    echo "ERROR: ${BASH_SOURCE[1]} at about ${BASH_LINENO[0]}"
+}
+
+set -o errtrace
+trap traperr ERR
+
+# comment out
+DEBG=${DEBUG-:}
+NOOP=
+while [[ $# -gt 0 ]]; do
+    case "${1:-}" in
+    --debug | --verbose | -d)
+        DEBG=
+        ;;
+    --noop | --dry-run | -n)
+        NOOP=:
+        ;;
+    esac
+    shift
+done
+
+function print_states() {
+    block_state="$1"
+    function state() {
+        echo "$block_state" | grep -cs "$1" || true
+    }
+    echo -en "[huge: $(state 'h')\tidle: $(state 'i')\trcmp: $(state 'r')\tnone: $(state 'n')\ttotal: $(state '')]"
+}
+
+export TIMEFORMAT=$'real: %3lR\tuser: %3lU\tsys: %3lS'
+
+# recompress then compact pages
 for device in /sys/block/zram*; do
-    echo type=huge_idle >"$device"/recompress
+    $DEBG zramctl --output-all /dev/"${device##*/}"
+    $DEBG cat "$device"/recomp_algorithm
+    $DEBG print_states "$device"/block_state
+    $DEBG echo -e " λ ${NOOP}echo ${TYPE:-type=idle}\t>$device/recompress"
+    $NOOP echo "${TYPE:-type=idle}" >"$device"/recompress
+    $DEBG print_states "$device"/block_state
+    $DEBG echo -e " λ ${NOOP}echo\t\t>$device/compact"
+    $NOOP echo >"$device"/compact
+    $DEBG zramctl --output-all /dev/"${device##*/}"
 done
