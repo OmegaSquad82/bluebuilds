@@ -21,11 +21,11 @@ TIMEFORMAT=$'real: %3lR\tuser: %3lU\tsys: %3lS'
 TYPE="${TYPE:=type=huge}"
 
 # comment out
-DEBG=${DEBUG-:}
-DENT=
-NOOP=
+DEBG=${DEBUG-:} # print statistics
+DENT=           # indentation only var
+NOOP=           # don't actually turn knobs
 while [[ $# -gt 0 ]]; do
-    case "${1:-}" in
+    case "${1}" in
     --debug | --verbose | -d)
         DEBG=
         ;;
@@ -37,42 +37,46 @@ while [[ $# -gt 0 ]]; do
 done
 
 function print_states() {
-    recomp_path="/sys/block/${1##*/}/recomp_algorithm"
-    $ONCE echo -en "$recomp_path = "
-    $ONCE echo "$(grep -Eo "(#.*:|\[.*\])" "$recomp_path" | xargs echo)"
-    ONCE=:
+    # first run always passes || stats on action
+    if [[ "$ONCE" = '' || "$NOOP" != ':' ]]; then
+        recomp_path="/sys/block/${1##*/}/recomp_algorithm"
+        $ONCE echo -en "$recomp_path = "
+        $ONCE echo "$(grep -Eo "(#.*:|\[.*\])" "$recomp_path" | xargs echo)"
+        ONCE=:
 
-    $DEBG echo
-    $DEBG zramctl --output-all "${1:?Need a '/dev/zram<n>' device path.}"
+        echo
+        zramctl --output-all "${1:?Need a '/dev/zram<n>' device path.}"
 
-    block_path="/sys/kernel/debug/zram/${1##*/}/block_state"
-    if [[ -f "$block_path" ]]; then
-        block_state="$(cat "$block_path")"
-        function state() {
-            echo "$block_state" | grep -cs "$1" || true
-        }
-        echo -e "$block_path = [huge: $(state 'h') idle: $(state 'i') rcmp: $(state 'r') none: $(state 'n') total: $(state '')]"
-    else
-        echo -e "$block_path not available!"
-    fi
+        block_path="/sys/kernel/debug/zram/${1##*/}/block_state"
+        if [[ -f "$block_path" ]]; then
+            block_state="$(cat "$block_path")"
+            function state() {
+                echo "$block_state" | grep -cs "$1" || true
+            }
+            echo -e "$block_path = [huge: $(state 'h') idle: $(state 'i') rcmp: $(state 'r') none: $(state 'n') total: $(state '')]"
+        else
+            echo -e "$block_path not available!"
+        fi
 
-    mm_path="/sys/block/${1##*/}/mm_stat"
-    if [[ -f "$mm_path" ]]; then
-        mm_stat="$(cat "$mm_path")"
-        function column() {
-            echo "$mm_stat" | awk -v "n=$1" '{print $n}'
-        }
-        echo -e "$mm_path = [pages_compacted: $(column 7) huge_pages_since: $(column 9)]"
-    else
-        echo -e "$mm_path not available!"
+        mm_path="/sys/block/${1##*/}/mm_stat"
+        if [[ -f "$mm_path" ]]; then
+            mm_stat="$(cat "$mm_path")"
+            function column() {
+                echo "$mm_stat" | awk -v "n=$1" '{print $n}'
+            }
+            echo -e "$mm_path = [pages_compacted: $(column 7) huge_pages_since: $(column 9)]"
+        else
+            echo -e "$mm_path not available!"
+        fi
     fi
 }
 
 function turns_a_knob() {
     knob="${1:?Need a knob to write to.}"
     valu="${2:?Need a valu to write to $knob.}"
+    $DEBG $NOOP echo
     if [[ -f "$knob" ]]; then
-        $DEBG echo -e "λ ${NOOP}echo ${valu} >$knob"
+        $DEBG echo -e "λ ${NOOP:+#} echo ${valu} >$knob"
         $NOOP echo "${valu}" >"$knob"
     else
         $DEBG echo -e "$knob is not available!"
@@ -81,7 +85,10 @@ function turns_a_knob() {
 
 # recompress then compact
 for device in /dev/zram*; do
-    ONCE=$DEBG
+    ONCE=$DEBG # do stuff only once per loop
+    : "$ONCE is either null or nop / comment ':'
+    and is guaranteed to be nop after print_states()"
+
     sysblk=/sys/block/"${device##*/}"
     $DEBG print_states "$device" # pre
     $DENT turns_a_knob "$sysblk"/recompress "$TYPE"
