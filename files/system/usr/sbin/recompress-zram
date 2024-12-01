@@ -16,8 +16,13 @@ traperr() {
 set -o errtrace
 trap traperr ERR
 
+# settings
+TIMEFORMAT=$'real: %3lR\tuser: %3lU\tsys: %3lS'
+TYPE="${TYPE:=type=huge}"
+
 # comment out
 DEBG=${DEBUG-:}
+DENT=
 NOOP=
 while [[ $# -gt 0 ]]; do
     case "${1:-}" in
@@ -32,36 +37,38 @@ while [[ $# -gt 0 ]]; do
 done
 
 function print_states() {
-    if [[ -f /sys/kernel/debug/zram/"$1"/block_state ]]; then
-        block_state="$(cat /sys/kernel/debug/zram/"$1"/block_state)"
+    $DEBG zramctl --output-all "${1:?Need a '/dev/zram<n>' device path.}"
+    $ONCE cat "$sysblk"/recomp_algorithm
+    statevar="/sys/kernel/debug/zram/${1##*/}/block_state"
+    if [[ -f "$statevar" ]]; then
+        block_state="$(cat "$statevar")"
         function state() {
             echo "$block_state" | grep -cs "$1" || true
         }
         echo -en "block_state=[huge: $(state 'h')\tidle: $(state 'i')\trcmp: $(state 'r')\tnone: $(state 'n')\ttotal: $(state '')]"
+    else
+        echo -en "$statevar not available!\t"
+    fi
+    ONCE=:
+}
+
+function turns_a_knob() {
+    knob="${1:?Need a knob to write to.}"
+    parm="${2:?Need a parm to write to $knob.}"
+    if [[ -f "$knob" ]]; then
+        $DEBG echo -e " λ ${NOOP}echo ${parm}\t>$knob"
+        $NOOP echo "${parm}" >"$knob"
+    else
+        $DEBG echo -e "$knob is not available!"
     fi
 }
 
-export TIMEFORMAT=$'real: %3lR\tuser: %3lU\tsys: %3lS'
-
-# recompress then compact pages
-for drive in /dev/zram*; do
-    device="${drive##*/}"
-    sysblk=/sys/block/"$device"
-
-    $DEBG zramctl --output-all "$drive"
-    $DEBG cat "$sysblk"/recomp_algorithm
-
+# recompress then compact
+for device in /dev/zram*; do
+    ONCE=$DEBG
+    sysblk=/sys/block/"${device##*/}"
     $DEBG print_states "$device"
-
-    if [[ -f "$sysblk"/recompress ]]; then
-        $DEBG echo -e " λ ${NOOP}echo ${TYPE:-type=huge}\t>$sysblk/recompress"
-        $NOOP echo "${TYPE:-type=huge}" >"$sysblk"/recompress
-    fi
+    $DENT turns_a_knob "$sysblk"/recompress "$TYPE"
     $DEBG print_states "$device"
-
-    if [[ -f "$sysblk"/compact ]]; then
-        $DEBG echo -e " λ ${NOOP}echo\t\t>$sysblk/compact"
-        $NOOP echo >"$sysblk"/compact
-    fi
-    $DEBG zramctl --output-all "$drive"
+    $DENT turns_a_knob "$sysblk"/compact ' '
 done
