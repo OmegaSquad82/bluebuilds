@@ -37,27 +37,43 @@ while [[ $# -gt 0 ]]; do
 done
 
 function print_states() {
+    recomp_path="/sys/block/${1##*/}/recomp_algorithm"
+    $ONCE echo -en "$recomp_path = "
+    $ONCE echo "$(grep -Eo "(#.*:|\[.*\])" "$recomp_path" | xargs echo)"
+    ONCE=:
+
+    $DEBG echo
     $DEBG zramctl --output-all "${1:?Need a '/dev/zram<n>' device path.}"
-    $ONCE cat "$sysblk"/recomp_algorithm
-    statevar="/sys/kernel/debug/zram/${1##*/}/block_state"
-    if [[ -f "$statevar" ]]; then
-        block_state="$(cat "$statevar")"
+
+    block_path="/sys/kernel/debug/zram/${1##*/}/block_state"
+    if [[ -f "$block_path" ]]; then
+        block_state="$(cat "$block_path")"
         function state() {
             echo "$block_state" | grep -cs "$1" || true
         }
-        echo -en "block_state=[huge: $(state 'h')\tidle: $(state 'i')\trcmp: $(state 'r')\tnone: $(state 'n')\ttotal: $(state '')]"
+        echo -e "$block_path = [huge: $(state 'h') idle: $(state 'i') rcmp: $(state 'r') none: $(state 'n') total: $(state '')]"
     else
-        echo -en "$statevar not available!\t"
+        echo -e "$block_path not available!"
     fi
-    ONCE=:
+
+    mm_path="/sys/block/${1##*/}/mm_stat"
+    if [[ -f "$mm_path" ]]; then
+        mm_stat="$(cat "$mm_path")"
+        function column() {
+            echo "$mm_stat" | awk -v "n=$1" '{print $n}'
+        }
+        echo -e "$mm_path = [pages_compacted: $(column 7) huge_pages_since: $(column 9)]"
+    else
+        echo -e "$mm_path not available!"
+    fi
 }
 
 function turns_a_knob() {
     knob="${1:?Need a knob to write to.}"
-    parm="${2:?Need a parm to write to $knob.}"
+    valu="${2:?Need a valu to write to $knob.}"
     if [[ -f "$knob" ]]; then
-        $DEBG echo -e " λ ${NOOP}echo ${parm}\t>$knob"
-        $NOOP echo "${parm}" >"$knob"
+        $DEBG echo -e "λ ${NOOP}echo ${valu} >$knob"
+        $NOOP echo "${valu}" >"$knob"
     else
         $DEBG echo -e "$knob is not available!"
     fi
@@ -67,8 +83,9 @@ function turns_a_knob() {
 for device in /dev/zram*; do
     ONCE=$DEBG
     sysblk=/sys/block/"${device##*/}"
-    $DEBG print_states "$device"
+    $DEBG print_states "$device" # pre
     $DENT turns_a_knob "$sysblk"/recompress "$TYPE"
-    $DEBG print_states "$device"
+    $DEBG print_states "$device" # inter
     $DENT turns_a_knob "$sysblk"/compact ' '
+    $DEBG print_states "$device" # post
 done

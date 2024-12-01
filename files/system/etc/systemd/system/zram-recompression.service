@@ -1,6 +1,7 @@
 [Unit]
-Description=Recompress all idle, then all huge pages in and compact memory of zram devices
+Description=Recompress idle, then huge pages in zram, then trigger memory compaction
 Documentation="https://docs.kernel.org/admin-guide/blockdev/zram.html#recompression"
+StopWhenUnneeded=yes
 
 [Service]
 Type=oneshot
