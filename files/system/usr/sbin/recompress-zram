@@ -37,17 +37,20 @@ while [[ $# -gt 0 ]]; do
 done
 
 function print_states() {
+    device="${1:?Need a '/dev/zram<n>' device path.}"
+    zramno="${device##*/}" # isolate device name
+
     # first run always passes || stats on action
     if [[ "$ONCE" = '' || "$NOOP" != ':' ]]; then
-        recomp_path="/sys/block/${1##*/}/recomp_algorithm"
+        recomp_path="/sys/block/$zramno/recomp_algorithm"
         $ONCE echo -en "$recomp_path = "
         $ONCE echo "$(grep -Eo "(#.*:|\[.*\])" "$recomp_path" | xargs echo)"
         ONCE=:
 
         echo
-        zramctl --output-all "${1:?Need a '/dev/zram<n>' device path.}"
+        zramctl --output-all "$device"
 
-        block_path="/sys/kernel/debug/zram/${1##*/}/block_state"
+        block_path="/sys/kernel/debug/zram/$zramno/block_state"
         if [[ -f "$block_path" ]]; then
             block_state="$(cat "$block_path")"
             function state() {
