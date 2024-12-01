@@ -80,7 +80,7 @@ The `podman.service` is enabled on Borealis, Buttgenbachit and Flaviramea.
 
 Let's have a look into some articles I've read over time. I did not do many measurements on my own, just rough observations while using my systems, especially the low memory (4 GiB) netbook I'm using for roughly seven years, and generally fare well with these settings. I'm choosing `lz4` over `zstd` as higher IOPS are - for my use cases - seemingly more important than the compression gain over either lz4 or `lzo-rle`.
 
-By default Fedora is using the [systemd-zram-generator](https://github.com/systemd/zram-generator).
+By default Fedora is using the [systemd-zram-generator](https://github.com/systemd/zram-generator). Since v1.2.1 it supports setting recompression algorithms, which are secondary compression algorithms to recompress some or all of the pages in zram on a trigger. The [zram-recompression.timer](files/system/etc/systemd/system/zram-recompression.timer) orchestrates it. Using [`zstd` and `lz4hc`](files/system/etc/systemd/zram-generator.conf) to try to recompress first idle and then huge (=incompressible) pages. It would be possible to recompress all pages which is not used here.
 
 #### Blogs
 

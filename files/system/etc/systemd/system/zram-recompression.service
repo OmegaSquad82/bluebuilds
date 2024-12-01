@@ -1,5 +1,5 @@
 [Unit]
-Description=Recompress all idle, then all huge pages in zram devices
+Description=Recompress all idle, then all huge pages in and compact memory of zram devices
 Documentation="https://docs.kernel.org/admin-guide/blockdev/zram.html#recompression"
 
 [Service]
