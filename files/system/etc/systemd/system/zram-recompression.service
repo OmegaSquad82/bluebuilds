@@ -1,5 +1,5 @@
 [Unit]
-Description=Recompress idle, then huge pages in zram, then trigger memory compaction
+Description=Recompress idle, then huge pages in zram, finally trigger memory compaction
 Documentation="https://docs.kernel.org/admin-guide/blockdev/zram.html#recompression"
 StopWhenUnneeded=yes
 
