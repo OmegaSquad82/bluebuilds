@@ -40,7 +40,7 @@ function print_states() {
     device="${1:?Need a '/dev/zram<n>' device path.}"
     zramno="${device##*/}" # isolate device name
 
-    # first run always passes || stats on action
+    # pre always passes || inter+post on action
     if [[ "$ONCE" = '' || "$NOOP" != ':' ]]; then
         recomp_path="/sys/block/$zramno/recomp_algorithm"
         $ONCE echo -en "$recomp_path = "
@@ -86,7 +86,7 @@ function turns_a_knob() {
     fi
 }
 
-# recompress then compact
+# recompress and compact
 for device in /dev/zram*; do
     ONCE=$DEBG # do stuff only once per loop
     : "$ONCE is either null or nop / comment ':'
