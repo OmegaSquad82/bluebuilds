@@ -35,7 +35,7 @@ jobs:
         run: echo "DEFAULT_BRANCH=$(git branch | grep -o -m1 "\b\(master\|main\)\b")" | tee -a $GITHUB_ENV
       - name: Check if on default (main) or test (rechunk) branch to rechunk it
         run: |
-          if [[ "{{ github.ref_name }}" = "$DEFAULT_BRANCH" || "{{ github.ref_name }}" = 'rechunk' ]]; then
+          if [[ "${{ github.ref_name }}" = "$DEFAULT_BRANCH" || "${{ github.ref_name }}" = 'rechunk' ]]; then
             echo "IS_DEFAULT=true" | tee -a $GITHUB_ENV
           else
             echo "IS_DEFAULT=false" | tee -a $GITHUB_ENV
