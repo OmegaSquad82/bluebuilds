@@ -29,9 +29,11 @@ jobs:
           - carbonatcyanotrichit
           - flaviramea
     steps:
-      - name: get default branch
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Get default branch
         run: echo "DEFAULT_BRANCH=$(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@')" | tee -a $GITHUB_ENV
-      - name: check if on default (main) branch, only then rechuck the image
+      - name: Check if on default (main) or test (rechunk) branch to rechunk it
         run: if [[ "{{ github.ref_name }}" = "$DEFAULT_BRANCH" || "{{ github.ref_name }}" = 'rechunk' ]]; then echo "IS_DEFAULT=true"  | tee -a $GITHUB_ENV; fi
       - name: Build Custom Image
         uses: blue-build/github-action@v1.8
