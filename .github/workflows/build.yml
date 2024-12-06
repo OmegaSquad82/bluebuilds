@@ -29,9 +29,14 @@ jobs:
           - carbonatcyanotrichit
           - flaviramea
     steps:
+      - name: get default branch
+        run: echo "DEFAULT_BRANCH=$(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@') >> $GITHUB_ENV
+      - name: check if on default (main) branch, only then rechuck the image
+        run: if [[ "{{ github.ref_name }}" = "$DEFAULT_BRANCH" || "{{ github.ref_name }}" = 'rechunk' ]]; then echo "IS_DEFAULT=true" >> $GITHUB_ENV; fi
       - name: Build Custom Image
         uses: blue-build/github-action@v1.8
         with:
+          rechunk: "${{ env.IS_DEFAULT }}"
           recipe: recipe-${{ matrix.package }}.yml
           cosign_private_key: ${{ secrets.SIGNING_SECRET }}
           registry_token: ${{ github.token }}
