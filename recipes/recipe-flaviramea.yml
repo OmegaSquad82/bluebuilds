@@ -14,9 +14,9 @@ stages:
           - build-zram-generator.sh
 
 modules:
-  - from-file: configs/zram-generator.yml
-  - from-file: configs/systemfiles.yml
   - from-file: configs/udevrules.yml
+  - from-file: configs/systemfiles.yml
+  - from-file: configs/zram-generator.yml
 
   - from-file: configs/podman.yml
   - from-file: configs/sshd.yml
