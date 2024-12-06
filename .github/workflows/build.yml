@@ -31,8 +31,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: Get default branch name (if main/master) # https://stackoverflow.com/a/65859728
-        run: echo "DEFAULT_BRANCH=$(git branch | grep -o -m1 "\b\(master\|main\)\b")" | tee -a $GITHUB_ENV
+      - name: Get default branch name
+        run: echo "DEFAULT_BRANCH=${{ github.event.repository.default_branch }} | tee -a $GITHUB_ENV
       - name: Check if on default (main) or test (rechunk) branch to rechunk it
         run: |
           if [[ "${{ github.ref_name }}" = "$DEFAULT_BRANCH" || "${{ github.ref_name }}" = 'rechunk' ]]; then
