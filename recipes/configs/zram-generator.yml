@@ -1,36 +1,15 @@
 stages:
   - name: build
-    from: docker.io/library/rust
+    from: fedora
     modules:
       - type: script
-        snippets:
-          - |
-            # dependencies
-            make --version
-            cc --version
-          - rustup toolchain install stable
-          - rustup default stable
-          - |
-            # verify toolchain
-            rustup --version
-            rustc --version
-            cargo --version
-          - |
-            # https://crates.io/crates/zram-generator
-            SYSTEMD_UTIL_DIR=$(pkg-config --variable=systemdutildir systemd)
-            SYSTEMD_SYSTEM_UNIT_DIR=$(pkg-config --variable=systemdsystemunitdir systemd)
-            SYSTEMD_SYSTEM_GENERATOR_DIR=$(pkg-config --variable=systemdsystemgeneratordir systemd)
-            export SYSTEMD_UTIL_DIR
-            export SYSTEMD_SYSTEM_UNIT_DIR
-            export SYSTEMD_SYSTEM_GENERATOR_DIR
-          - cargo install zram-generator # >=v1.2.1 supports recompression and options for algorithms
-          - mkdir -p /out/"$SYSTEMD_SYSTEM_GENERATOR_DIR" && mv $CARGO_HOME/bin/zram-generator /out/"$SYSTEMD_SYSTEM_GENERATOR_DIR" # this may not work
+        scripts:
+          - build-zram-generator.sh
 modules:
-  # Copy the bin and runtime from the `helix` stage
   - type: copy
     from: build
-    src: /out/*
-    dest: /
+    src: /root/.cargo/bin/zram-generator
+    dest: /usr/lib/systemd/system-generators/zram-generator
   - type: systemd
     system:
       enabled:
