@@ -1,15 +1,10 @@
 #!/usr/bin/env bash
-## devhints.io/bash
-set -euo pipefail
+
+# https://devhints.io/bash
+set -euo pipefail # strict
 IFS=$'\n\t'
 
-# ensure sysfs knobs can be meddled with
-if [[ $(/usr/bin/id -u) -ne 0 ]]; then
-    echo "Not running as root"
-    exit
-fi
-
-traperr() {
+function traperr() {
     echo "ERROR: ${BASH_SOURCE[1]} at about ${BASH_LINENO[0]}"
 }
 
@@ -20,7 +15,7 @@ trap traperr ERR
 TIMEFORMAT=$'real: %3lR\tuser: %3lU\tsys: %3lS'
 TYPE="${TYPE:=type=huge}"
 
-# comment out
+# comment stuff out on the fly
 DEBG=${DEBUG-:} # print statistics
 DENT=           # indentation only var
 NOOP=           # don't actually turn knobs
@@ -35,6 +30,12 @@ while [[ $# -gt 0 ]]; do
     esac
     shift
 done
+
+# ensure sysfs knobs can be meddled with
+if [[ $(/usr/bin/id -u) -ne 0 ]]; then
+    $NOOP echo "Not running as root"
+    $NOOP exit
+fi
 
 function print_states() {
     device="${1:?Need a '/dev/zram<n>' device path.}"
@@ -79,8 +80,10 @@ function turns_a_knob() {
     valu="${2:?Need a valu to write to $knob.}"
     $DEBG $NOOP echo
     if [[ -f "$knob" ]]; then
-        $DEBG echo -e "λ ${NOOP:+#} echo ${valu} >$knob"
-        $NOOP echo "${valu}" >"$knob"
+        echo -e "λ${NOOP:+ #} echo ${valu} >$knob"
+        if [[ "$NOOP" = '' ]]; then
+            time echo "${valu}" >"$knob"
+        fi
     else
         $DEBG echo -e "$knob is not available!"
     fi
