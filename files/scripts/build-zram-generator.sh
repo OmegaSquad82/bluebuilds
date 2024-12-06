@@ -17,7 +17,7 @@ set -o errtrace
 trap traperr ERR
 
 # verify dependencies
-dnf5 install gcc
+dnf5 install -y gcc
 make --version
 cc --version
 
