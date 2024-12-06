@@ -1,10 +1,8 @@
 modules:
-  - type: rpm-ostree
-    install:
-      - gcc
-  - type: script
-    scripts:
-      - setup-zram.sh
+  - type: copy
+    from: zram-generator
+    src: /root/.cargo/bin/zram-generator
+    dest: /usr/lib/systemd/system-generators/zram-generator
   - type: systemd
     system:
       enabled:

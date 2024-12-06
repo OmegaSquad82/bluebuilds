@@ -13,7 +13,7 @@ trap traperr ERR
 
 # settings
 TIMEFORMAT=$'real: %3lR\tuser: %3lU\tsys: %3lS'
-TYPE="${TYPE:=type=huge}"
+TYPE="${PARM:=type=huge}"
 
 # comment stuff out on the fly
 DEBG=${DEBUG-:} # print statistics

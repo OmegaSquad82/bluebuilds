@@ -17,6 +17,7 @@ set -o errtrace
 trap traperr ERR
 
 # verify dependencies
+dnf5 install -y gcc
 make --version
 cc --version
 
@@ -44,8 +45,3 @@ export SYSTEMD_SYSTEM_UNIT_DIR
 export SYSTEMD_SYSTEM_GENERATOR_DIR
 
 cargo install zram-generator # >=v1.2.1 supports recompression and options for algorithms
-install -b /root/.cargo/bin/zram-generator "$SYSTEMD_SYSTEM_GENERATOR_DIR"
-
-# cleanup build toolchain
-rustup self uninstall -y
-rm -rf /root/.cargo/
