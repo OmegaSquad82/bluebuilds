@@ -6,7 +6,7 @@ base-image: ghcr.io/ublue-os/sericea-main
 image-version: latest
 
 stages:
-  - name: build
+  - name: zram-generator
     from: fedora
     modules:
       - type: script

@@ -6,7 +6,7 @@ base-image: ghcr.io/ublue-os/bazzite
 image-version: stable
 
 stages:
-  - name: build
+  - name: zram-generator
     from: fedora
     modules:
       - type: script

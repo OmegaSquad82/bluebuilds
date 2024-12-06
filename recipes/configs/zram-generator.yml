@@ -1,13 +1,6 @@
-# stages:
-#   - name: build
-#     from: fedora
-#     modules:
-#       - type: script
-#         scripts:
-#           - build-zram-generator.sh
 modules:
   - type: copy
-    from: build
+    from: zram-generator
     src: /root/.cargo/bin/zram-generator
     dest: /usr/lib/systemd/system-generators/zram-generator
   - type: systemd
