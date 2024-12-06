@@ -1,3 +1,5 @@
+---
+# yaml-language-server: $schema=https://schema.blue-build.org/recipe-v1.json
 name: flaviramea
 description: My personal flavor of Fedora Sway Atomic.
 base-image: ghcr.io/ublue-os/sericea-main
