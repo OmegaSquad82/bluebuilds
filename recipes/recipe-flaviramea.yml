@@ -5,10 +5,18 @@ description: My personal flavor of Fedora Sway Atomic.
 base-image: ghcr.io/ublue-os/sericea-main
 image-version: latest
 
+stages:
+  - name: build
+    from: fedora
+    modules:
+      - type: script
+        scripts:
+          - build-zram-generator.sh
+
 modules:
-  - from-file: configs/udevrules.yml
-  - from-file: configs/systemfiles.yml
   - from-file: configs/zram-generator.yml
+  - from-file: configs/systemfiles.yml
+  - from-file: configs/udevrules.yml
 
   - from-file: configs/podman.yml
   - from-file: configs/sshd.yml

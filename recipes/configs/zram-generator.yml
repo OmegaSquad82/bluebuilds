@@ -1,10 +1,10 @@
-stages:
-  - name: build
-    from: fedora
-    modules:
-      - type: script
-        scripts:
-          - build-zram-generator.sh
+# stages:
+#   - name: build
+#     from: fedora
+#     modules:
+#       - type: script
+#         scripts:
+#           - build-zram-generator.sh
 modules:
   - type: copy
     from: build
