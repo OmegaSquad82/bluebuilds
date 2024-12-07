@@ -71,10 +71,9 @@ The `podman.service` is enabled on Borealis, Buttgenbachit and Flaviramea.
 #### All images
 
 - byobu
+- htop
 - kitty
 - neovim
-- powertop
-- powerstat
 
 ### swap on zram
 
