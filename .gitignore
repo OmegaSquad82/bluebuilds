@@ -3,3 +3,4 @@ cosign.private
 /Containerfile
 /Containerfile.*
 iso-output/
+*.iso*
