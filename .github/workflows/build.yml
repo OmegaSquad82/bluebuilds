@@ -10,6 +10,9 @@ on:
       - "build-isos"
       - "**/trivy.yml"
   workflow_dispatch:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref || github.run_id }}
+  cancel-in-progress: true
 env:
   REPO_OWNER: ${{ github.repository_owner }}
 jobs:

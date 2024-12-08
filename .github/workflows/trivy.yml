@@ -5,10 +5,13 @@ on:
         "55 0,6,12,18 * * *" # build at {0,6,12,18}:55 UTC every day
         # (50 minutes after custom image build was triggered, then every 6h)
   push:
-      paths-ignore:
+    paths-ignore:
       - "**.md"
       - "build-isos"
       - "**/build.yml"
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref || github.run_id }}
+  cancel-in-progress: true
 env:
   REPO_OWNER: ${{ github.repository_owner }}
 jobs:
