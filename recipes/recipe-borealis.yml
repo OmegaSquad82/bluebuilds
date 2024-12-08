@@ -5,12 +5,21 @@ description: My personal flavor of Aurora for Developers.
 base-image: ghcr.io/ublue-os/aurora-dx
 image-version: latest
 
+stages:
+  - name: zram-generator
+    from: fedora
+    modules:
+      - type: script
+        scripts:
+          - build-zram-generator.sh
+
 modules:
   - from-file: configs/udevrules.yml
   - from-file: configs/systemfiles.yml
   - from-file: configs/zram-generator.yml
 
   - from-file: configs/podman.yml
+  - from-file: configs/fonts.yml
   - from-file: configs/sshd.yml
 
   - from-file: configs/packages.yml

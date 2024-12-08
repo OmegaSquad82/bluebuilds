@@ -18,10 +18,12 @@ modules:
   - from-file: configs/systemfiles.yml
   - from-file: configs/zram-generator.yml
 
-  - from-file: configs/podman.yml
   - from-file: configs/sshd.yml
+  - from-file: configs/fonts.yml
+  - from-file: configs/podman.yml
   - from-file: configs/tailscale.yml
 
+  - from-file: configs/amdgpu.yml
   - from-file: configs/bazzite.yml
   - from-file: configs/packages.yml
   - from-file: configs/flatpaks.yml

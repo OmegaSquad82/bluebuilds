@@ -1,0 +1,8 @@
+modules:
+  - type: rpm-ostree
+    install:
+      - lact
+  - type: systemd
+    system:
+      enabled:
+        - lactd.service

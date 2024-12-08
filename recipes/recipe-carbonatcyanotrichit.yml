@@ -5,14 +5,24 @@ description: My personal flavor of Bazzite Deck Stable.
 base-image: ghcr.io/ublue-os/bazzite-deck
 image-version: stable
 
+stages:
+  - name: zram-generator
+    from: fedora
+    modules:
+      - type: script
+        scripts:
+          - build-zram-generator.sh
+
 modules:
   - from-file: configs/udevrules.yml
   - from-file: configs/systemfiles.yml
   - from-file: configs/zram-generator.yml
 
   - from-file: configs/sshd.yml
+  - from-file: configs/fonts.yml
   - from-file: configs/tailscale.yml
 
+  - from-file: configs/amdgpu.yml
   - from-file: configs/bazzite.yml
   - from-file: configs/packages.yml
   - from-file: configs/flatpaks.yml
