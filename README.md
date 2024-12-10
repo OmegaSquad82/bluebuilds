@@ -75,11 +75,11 @@ The `podman.service` is enabled on Borealis, Buttgenbachit and Flaviramea.
 - kitty
 - neovim
 
-### ZRAM swap
+### Swap on ZRAM
 
-Let's have a look into some articles I've read over time. I did not do many measurements on my own, just rough observations while using my systems, especially the low memory (4 GiB) netbook I'm using for roughly seven years, and generally fare well with these settings. I'm choosing `lz4` over `zstd` as higher IOPS are - for my use cases - seemingly more important than the compression gain over either lz4 or `lzo-rle`.
+Let's have a look into some articles I've read over time. I did not do many measurements on my own, just rough observations while using my systems, especially the low memory (4 GiB) netbook I'm using for over seven years, and generally fare well with these settings. I'm choosing `lz4` over `zstd` as higher IOPS are - for my use cases - seemingly more important than the compression gain over either lz4 or `lzo-rle`. See linked posts on Reddit and GitHub with some synthetic benchmarks of various settings.
 
-By default Fedora is using the [systemd-zram-generator](https://github.com/systemd/zram-generator). Since v1.2.1 it supports setting recompression, which allows to set secondary compression algorithms to recompress some or all of the pages in zram on a trigger. For these images the [zram-recompression.timer](files/system/etc/systemd/system/zram-recompression.timer) orchestrates it. Using [`zstd` and `lz4hc`](files/system/etc/systemd/zram-generator.conf) to try to recompress first idle and then huge (=incompressible in zram terms) pages. It would be possible to recompress all pages which is not used here.
+Since before Fedora 33 raised [Swap on ZRAM](https://fedoraproject.org/wiki/Changes/SwapOnZRAM) to default for all Spins, the [systemd-zram-generator](https://github.com/systemd/zram-generator) was used to configure compressed drives. Starting with v1.2.1 the zram-generator supports setting recompression, which allows to set secondary compression algorithms to recompress some or all of the pages on any zram drive on a trigger. For the images built from this repository the [zram-recompression.timer](files/system/etc/systemd/system/zram-recompression.timer) orchestrates the trigger using [`zstd` and `lz4hc`](files/system/etc/systemd/zram-generator.conf) to try to recompress first idle and then huge (=incompressible in zram terms) pages. I suppose it would be possible to try to recompress all pages (currently not marked as incompressible) in ZRAM which is currently not used here.
 
 #### Blogs
 
