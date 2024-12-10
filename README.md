@@ -8,7 +8,7 @@ See the [BlueBuild docs](https://blue-build.org/how-to/setup/) for quick setup i
 
 ## Images
 
-All images are built with a selection of common packages and flatpaks. ZRAM is pre-configured to use LZ4 and from 2 x RAM up to 32 GiB as Swap space, the Virtual Memory management subsystem settings have been configured for both an increased amount of and low latency swapping. The latency improvements come at a price of a higher likelyhood of page faults because readahead has been deactivated.
+All images are built with a selection of common packages and flatpaks. ZRAM is pre-configured to use LZ4 and from 2 x RAM up to 16 GiB as Swap space with recompression, the Virtual Memory management subsystem settings have been configured for both an increased amount of and low latency swapping. The latency improvements come at a price of a higher likelyhood of page faults because readahead has been deactivated.
 
 ### [Aubertit](https://www.mineralienatlas.de/lexikon/index.php/MineralData?lang=en&language=english&mineral=Aubertit)
 
@@ -75,11 +75,11 @@ The `podman.service` is enabled on Borealis, Buttgenbachit and Flaviramea.
 - kitty
 - neovim
 
-### swap on zram
+### ZRAM swap
 
 Let's have a look into some articles I've read over time. I did not do many measurements on my own, just rough observations while using my systems, especially the low memory (4 GiB) netbook I'm using for roughly seven years, and generally fare well with these settings. I'm choosing `lz4` over `zstd` as higher IOPS are - for my use cases - seemingly more important than the compression gain over either lz4 or `lzo-rle`.
 
-By default Fedora is using the [systemd-zram-generator](https://github.com/systemd/zram-generator). Since v1.2.1 it supports setting recompression algorithms, which are secondary compression algorithms to recompress some or all of the pages in zram on a trigger. The [zram-recompression.timer](files/system/etc/systemd/system/zram-recompression.timer) orchestrates it. Using [`zstd` and `lz4hc`](files/system/etc/systemd/zram-generator.conf) to try to recompress first idle and then huge (=incompressible) pages. It would be possible to recompress all pages which is not used here.
+By default Fedora is using the [systemd-zram-generator](https://github.com/systemd/zram-generator). Since v1.2.1 it supports setting recompression, which allows to set secondary compression algorithms to recompress some or all of the pages in zram on a trigger. For these images the [zram-recompression.timer](files/system/etc/systemd/system/zram-recompression.timer) orchestrates it. Using [`zstd` and `lz4hc`](files/system/etc/systemd/zram-generator.conf) to try to recompress first idle and then huge (=incompressible in zram terms) pages. It would be possible to recompress all pages which is not used here.
 
 #### Blogs
 
