@@ -2,3 +2,4 @@ modules:
   - type: containerfile
     snippets:
       - COPY --from=ghcr.io/ublue-os/config:latest /files/ublue-os-udev-rules /
+      - ADD https://openrgb.org/releases/release_0.9/60-openrgb.rules /usr/lib/udev/rules.d
