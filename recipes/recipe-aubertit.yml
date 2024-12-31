@@ -2,7 +2,7 @@
 # yaml-language-server: $schema=https://schema.blue-build.org/recipe-v1.json
 name: aubertit
 description: My personal flavor of Bazzite Stable for ASUS Laptops with NVIDIA cards.
-base-image: ghcr.io/ublue-os/bazzite-asus-nvidia
+base-image: ghcr.io/ublue-os/bazzite-asus
 image-version: stable
 
 stages:
@@ -19,11 +19,9 @@ modules:
   - from-file: configs/zram-generator.yml
 
   - from-file: configs/sshd.yml
-  - from-file: configs/fonts.yml
   - from-file: configs/tailscale.yml
 
   - from-file: configs/bazzite.yml
-  - from-file: configs/packages.yml
   - from-file: configs/flatpaks.yml
 
   - type: signing
