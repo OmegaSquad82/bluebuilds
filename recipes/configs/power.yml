@@ -2,7 +2,7 @@ modules:
   - type: rpm-ostree
     install:
       - tuned
-    uninstall:
+    remove:
       - cpupower
       - powertop
       - power-profiles-daemon
