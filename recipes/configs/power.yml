@@ -1,0 +1,19 @@
+modules:
+  - type: rpm-ostree
+    install:
+      - tuned
+    uninstall:
+      - cpupower
+      - powertop
+      - power-profiles-daemon
+  - type: systemd
+    system:
+      unmasked:
+        - tuned.service
+  - type: systemd
+    system:
+      enabled:
+        - tuned.service
+  - type: script
+    snippets:
+      - "tuned-admin recommend && tuned-adm auto_profile && tuned-adm profile_info"
