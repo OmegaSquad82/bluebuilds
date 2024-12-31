@@ -2,8 +2,6 @@ modules:
   - type: rpm-ostree
     install:
       - tuned
-    remove:
-      - powertop
   - type: systemd
     system:
       masked:
