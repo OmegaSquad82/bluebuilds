@@ -12,6 +12,3 @@ modules:
     system:
       enabled:
         - tuned.service
-  - type: script
-    snippets:
-      - "tuned-adm recommend && tuned-adm auto_profile && tuned-adm profile_info"
