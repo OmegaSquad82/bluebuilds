@@ -4,7 +4,6 @@ modules:
       - tuned
     remove:
       - powertop
-      - power-profiles-daemon
   - type: systemd
     system:
       masked:
