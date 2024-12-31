@@ -21,7 +21,7 @@ for image in "${IMAGES[@]}"; do
 	image="${image#recipe-}"
 	image="${image%.yml}"
 	cd "$here"
-	if ! bluebuild generate-iso --output-dir "$outdir" --iso-name "$image-$(date -I)" image ghcr.io/omegasquad82/"$image"; then
+	if ! bluebuild generate-iso --output-dir "$outdir" --iso-name "$image-$(date -I)".iso image ghcr.io/omegasquad82/"$image"; then
 		echo "ostree-image-signed:docker://$image could not be turned into an ISO"
 		continue
 	fi
