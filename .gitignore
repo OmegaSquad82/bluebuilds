@@ -2,5 +2,6 @@ cosign.key
 cosign.private
 /Containerfile
 /Containerfile.*
+build-isos
 *iso*/
 *.iso*

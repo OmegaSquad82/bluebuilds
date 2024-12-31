@@ -2,7 +2,5 @@ modules:
   - type: fonts
     fonts:
       nerd-fonts:
-        - FiraCode
         - Hack
-        - SourceCodePro
         - Terminus

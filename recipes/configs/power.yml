@@ -1,0 +1,14 @@
+modules:
+  - type: rpm-ostree
+    install:
+      - tuned
+  - type: systemd
+    system:
+      masked:
+        - cpupower.service
+      unmasked:
+        - tuned.service
+  - type: systemd
+    system:
+      enabled:
+        - tuned.service
