@@ -3,11 +3,12 @@ modules:
     install:
       - tuned
     remove:
-      - cpupower
       - powertop
       - power-profiles-daemon
   - type: systemd
     system:
+      masked:
+        - cpupower.service
       unmasked:
         - tuned.service
   - type: systemd
@@ -16,4 +17,4 @@ modules:
         - tuned.service
   - type: script
     snippets:
-      - "tuned-admin recommend && tuned-adm auto_profile && tuned-adm profile_info"
+      - "tuned-adm recommend && tuned-adm auto_profile && tuned-adm profile_info"
