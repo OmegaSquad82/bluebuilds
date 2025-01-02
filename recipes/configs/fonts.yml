@@ -2,4 +2,3 @@ modules:
   - type: fonts
     fonts:
       nerd-fonts:
-        - Terminus
