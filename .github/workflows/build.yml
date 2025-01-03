@@ -32,6 +32,12 @@ jobs:
           #- carbonatcyanotrichit
           - flaviramea
     steps:
+      - name: Maximize build space
+        uses: easimon/maximize-build-space@master
+        with:
+          root-reserve-mb: 512
+          swap-size-mb: 1024
+          remove-docker-images: true
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Get default branch name
