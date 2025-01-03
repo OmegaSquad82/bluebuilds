@@ -66,14 +66,18 @@ The `podman.service` is enabled on Borealis, Buttgenbachit and Flaviramea.
 - Ptyxis
 - Weasis
 
-### Packages
+### Utility packages
 
-#### All images
+#### All images get
+
+- kitty
+
+#### 'brew install ...'
 
 - byobu
 - htop
-- kitty
 - neovim
+- pdfgrep
 
 ### Swap on ZRAM
 
