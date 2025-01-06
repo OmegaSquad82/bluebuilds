@@ -40,6 +40,8 @@ jobs:
       - name: Convert to compressed filesystem
         shell: bash
         run: |
+          cd ~
+          
           # https://github.com/easimon/maximize-build-space/issues/23
           # https://github.com/easimon/maximize-build-space/pull/37
           WORKSPACE_OWNER="$(stat -c '%U:%G' "${GITHUB_WORKSPACE}")"
