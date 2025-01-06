@@ -50,7 +50,7 @@ jobs:
           sudo umount "${LV_NAME}"
 
           # https://github.com/radxa/armbian-compile-action/commit/82fe40188f2f3b4dbd4ae8fb9c64f49f117085c7
-          mkfs.btrfs -L buildlv -M -m single --force "${LV_NAME}"
+          sudo mkfs.btrfs -L buildlv -M -m single --force "${LV_NAME}"
           sudo mount -o defaults,noatime,compress=zstd:3,discard=sync "${LV_NAME}" "${GITHUB_WORKSPACE}"
 
           sudo chown -R "$WORKSPACE_OWNER" "${GITHUB_WORKSPACE}"
