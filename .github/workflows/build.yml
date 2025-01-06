@@ -35,9 +35,24 @@ jobs:
       - name: Maximize build space
         uses: easimon/maximize-build-space@master
         with:
-          root-reserve-mb: 512
-          swap-size-mb: 1024
           remove-docker-images: true
+          overprovision-lvm: true
+      - name: Convert to compressed filesystem
+        shell: bash
+        run: |
+          # https://github.com/easimon/maximize-build-space/issues/23
+          # https://github.com/easimon/maximize-build-space/pull/37
+          WORKSPACE_OWNER="$(stat -c '%U:%G' "${GITHUB_WORKSPACE}")"
+          VG_NAME=buildvg
+          LV_NAME="/dev/mapper/${VG_NAME}-buildlv"
+
+          sudo umount "${LV_NAME}"
+
+          # https://github.com/radxa/armbian-compile-action/commit/82fe40188f2f3b4dbd4ae8fb9c64f49f117085c7
+          mkfs.btrfs -L buildlv -M -m single "${LV_NAME}"
+          sudo mount -o defaults,noatime,compress=zstd:3,discard=sync "${LV_NAME}" "${GITHUB_WORKSPACE}"
+
+          sudo chown -R "$WORKSPACE_OWNER" "${GITHUB_WORKSPACE}"
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Get default branch name
