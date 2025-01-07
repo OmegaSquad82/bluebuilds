@@ -1,4 +1,6 @@
 modules:
   - type: rpm-ostree
     install:
+      - byobu
+      - htop
       - kitty
