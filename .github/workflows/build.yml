@@ -72,3 +72,26 @@ jobs:
           cosign_private_key: ${{ secrets.SIGNING_SECRET }}
           registry_token: ${{ github.token }}
           pr_event_number: ${{ github.event.number }}
+
+      - name: Force repository owner to lowercase
+        run: echo "IMAGE_REF=ghcr.io/${REPO_OWNER@L}/${{ matrix.package }}" >> ${GITHUB_ENV}
+
+      - name: Generate SARIF for Custom Image with Trivy
+        uses: aquasecurity/trivy-action@0.29.0
+        with:
+          output: trivy-results.sarif
+          github-pat: ${{ secrets.GITHUB_TOKEN }}
+          image-ref: "${{ env.IMAGE_REF }}"
+          severity: MEDIUM,HIGH,CRITICAL
+          scan-type: image
+          scanners: vuln
+          format: sarif
+        env:
+          TRIVY_USERNAME: ${{ github.actor }}
+          TRIVY_PASSWORD: ${{ github.token }}
+
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          category: trivy-${{ matrix.package }}
+          sarif_file: trivy-results.sarif
