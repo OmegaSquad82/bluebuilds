@@ -12,11 +12,7 @@ All images are built with a selection of common packages and flatpaks. ZRAM is p
 
 ### [Aubertit](https://www.mineralienatlas.de/lexikon/index.php/MineralData?lang=en&language=english&mineral=Aubertit)
 
-NOT BUILT! It is a flavor of Bazzite for ASUS Laptops with NVIDIA GPUs.
-
-### [Borealis](https://en.wikipedia.org/wiki/Aurora_Borealis)
-
-NOT BUILT! An opinionated descendant of Aurora for my usual desktop and tinkering workflows.
+It is a flavor of Bazzite for ASUS Laptops with NVIDIA GPUs.
 
 ### [Buttgenbachit](https://www.mineralienatlas.de/lexikon/index.php/MineralData?lang=en&language=english&mineral=Buttgenbachit)
 
@@ -70,13 +66,13 @@ The `podman.service` is enabled on Borealis, Buttgenbachit and Flaviramea.
 
 #### All images get
 
+- byobu
+- htop
 - kitty
+- neovim
 
 #### 'brew install ...'
 
-- byobu
-- htop
-- neovim
 - pdfgrep
 
 ### Swap on ZRAM

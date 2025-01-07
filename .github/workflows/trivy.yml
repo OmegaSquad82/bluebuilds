@@ -27,7 +27,6 @@ jobs:
       matrix:
         package:
           - aubertit
-          #- borealis
           - buttgenbachit
           #- carbonatcyanotrichit
           - flaviramea
