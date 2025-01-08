@@ -96,3 +96,4 @@ jobs:
         with:
           category: trivy-${{ matrix.package }}
           sarif_file: trivy-results.sarif
+        if: "${{ env.IS_DEFAULT }}"
