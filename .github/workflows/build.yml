@@ -89,11 +89,11 @@ jobs:
         env:
           TRIVY_USERNAME: ${{ github.actor }}
           TRIVY_PASSWORD: ${{ github.token }}
-        if: env.IS_DEFAULT == true
+        if: env.IS_DEFAULT == 'true'
 
       - name: Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v3
         with:
           category: trivy-${{ matrix.package }}
           sarif_file: trivy-results.sarif
-        if: env.IS_DEFAULT == true
+        if: env.IS_DEFAULT == 'true'
