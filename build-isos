@@ -15,16 +15,20 @@ fi
 
 outdir=./isos
 mkdir -p "$outdir"
-IMAGES=()
+RECIPES=()
 here="$PWD"
 cd recipes
-IMAGES+=(recipe-*.yml)
-for image in "${IMAGES[@]}"; do
-	image="${image#recipe-}"
+today=$(date -I)
+RECIPES+=(recipe-*.yml)
+for recipe in "${RECIPES[@]}"; do
+	image="${recipe#recipe-}"
 	image="${image%.yml}"
 	cd "$here"
-	if ! bluebuild generate-iso --output-dir "$outdir" --iso-name "$image-$(date -I)".iso image ghcr.io/omegasquad82/"$image"; then
-		echo "ostree-image-signed:docker://$image could not be turned into an ISO"
-		continue
+	if bluebuild generate "recipes/$recipe" --output "$outdir/$image-$today".yaml --display-full-recipe &&
+		bluebuild generate "recipes/$recipe" --output "$outdir/$image-$today".Containerfile &&
+		bluebuild generate-iso -V kinoite --output-dir "$outdir" --iso-name "$image-$today".iso image ghcr.io/omegasquad82/"$image"; then
+		echo "$(ls "$outdir/$image-$today".{iso,Containerfile,yaml}) => rendered from $recipe and ostree-image-signed:docker://$image"
+	else
+		echo "ostree-image-signed:docker://$image from $recipe could not be turned into {iso,Containerfile,yaml} formats"
 	fi
 done
