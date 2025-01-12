@@ -1,9 +1,13 @@
 modules:
+  - type: rpm-ostree
+    install:
+      - qemu
   - type: default-flatpaks
     notify: true
     system:
       install:
         - app.devsuite.Ptyxis
+        - com.logseq.Logseq
         - com.vscodium.codium
         - de.bund.ausweisapp.ausweisapp2
         - io.github.dvlv.boxbuddyrs
