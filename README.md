@@ -64,16 +64,20 @@ The `podman.service` is enabled on Borealis, Buttgenbachit and Flaviramea.
 
 ### Utility packages
 
-#### All images get
+#### All images
 
 - byobu
 - htop
 - kitty
 - neovim
 
-#### 'brew install ...'
+#### Select images
 
-- pdfgrep
+ - qemu
+
+#### Manually
+
+`brew install pdfgrep`
 
 ### Swap on ZRAM
 
