@@ -9,8 +9,8 @@ if ! command -v bluebuild >/dev/null; then
 fi
 
 if [ "$EUID" -ne 0 ]; then
-	echo "Must be run as root!"
-	exit 2
+	sudo $0
+	exit $?
 fi
 
 outdir=./isos
