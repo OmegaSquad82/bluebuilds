@@ -35,7 +35,6 @@ jobs:
       - name: Maximize build space
         uses: easimon/maximize-build-space@master
         with:
-          remove-docker-images: true
           overprovision-lvm: true
       - name: Convert to compressed filesystem
         shell: bash
@@ -68,11 +67,12 @@ jobs:
       - name: Build Custom Image
         uses: blue-build/github-action@v1.8.1
         with:
-          rechunk: "${{ env.IS_DEFAULT }}"
-          recipe: recipe-${{ matrix.package }}.yml
           cosign_private_key: ${{ secrets.SIGNING_SECRET }}
-          registry_token: ${{ github.token }}
+          maximize_build_space: ${{ env.IS_DEFAULT }}
           pr_event_number: ${{ github.event.number }}
+          rechunk: ${{ env.IS_DEFAULT }}
+          recipe: recipe-${{ matrix.package }}.yml
+          registry_token: ${{ github.token }}
 
       - name: Force repository owner to lowercase
         run: echo "IMAGE_REF=ghcr.io/${REPO_OWNER@L}/${{ matrix.package }}" >> ${GITHUB_ENV}
