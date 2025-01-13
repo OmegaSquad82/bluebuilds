@@ -20,7 +20,7 @@ Bazzite Stable for desktop gaming.
 
 ### [Carbonatcyanotrichit](https://www.mineralienatlas.de/lexikon/index.php/MineralData?lang=en&language=english&mineral=Carbonatcyanotrichit)
 
-NOT BUILT! Bazzite Deck Stable for my Steam Deck clone.
+Bazzite Deck Stable for my Steam Deck clone.
 
 ### [Flaviramea](https://www.ecosia.org/search?tt=mzl&q=Cornus%20sericea%20Flaviramea)
 
