@@ -28,7 +28,7 @@ jobs:
         package:
           - aubertit
           - buttgenbachit
-          #- carbonatcyanotrichit
+          - carbonatcyanotrichit
           - flaviramea
     steps:
       - name: Checkout code
