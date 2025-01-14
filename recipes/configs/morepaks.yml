@@ -1,6 +1,7 @@
 modules:
   - type: rpm-ostree
     install:
+      - libvirt
       - qemu
   - type: default-flatpaks
     notify: true
