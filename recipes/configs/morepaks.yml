@@ -1,6 +1,7 @@
 modules:
   - type: rpm-ostree
     install:
+      - https://github.com/rmcrackan/Libation/releases/download/v11.6.4/Libation.11.6.4-linux-chardonnay-amd64.rpm
       - libvirt
       - qemu
   - type: default-flatpaks
