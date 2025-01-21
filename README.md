@@ -12,7 +12,7 @@ All images are built with a selection of common packages and flatpaks. ZRAM is p
 
 ### [Aubertit](https://www.mineralienatlas.de/lexikon/index.php/MineralData?lang=en&language=english&mineral=Aubertit)
 
-It is a flavor of Bazzite for ASUS Laptops with NVIDIA GPUs.
+It is a flavor of Bazzite for ASUS Laptops.
 
 ### [Buttgenbachit](https://www.mineralienatlas.de/lexikon/index.php/MineralData?lang=en&language=english&mineral=Buttgenbachit)
 
