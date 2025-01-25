@@ -28,13 +28,9 @@ My netbook still exists and is dear to me and so it is running Sway, now.
 
 ## Customizations
 
-### Bazzite
-
-The `tailscaled.service` is disabled on Aubertit, Buttgenbachit and Carbonatcyanotrichit.
-
 ### Podman
 
-The `podman.service` is enabled on Borealis, Buttgenbachit and Flaviramea.
+The `podman.service` is enabled on both Buttgenbachit and Flaviramea.
 
 ### Flatpaks
 
