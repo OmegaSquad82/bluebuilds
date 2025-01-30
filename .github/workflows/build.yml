@@ -15,7 +15,10 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref || github.run_id }}
   cancel-in-progress: true
 env:
-  REPO_OWNER: ${{ github.repository_owner }}
+  IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
+  IMAGE_TAGS: latest ${{ github.sha }}
+  REGISTRY_USER: ${{ github.actor }}
+  REGISTRY_PASSWORD: ${{ github.token }}
 jobs:
   bluebuild:
     name: Build Custom Image
@@ -33,6 +36,8 @@ jobs:
           - carbonatcyanotrichit
           - flaviramea
     steps:
+
+      # Gimme more room to unfold
       - name: Maximize build space
         uses: easimon/maximize-build-space@master
         with:
@@ -59,10 +64,14 @@ jobs:
           sudo mount -o defaults,noatime,compress=zstd:3,discard=sync "${LV_NAME}" "${GITHUB_WORKSPACE}"
 
           sudo chown -R "$WORKSPACE_OWNER" "${GITHUB_WORKSPACE}"
-      - name: Checkout code
+
+      # Create bootc image
+      - name: Checkout codeZ
         uses: actions/checkout@v4
+      
       - name: Get default branch name
         run: echo "DEFAULT_BRANCH=${{ github.event.repository.default_branch }}" >$GITHUB_ENV
+      
       - name: Check if on default (main) or test (rechunk) branch to rechunk it
         run: |
           if [[ "${{ github.ref_name }}" = "$DEFAULT_BRANCH" || "${{ github.ref_name }}" = 'rechunk' ]]; then
@@ -70,6 +79,7 @@ jobs:
           else
             echo "IS_DEFAULT=false" >$GITHUB_ENV
           fi
+      
       - name: Build Custom Image
         uses: blue-build/github-action@v1.8.1
         with:
@@ -80,17 +90,63 @@ jobs:
           recipe: recipe-${{ matrix.package }}.yml
           registry_token: ${{ github.token }}
 
-      - name: Force repository owner to lowercase
-        run: echo "IMAGE_REF=ghcr.io/${REPO_OWNER@L}/${{ matrix.package }}" >> ${GITHUB_ENV}
-        if: env.IS_DEFAULT == 'true'
+      # Workaround bug where capital letters in your GitHub username make it impossible to push to GHCR.
+      # https://github.com/macbre/push-to-ghcr/issues/12
+      - name: Lowercase Registry
+        id: registry_case
+        uses: ASzc/change-string-case-action@v6
+        with:
+          string: ${{ env.IMAGE_REGISTRY }}
 
+      # Compression overdrive
+      - name: Push To GHCR
+        uses: redhat-actions/push-to-registry@v2
+        if: github.event_name != 'pull_request'
+        id: push
+        with:
+          image: ${{ matrix.package }}
+          tags: ${{ env.IMAGE_TAGS }}
+          registry: ${{ steps.registry_case.outputs.lowercase }}
+          username: ${{ env.REGISTRY_USER }}
+          password: ${{ env.REGISTRY_PASSWORD }}
+          extra-args: |
+            --compression-format=zstd:chunked
+
+      # Sign container
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        if: github.event_name != 'pull_request'
+        with:
+          registry: ghcr.io
+          username: ${{ env.REGISTRY_USER }}
+          password: ${{ env.REGISTRY_PASSWORD }}
+      
+      - uses: sigstore/cosign-installer@v3.7.0
+        if: github.event_name != 'pull_request'
+      
+      - name: Sign container image
+        if: github.event_name != 'pull_request'
+        run: |
+          echo "${{ env.COSIGN_PRIVATE_KEY }}" > cosign.key
+          wc -c cosign.key
+          cosign sign -y --key cosign.key ${{ steps.registry_case.outputs.lowercase }}/${{ env.IMAGE_NAME }}@${TAGS}
+        env:
+          TAGS: ${{ steps.push.outputs.digest }}
+          COSIGN_EXPERIMENTAL: false
+          COSIGN_PRIVATE_KEY: ${{ secrets.SIGNING_SECRET }}
+      
+      - name: Echo outputs
+        run: |
+          echo "${{ toJSON(steps.push.outputs) }}"
+
+      # Vulnerability Analysis
       - name: Generate SARIF for Custom Image with Trivy
         uses: aquasecurity/trivy-action@0.29.0
         with:
-          output: trivy-results.sarif
+          image-ref: ${{ steps.registry_case.outputs.lowercase }}/${{ matrix.package }}
           github-pat: ${{ secrets.GITHUB_TOKEN }}
-          image-ref: "${{ env.IMAGE_REF }}"
           severity: MEDIUM,HIGH,CRITICAL
+          output: trivy-results.sarif
           scan-type: image
           scanners: vuln
           format: sarif
