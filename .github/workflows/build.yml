@@ -16,7 +16,7 @@ concurrency:
   cancel-in-progress: true
 env:
   IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
-  IMAGE_TAGS: latest ${{ github.sha }}
+  IMAGE_TAGS: latest
   REGISTRY_USER: ${{ github.actor }}
   REGISTRY_PASSWORD: ${{ github.token }}
 jobs:
@@ -89,6 +89,8 @@ jobs:
           rechunk: ${{ env.IS_DEFAULT }}
           recipe: recipe-${{ matrix.package }}.yml
           registry_token: ${{ github.token }}
+          build_opts: |
+            --compression-format zstd
 
       # Workaround bug where capital letters in your GitHub username make it impossible to push to GHCR.
       # https://github.com/macbre/push-to-ghcr/issues/12
