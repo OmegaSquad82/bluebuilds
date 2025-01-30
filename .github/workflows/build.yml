@@ -114,18 +114,19 @@ jobs:
         if: env.IS_DEFAULT == 'true'
         run: |
           set -eux pipefail
+          IMAGES=''
           for tag in ${{ env.IMAGE_TAGS }}; do
+            IMAGES="$IMAGES ${{ steps.registry_case.outputs.lowercase }}/${{ matrix.package }}:$tag"
             podman pull ${{ steps.registry_case.outputs.lowercase }}/${{ matrix.package }}:"$tag"
           done
+          echo "ALL_IMAGES=$IMAGES" >$GITHUB_ENV
 
       - name: Push To GHCR with Podman
         uses: redhat-actions/push-to-registry@v2
         if: env.IS_DEFAULT == 'true'
         id: push
         with:
-          image: ${{ matrix.package }}
-          tags: ${{ env.IMAGE_TAGS }}
-          registry: ${{ steps.registry_case.outputs.lowercase }}
+          tags: ${{ env.ALL_IMAGES }}
           username: ${{ env.REGISTRY_USER }}
           password: ${{ env.REGISTRY_PASSWORD }}
           extra-args: |
