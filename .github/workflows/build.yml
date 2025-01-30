@@ -114,7 +114,7 @@ jobs:
         if: env.IS_DEFAULT == 'true'
         run: |
           set -eux pipefail
-          for tag in ${{ env.IMAGE_TAGS }};
+          for tag in ${{ env.IMAGE_TAGS }}; do
             podman pull ${{ steps.registry_case.outputs.lowercase }}/${{ matrix.package }}:"$tag"
           done
 
