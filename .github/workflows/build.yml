@@ -108,7 +108,7 @@ jobs:
         with:
           username: ${{ env.REGISTRY_USER }}
           password: ${{ env.REGISTRY_PASSWORD }}
-          registry: ${{ env.IMAGE_REGISTRY }}
+          registry: ${{ steps.registry_case.outputs.lowercase }}
 
       - name: Pull latest into Podman
         if: env.IS_DEFAULT == 'true'
