@@ -124,7 +124,7 @@ jobs:
             IMAGES+=("$IMAGE:$tag")
           done
           echo "IMAGE_NAME=$IMAGE" >$GITHUB_ENV
-          echo "ALL_TAGS=${IMAGES[@]}" >$GITHUB_ENV
+          echo "ALL_TAGS=${IMAGES[@]}" >>$GITHUB_ENV
 
       - name: Push To GHCR with Podman
         uses: redhat-actions/push-to-registry@v2
