@@ -15,7 +15,11 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref || github.run_id }}
   cancel-in-progress: true
 env:
-  REPO_OWNER: ${{ github.repository_owner }}
+  IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
+  IMAGE_TAGS: latest
+  REGISTRY_USER: ${{ github.actor }}
+  REGISTRY_PASSWORD: ${{ github.token }}
+  ZSTD_CHUNKED: false
 jobs:
   bluebuild:
     name: Build Custom Image
@@ -33,6 +37,8 @@ jobs:
           - carbonatcyanotrichit
           - flaviramea
     steps:
+
+      # Gimme more room to unfold
       - name: Maximize build space
         uses: easimon/maximize-build-space@master
         with:
@@ -45,6 +51,8 @@ jobs:
       - name: Convert to compressed filesystem
         shell: bash
         run: |
+          set -eux pipefail
+
           # https://github.com/easimon/maximize-build-space/issues/23
           # https://github.com/easimon/maximize-build-space/pull/37
           WORKSPACE_OWNER="$(stat -c '%U:%G' "${GITHUB_WORKSPACE}")"
@@ -59,17 +67,23 @@ jobs:
           sudo mount -o defaults,noatime,compress=zstd:3,discard=sync "${LV_NAME}" "${GITHUB_WORKSPACE}"
 
           sudo chown -R "$WORKSPACE_OWNER" "${GITHUB_WORKSPACE}"
-      - name: Checkout code
+
+      # Create bootc image
+      - name: Checkout codeZ
         uses: actions/checkout@v4
+      
       - name: Get default branch name
         run: echo "DEFAULT_BRANCH=${{ github.event.repository.default_branch }}" >$GITHUB_ENV
+      
       - name: Check if on default (main) or test (rechunk) branch to rechunk it
         run: |
-          if [[ "${{ github.ref_name }}" = "$DEFAULT_BRANCH" || "${{ github.ref_name }}" = 'rechunk' ]]; then
-            echo "IS_DEFAULT=true" >$GITHUB_ENV
+          if [[ '${{ github.ref_name }}' = "$DEFAULT_BRANCH" || '${{ github.ref_name }}' = 'rechunk' ]]; then
+            OUT='IS_DEFAULT=true'
           else
-            echo "IS_DEFAULT=false" >$GITHUB_ENV
+            OUT='IS_DEFAULT=false'
           fi
+          echo "$OUT" >$GITHUB_ENV
+
       - name: Build Custom Image
         uses: blue-build/github-action@v1.8.1
         with:
@@ -79,21 +93,117 @@ jobs:
           rechunk: ${{ env.IS_DEFAULT }}
           recipe: recipe-${{ matrix.package }}.yml
           registry_token: ${{ github.token }}
+          build_opts: |
+            --compression-format zstd
 
-      - name: Force repository owner to lowercase
-        run: echo "IMAGE_REF=ghcr.io/${REPO_OWNER@L}/${{ matrix.package }}" >> ${GITHUB_ENV}
+      # Workaround bug where capital letters in your GitHub username make it impossible to push to GHCR.
+      # https://github.com/macbre/push-to-ghcr/issues/12
+      - name: Lowercase Registry
+        uses: ASzc/change-string-case-action@v6
         if: env.IS_DEFAULT == 'true'
+        id: registry_case
+        with:
+          string: ${{ env.IMAGE_REGISTRY }}
 
+      - name: Composite image name
+        run: echo "IMAGE_NAME=${{ steps.registry_case.outputs.lowercase }}/${{ matrix.package }}" >$GITHUB_ENV
+
+      # This is something the community works for quite a long time
+      #   but it likely will improve the efficiency of transfers;
+      #    this was made to workaround the fact that blue-build
+      #     does not yet support zstd:chunked and it depends
+      #      on bootc/rpm-ostree having implemented this.
+      #       No OS image must be pushed in this form!
+      #
+      # Changetracker
+      #   https://fedoraproject.org/wiki/Changes/zstd:chunked
+      #   https://github.com/containers/storage/pull/775
+      # Documentation
+      #   https://universal-blue.discourse.group/t/zst-chunked-faq/3462
+      # Projectstuffz
+      #   https://github.com/blue-build/cli/issues/112
+      #   https://github.com/containers/bootc/issues/20
+      #   https://github.com/containers/bootc/issues/963
+      - name: Until zstd:chunked is supported by both blue-build/cli and bootc
+        run: |
+          if [[ '${{ env.IS_DEFAULT }}' = 'true' && '${{ env.ZSTD_CHUNKED }}' = 'true' ]]; then
+            OUT='DO_ZSTD_CHUNKED=true'
+          else
+            OUT='DO_ZSTD_CHUNKED=false'
+          fi
+          echo "$OUT" >$GITHUB_ENV
+    
+      # Compression overdrive
+      - name: Log in to GHCR with Podman
+        uses: redhat-actions/podman-login@v1
+        if: env.DO_ZSTD_CHUNKED == 'true'
+        with:
+          username: ${{ env.REGISTRY_USER }}
+          password: ${{ env.REGISTRY_PASSWORD }}
+          registry: ${{ steps.registry_case.outputs.lowercase }}
+
+      - name: Pull latest into Podman
+        if: env.DO_ZSTD_CHUNKED == 'true'
+        id: pull
+        run: |
+          set -eux pipefail
+          IMAGES=()
+          for tag in ${{ env.IMAGE_TAGS }}; do
+            podman pull "${{ env.IMAGE_NAME }}:$tag"
+            IMAGES+=("${{ env.IMAGE_NAME }}:$tag")
+          done
+          echo "ALL_TAGS=${IMAGES[@]}" >$GITHUB_ENV
+
+      - name: Push To GHCR with Podman
+        uses: redhat-actions/push-to-registry@v2
+        if: env.DO_ZSTD_CHUNKED == 'true'
+        id: push
+        with:
+          tags: ${{ env.ALL_TAGS }}
+          username: ${{ env.REGISTRY_USER }}
+          password: ${{ env.REGISTRY_PASSWORD }}
+          extra-args: |
+            --compression-format=zstd:chunked
+
+      # Sign container
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        if: env.DO_ZSTD_CHUNKED == 'true'
+        with:
+          registry: ghcr.io
+          username: ${{ env.REGISTRY_USER }}
+          password: ${{ env.REGISTRY_PASSWORD }}
+      
+      - uses: sigstore/cosign-installer@v3.7.0
+        if: env.DO_ZSTD_CHUNKED == 'true'
+      
+      - name: Sign container image
+        if: env.DO_ZSTD_CHUNKED == 'true'
+        run: |
+          echo "${{ env.COSIGN_PRIVATE_KEY }}" >cosign.key
+          wc -c cosign.key
+          cosign sign -y --key cosign.key ${{ env.IMAGE_NAME }}@${TAGS}
+        env:
+          COSIGN_EXPERIMENTAL: false
+          COSIGN_PRIVATE_KEY: ${{ secrets.SIGNING_SECRET }}
+          TAGS: ${{ steps.push.outputs.digest }}
+      
+      - name: Echo outputs
+        if: env.DO_ZSTD_CHUNKED == 'true'
+        run: |
+          echo "${{ toJSON(steps.push.outputs) }}"
+
+      # Vulnerability Analysis
       - name: Generate SARIF for Custom Image with Trivy
         uses: aquasecurity/trivy-action@0.29.0
         with:
+          format: sarif
+          github-pat: ${{ github.token }}
+          image-ref: ${{ env.IMAGE_NAME }}
           output: trivy-results.sarif
-          github-pat: ${{ secrets.GITHUB_TOKEN }}
-          image-ref: "${{ env.IMAGE_REF }}"
-          severity: MEDIUM,HIGH,CRITICAL
           scan-type: image
           scanners: vuln
-          format: sarif
+          severity: MEDIUM,HIGH,CRITICAL
         env:
           TRIVY_USERNAME: ${{ github.actor }}
           TRIVY_PASSWORD: ${{ github.token }}
