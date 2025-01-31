@@ -10,6 +10,7 @@ on:
       - "build-isos"
       - "**/build.yml"
       - "**/.gitkeep"
+      - "renovate.json"
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref || github.run_id }}
   cancel-in-progress: true
