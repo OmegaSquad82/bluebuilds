@@ -33,8 +33,8 @@ done
 
 # ensure sysfs knobs can be meddled with
 if [[ $(/usr/bin/id -u) -ne 0 ]]; then
-    $NOOP echo "Not running as root"
-    $NOOP exit
+    $NOOP sudo $0
+    $NOOP exit $?
 fi
 
 function print_states() {
