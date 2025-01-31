@@ -1,4 +1,4 @@
-name: bluebuild
+name: image-build
 on:
   schedule:
     - cron:
@@ -8,9 +8,9 @@ on:
     paths-ignore:
       - "**.md"
       - "build-isos"
-      - "**/trivy.yml"
       - "**/.gitkeep"
       - "renovate.json"
+      - "**/vulnerability-scan.yml"
   workflow_dispatch:
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref || github.run_id }}
