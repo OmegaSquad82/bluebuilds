@@ -20,7 +20,7 @@ env:
   IMAGE_TAGS: latest
   REGISTRY_USER: ${{ github.actor }}
   REGISTRY_PASSWORD: ${{ github.token }}
-  ZSTD_CHUNKED: false
+  ZSTD_CHUNKED: true
 jobs:
   bluebuild:
     name: Build Custom Image
@@ -107,6 +107,7 @@ jobs:
           string: ${{ env.IMAGE_REGISTRY }}
 
       - name: Composite image name
+        if: env.IS_DEFAULT == 'true'
         run: echo "IMAGE_NAME=${{ steps.registry_case.outputs.lowercase }}/${{ matrix.package }}" >$GITHUB_ENV
 
       # This is something the community works for quite a long time
@@ -114,7 +115,8 @@ jobs:
       #    this was made to workaround the fact that blue-build
       #     does not yet support zstd:chunked and it depends
       #      on bootc/rpm-ostree having implemented this.
-      #       No OS image must be pushed in this form!
+      #       No OS image must be pushed in this form,
+      #        except to non-productive image tags.
       #
       # Changetracker
       #   https://fedoraproject.org/wiki/Changes/zstd:chunked
@@ -135,27 +137,24 @@ jobs:
           echo "$OUT" >$GITHUB_ENV
     
       # Compression overdrive
-      - name: Log in to GHCR with Podman
-        uses: redhat-actions/podman-login@v1
-        if: env.DO_ZSTD_CHUNKED == 'true'
-        with:
-          username: ${{ env.REGISTRY_USER }}
-          password: ${{ env.REGISTRY_PASSWORD }}
-          registry: ${{ steps.registry_case.outputs.lowercase }}
-
-      - name: Pull latest into Podman
+      - name: Tag latest as latest-zstchd
         if: env.DO_ZSTD_CHUNKED == 'true'
         id: pull
         run: |
           set -eux pipefail
           IMAGES=()
+          podman login \
+            --username ${{ env.REGISTRY_USER }} \
+            --password ${{ env.REGISTRY_PASSWORD }} \
+            ${{ steps.registry_case.outputs.lowercase }}
           for tag in ${{ env.IMAGE_TAGS }}; do
             podman pull "${{ env.IMAGE_NAME }}:$tag"
-            IMAGES+=("${{ env.IMAGE_NAME }}:$tag")
+            podman tag "${{ env.IMAGE_NAME }}:$tag" "${{ env.IMAGE_NAME }}:${tag}-zstchd"
+            IMAGES+=("${{ env.IMAGE_NAME }}:${tag}-zstchd") # zstd:chunked
           done
           echo "ALL_TAGS=${IMAGES[@]}" >$GITHUB_ENV
 
-      - name: Push To GHCR with Podman
+      - name: Push To GHCR with Podman as latest-zstchd
         uses: redhat-actions/push-to-registry@v2
         if: env.DO_ZSTD_CHUNKED == 'true'
         id: push
