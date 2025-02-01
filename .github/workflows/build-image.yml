@@ -1,16 +1,16 @@
-name: image-build
+name: build-image
 on:
   schedule:
     - cron:
-        "05 06 * * *" # build at 06:05 UTC every day
-        # (25 minutes after last ublue images start building)
+        "10 06 * * *" # build at 06:10 UTC every day
+        # (30 minutes after last ublue images start building)
   push:
     paths-ignore:
+      - '.github/**'
       - "**.md"
-      - "build-isos"
       - "**/.gitkeep"
+      - "build-isos"
       - "renovate.json"
-      - "**/vulnerability-scan.yml"
   workflow_dispatch:
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref || github.run_id }}
@@ -26,9 +26,9 @@ jobs:
     name: Build Custom Image
     runs-on: ubuntu-24.04
     permissions:
-      security-events: write
       contents: read
       packages: write
+      security-events: write
     strategy:
       fail-fast: true
       matrix:
@@ -127,7 +127,7 @@ jobs:
       #   https://github.com/blue-build/cli/issues/112
       #   https://github.com/containers/bootc/issues/20
       #   https://github.com/containers/bootc/issues/963
-      - name: Until zstd:chunked is supported by both blue-build/cli and bootc
+      - name: bootc does not support zstd:chunked atm
         run: |
           if [[ '${{ env.IS_DEFAULT }}' = 'true' && '${{ env.ZSTD_CHUNKED }}' = 'true' ]]; then
             OUT='DO_ZSTD_CHUNKED=true'
@@ -154,7 +154,7 @@ jobs:
           done
           echo "ALL_TAGS=${IMAGES[@]}" >$GITHUB_ENV
 
-      - name: Push To GHCR with Podman as latest-zstchd
+      - name: Push To GHCR with Podman in zstd:chunked 
         uses: redhat-actions/push-to-registry@v2
         if: env.DO_ZSTD_CHUNKED == 'true'
         id: push
