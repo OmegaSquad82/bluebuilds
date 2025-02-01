@@ -107,6 +107,7 @@ jobs:
           string: ${{ env.IMAGE_REGISTRY }}
 
       - name: Composite image name
+        if: env.IS_DEFAULT == 'true'
         run: echo "IMAGE_NAME=${{ steps.registry_case.outputs.lowercase }}/${{ matrix.package }}" >$GITHUB_ENV
 
       # This is something the community works for quite a long time
