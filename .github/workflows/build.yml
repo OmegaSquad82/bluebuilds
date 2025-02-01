@@ -136,7 +136,7 @@ jobs:
           echo "$OUT" >$GITHUB_ENV
     
       # Compression overdrive
-      - name: Push latest with zstd:chunked as latest-zstchd
+      - name: Tag latest as latest-zstchd
         if: env.DO_ZSTD_CHUNKED == 'true'
         id: pull
         run: |
