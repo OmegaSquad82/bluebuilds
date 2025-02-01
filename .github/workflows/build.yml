@@ -149,7 +149,7 @@ jobs:
           for tag in ${{ env.IMAGE_TAGS }}; do
             podman pull "${{ env.IMAGE_NAME }}:$tag"
             podman tag "${{ env.IMAGE_NAME }}:$tag" "${{ env.IMAGE_NAME }}:${tag}-zstchd"
-            IMAGES+=("${{ env.IMAGE_NAME }}:${tag}-zstchd") # zst:chunked
+            IMAGES+=("${{ env.IMAGE_NAME }}:${tag}-zstchd") # zstd:chunked
           done
           echo "ALL_TAGS=${IMAGES[@]}" >$GITHUB_ENV
 
