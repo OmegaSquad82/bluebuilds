@@ -12,7 +12,7 @@ All images are built with a selection of common packages, flatpaks as well as so
 
 ### [Aubertit](https://www.mineralienatlas.de/lexikon/index.php/MineralData?lang=en&language=english&mineral=Aubertit)
 
-It is a flavor of Bazzite for ASUS Laptops.
+It is a flavor of [Bazzite](https://bazzite.gg/) for ASUS Laptops with NVIDIA dGPU.
 
 ### [Buttgenbachit](https://www.mineralienatlas.de/lexikon/index.php/MineralData?lang=en&language=english&mineral=Buttgenbachit)
 
