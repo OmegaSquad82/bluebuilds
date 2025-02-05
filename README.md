@@ -1,7 +1,7 @@
 # OmegaSquad82/BlueBuilds &nbsp;
 
-[![bluebuild](https://github.com/OmegaSquad82/bluebuilds/actions/workflows/build.yml/badge.svg)](https://github.com/OmegaSquad82/bluebuilds/actions/workflows/build.yml)
-[![bluevuln](https://github.com/OmegaSquad82/bluebuilds/actions/workflows/trivy.yml/badge.svg)](https://github.com/OmegaSquad82/bluebuilds/actions/workflows/trivy.yml)
+[![image-build](https://github.com/OmegaSquad82/bluebuilds/actions/workflows/image-build.yml/badge.svg)](https://github.com/OmegaSquad82/bluebuilds/actions/workflows/image-build.yml)
+[![vulnerability-scan](https://github.com/OmegaSquad82/bluebuilds/actions/workflows/vulnerability-scan.yml/badge.svg)](https://github.com/OmegaSquad82/bluebuilds/actions/workflows/vulnerability-scan.yml)
 [![Dependabot Updates](https://github.com/OmegaSquad82/bluebuilds/actions/workflows/dependabot/dependabot-updates/badge.svg)](https://github.com/OmegaSquad82/bluebuilds/actions/workflows/dependabot/dependabot-updates)
 
 See the [BlueBuild docs](https://blue-build.org/how-to/setup/) for quick setup instructions for setting up your own repository based on this template.
