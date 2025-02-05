@@ -4,6 +4,7 @@ on:
   push:
     paths-ignore:
       - '**/release-please.yml'
+      - '**/recompress-latest.yml'
       - '**/vulnerability-scan.yml'
       - '**/composition-analysis.yml'
       - "**.md"
