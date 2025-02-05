@@ -3,8 +3,8 @@ on:
   workflow_dispatch: # allow manually triggering builds
   push:
     paths-ignore:
-      - 'release-please.yml'
-      - 'vulnerability-scan.yml'
+      - '**/release-please.yml'
+      - '**/vulnerability-scan.yml'
       - "**.md"
       - "**/.gitkeep"
       - "build-isos"
