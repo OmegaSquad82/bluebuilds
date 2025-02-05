@@ -2,8 +2,6 @@ name: build-image
 on:
   workflow_dispatch: # allow manually triggering builds
   push:
-    branches:
-      - main
     paths-ignore:
       - 'release-please.yml'
       - 'vulnerability-scan.yml'
