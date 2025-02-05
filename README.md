@@ -20,11 +20,11 @@ Bazzite Stable for desktop gaming.
 
 ### [Carbonatcyanotrichit](https://www.mineralienatlas.de/lexikon/index.php/MineralData?lang=en&language=english&mineral=Carbonatcyanotrichit)
 
-Bazzite Deck Stable for my Steam Deck clone.
+Bazzite Deck Stable for Steam Deck clone(s).
 
 ### [Flaviramea](https://www.ecosia.org/search?tt=mzl&q=Cornus%20sericea%20Flaviramea)
 
-My netbook still exists and is dear to me and so it is running Sway, now.
+Fedora (Sericea/)Sway Atomic suitable for low resource footprint devices (e.g. netbooks).
 
 ## Customizations
 
