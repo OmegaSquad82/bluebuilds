@@ -1,14 +1,12 @@
 name: build-image
 on:
   workflow_dispatch: # allow manually triggering builds
-  pull_request:
-    branches:
-      - main
   push:
     branches:
       - main
     paths-ignore:
-      - '.github/**'
+      - 'release-please.yml'
+      - 'vulnerability-scan.yml'
       - "**.md"
       - "**/.gitkeep"
       - "build-isos"
