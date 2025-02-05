@@ -196,25 +196,6 @@ jobs:
         run: |
           echo "${{ toJSON(steps.push.outputs) }}"
 
-      # Vulnerability Analysis
-      - name: Generate SARIF for Custom Image with Trivy
-        uses: aquasecurity/trivy-action@0.29.0
-        with:
-          format: sarif
-          github-pat: ${{ github.token }}
-          image-ref: ${{ env.IMAGE_NAME }}
-          output: trivy-results.sarif
-          scan-type: image
-          scanners: vuln
-          severity: MEDIUM,HIGH,CRITICAL
-        env:
-          TRIVY_USERNAME: ${{ github.actor }}
-          TRIVY_PASSWORD: ${{ github.token }}
-        if: env.IS_DEFAULT == 'true'
-
-      - name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v3
-        with:
-          category: trivy-${{ matrix.package }}
-          sarif_file: trivy-results.sarif
-        if: env.IS_DEFAULT == 'true'
+      # Free and Open Source Software license scanning
+      - name: Run GitHub Action for ORT
+        uses: oss-review-toolkit/ort-ci-github-action@v1
