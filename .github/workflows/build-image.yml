@@ -201,3 +201,11 @@ jobs:
         uses: oss-review-toolkit/ort-ci-github-action@v1
         with:
           sw-name: ${{ matrix.package }}
+      - uses: philips-labs/tern-action@v1.1.0
+        id: tern
+        with:
+          image: ${{ env.ALL_TAGS }}
+      - uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.package }} 
+          path: ${{ steps.tern.outputs.file }} 
