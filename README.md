@@ -75,6 +75,34 @@ The `podman.service` is enabled on both Buttgenbachit and Flaviramea.
 
 `brew install pdfgrep`
 
+### Swap on ZRAM
+
+Fedora uses [Swap on ZRAM](https://fedoraproject.org/wiki/Changes/SwapOnZRAM) by default on all Spins, the [systemd-zram-generator](https://github.com/systemd/zram-generator) was available to configure compressed drives, including setting it up as swap. Starting with v1.2.1 the zram-generator supports configuring recompression, which allows to set secondary compression algorithms to recompress some or all of the pages on any zram drive on a user controlled trigger. For the images built from this repository the [zram-recompression.timer](files/system/etc/systemd/system/zram-recompression.timer) orchestrates the trigger, and zram is configured to use both [`zstd` and `lz4hc`](files/system/etc/systemd/zram-generator.conf) to try to recompress first idle and then huge (=_incompressible_ in specifically zram terms; the Memory Management subsystem also knows huge pages but means something [entirely different](https://docs.kernel.org/admin-guide/mm/concepts.html#huge-pages)) pages. I suppose it would be possible to try to recompress all pages (which are currently not marked as incompressible after actually trying to recompress those) in ZRAM, but this is currently not being used here.
+
+#### Blogs
+
+- [Free vs. Available Memory in Linux; August 30, 2024 by Hayden James, in Blog Linux](https://linuxblog.io/free-vs-available-memory-in-linux/)
+- [Linux Performance: Almost Always Add Swap Space – Part 2: ZRAM; September 25, 2023 by Hayden James, in Blog Linux](https://haydenjames.io/linux-performance-almost-always-add-swap-part2-zram/)
+- [Tales from responsivenessland: why Linux feels slow, and how to fix that](https://rudd-o.com/linux-and-free-software/tales-from-responsivenessland-why-linux-feels-slow-and-how-to-fix-that)
+- [Tuning ZRAM in Fedora for Better Performance and Get Rid of OOM Crashes; Tue, Dec 12, 2023](https://blog.guillaumea.fr/post/tuning_zram_fedora_for_better_performance/)
+
+#### Documentation
+
+- [Virtual Memory](https://www.kernel.org/doc/html/latest/admin-guide/sysctl/vm.html)
+- [zram: Compressed RAM-based block devices](https://docs.kernel.org/admin-guide/blockdev/zram.html)
+- [Phoronix Test Suite](https://github.com/phoronix-test-suite/phoronix-test-suite/blob/master/documentation/phoronix-test-suite.md)
+- [OpenBenchmarking](https://openbenchmarking.org/features)
+
+#### Github
+
+- [Zram can be configured more optimally by using lz4 instead of zstd1 #1570](https://github.com/ublue-os/bazzite/issues/1570)
+- [fix: General ZRAM Optimizations #2202](https://github.com/ublue-os/bazzite/pull/2202)
+
+#### Wikis
+
+- [Arch Wiki - Zram](https://wiki.archlinux.org/title/Zram)
+- [Fedora Wiki - Changes/Scale ZRAM to full memory size](https://fedoraproject.org/wiki/Changes/Scale_ZRAM_to_full_memory_size)
+
 ## Installation
 
 > **Warning**  
