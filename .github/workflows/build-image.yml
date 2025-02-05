@@ -196,8 +196,21 @@ jobs:
         run: |
           echo "${{ toJSON(steps.push.outputs) }}"
 
-      # Free and Open Source Software license scanning
+      # SCA, Vuln and License scanning
       - name: Run GitHub Action for ORT
+        if: env.IS_DEFAULT == 'true'
         uses: oss-review-toolkit/ort-ci-github-action@v1
         with:
           sw-name: ${{ matrix.package }}
+
+      - uses: philips-labs/tern-action@v1.1.0
+        if: env.IS_DEFAULT == 'true'
+        id: tern
+        with:
+          image: ${{ env.IMAGE_NAME }}
+
+      - uses: actions/upload-artifact@v4
+        if: env.IS_DEFAULT == 'true'
+        with:
+          name: ${{ matrix.package }} 
+          path: ${{ steps.tern.outputs.file }} 
