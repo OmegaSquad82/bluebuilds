@@ -5,6 +5,7 @@ on:
     paths-ignore:
       - '**/build-image.yml'
       - '**/release-please.yml'
+      - '**/recompress-latest.yml'
       - '**/vulnerability-scan.yml'
       - "**.md"
       - "**/.gitkeep"
@@ -30,7 +31,7 @@ jobs:
     runs-on: ubuntu-24.04
     permissions:
       contents: read
-      packages: write
+      packages: read
       security-events: write
     strategy:
       fail-fast: true
@@ -92,12 +93,12 @@ jobs:
       # https://github.com/macbre/push-to-ghcr/issues/12
       - name: Lowercase Registry
         uses: ASzc/change-string-case-action@v6
-        id: registry_case
+        id: case
         with:
           string: ${{ env.IMAGE_REGISTRY }}
 
       - name: Composite image name
-        run: echo "IMAGE_NAME=${{ steps.registry_case.outputs.lowercase }}/${{ matrix.package }}:$IMAGE_TAGS" >$GITHUB_ENV
+        run: echo "IMAGE_NAME=${{ steps.case.outputs.lowercase }}/${{ matrix.package }}:$IMAGE_TAGS" >$GITHUB_ENV
 
       # SCA, Vuln and License scanning
       - name: Run GitHub Action for ORT
@@ -113,7 +114,6 @@ jobs:
       - uses: philips-labs/tern-action@v1.1.0
         id: tern
         with:
-          image: ${{ env.ALL_TAGS }}
           image: ${{ env.IMAGE_NAME }}
 
       - uses: actions/upload-artifact@v4
@@ -123,4 +123,5 @@ jobs:
 
       - name: Echo outputs
         run: |
+          echo "${{ toJSON(steps.ort.outputs) }}"
           echo "${{ toJSON(steps.tern.outputs) }}"
