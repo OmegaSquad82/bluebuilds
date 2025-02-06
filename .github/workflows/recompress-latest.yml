@@ -139,6 +139,6 @@ jobs:
 
       - name: Print outputs
         run: |
-          echo "${{ toJSON(steps.pull.outputs) }}" | jq .
-          echo "${{ toJSON(steps.push.outputs) }}" | jq .
-          echo "${{ toJSON(steps.sign.outputs) }}" | jq .
+          echo '${{ toJSON(steps.pull.outputs) }}' | jq .
+          echo '${{ toJSON(steps.push.outputs) }}' | jq .
+          echo '${{ toJSON(steps.sign.outputs) }}' | jq .

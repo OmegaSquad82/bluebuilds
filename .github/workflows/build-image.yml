@@ -91,4 +91,4 @@ jobs:
 
       - name: Print outputs
         run: |
-          echo "${{ toJSON(steps.build.outputs) }}" | jq .
+          echo '${{ toJSON(steps.build.outputs) }}' | jq .

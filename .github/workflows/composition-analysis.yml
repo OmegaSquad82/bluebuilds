@@ -67,5 +67,5 @@ jobs:
 
       - name: Print outputs
         run: |
-          echo "${{ toJSON(steps.ort.outputs) }}" | jq .
-          echo "${{ toJSON(steps.tern.outputs) }}" | jq .
+          echo '${{ toJSON(steps.ort.outputs) }}'  | jq .
+          echo '${{ toJSON(steps.tern.outputs) }}' | jq .
