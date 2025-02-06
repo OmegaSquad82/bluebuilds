@@ -1,5 +1,44 @@
 # Changelog
 
+## [1.1.0](https://github.com/OmegaSquad82/bluebuilds/compare/v1.0.0...v1.1.0) (2025-02-06)
+
+
+### Features
+
+* add philips-labs/tern-action@v1.1.0 ([199197d](https://github.com/OmegaSquad82/bluebuilds/commit/199197deeda9ee70437f084c19027a242081d3a5))
+* colorize and format JSON output of GHAs via jq ([bf3f8b1](https://github.com/OmegaSquad82/bluebuilds/commit/bf3f8b194ae57ff3d0169f29bed963e07b1e2df2))
+* Create recompress-latest.yml ([de8182f](https://github.com/OmegaSquad82/bluebuilds/commit/de8182f2121e7fc686896a621b087f4f57521dea))
+* don't use control structures at large in ci workflows ([bf3f8b1](https://github.com/OmegaSquad82/bluebuilds/commit/bf3f8b194ae57ff3d0169f29bed963e07b1e2df2))
+* only run software composition analysis in default branch ([1b4ec5e](https://github.com/OmegaSquad82/bluebuilds/commit/1b4ec5ea31bb81eb128e294bf17064b485fb3548))
+* remove SCA from building workflow ([4049b74](https://github.com/OmegaSquad82/bluebuilds/commit/4049b74a9934b07b33bad7d0bcc1c797cfcbccf8))
+* run vulnerability-scan workflow once a day after build ([1f4aff1](https://github.com/OmegaSquad82/bluebuilds/commit/1f4aff10f05cfc3259c52fb0d4da7324e7825f58))
+* separate composition-analysis workflow ([b291541](https://github.com/OmegaSquad82/bluebuilds/commit/b29154119ed8cb3eec5392da7009b4eb0b247bd7))
+* use oss-review-toolkit/ort-ci-github-action@v1 instead of running Trivy here ([6020fe2](https://github.com/OmegaSquad82/bluebuilds/commit/6020fe23d92f15719964964fb3b0c336f7feca4c))
+
+
+### Bug Fixes
+
+* align with build and sort things ([4f93a00](https://github.com/OmegaSquad82/bluebuilds/commit/4f93a001cdc454b99b84356f12bc3d27480eafc4))
+* aligned executed times to execute sequentially after build ([bf3f8b1](https://github.com/OmegaSquad82/bluebuilds/commit/bf3f8b194ae57ff3d0169f29bed963e07b1e2df2))
+* build-image should run when it has changed ([737646c](https://github.com/OmegaSquad82/bluebuilds/commit/737646c4cc9f8df19e389c96440420217cffd450))
+* differentiate ORT runs per built artifact ([5aa28c4](https://github.com/OmegaSquad82/bluebuilds/commit/5aa28c411c66eabaf404070fffa6c0b6ef2005e5))
+* GitHub blocks actions/upload-artifact@v2 so use v4 ([0a5acdb](https://github.com/OmegaSquad82/bluebuilds/commit/0a5acdb8b183c04d58a98e8cea2908211eea95eb))
+* hand over full image name ([1b4ec5e](https://github.com/OmegaSquad82/bluebuilds/commit/1b4ec5ea31bb81eb128e294bf17064b485fb3548))
+* image reference in recompression workflow ([959311d](https://github.com/OmegaSquad82/bluebuilds/commit/959311dbec445727a90c846e9597aba79beb5690))
+* Job names were flat out wrong ([03d162e](https://github.com/OmegaSquad82/bluebuilds/commit/03d162e315cde778255948c6f49a81d6d22d82f4))
+* must find non-build workflows in a (nested) subdirectory ([cc9152e](https://github.com/OmegaSquad82/bluebuilds/commit/cc9152e5506064ee0dd00e9ecb7c800ae865d85a))
+* must find non-vuln workflows in a (nested) subdirectory ([1845ccf](https://github.com/OmegaSquad82/bluebuilds/commit/1845ccf513c56ab47c5f56dd101e792f53381442))
+* no execution after change in composition-analysis.yml ([cc73ad7](https://github.com/OmegaSquad82/bluebuilds/commit/cc73ad713b749596b803ac7d8fea0e9f08e9eb79))
+* paths-ignore filter in build ci ([49dacef](https://github.com/OmegaSquad82/bluebuilds/commit/49dacefdfe54d64945a20f631969258478770c2e))
+* polished all of the decomposed ci workflows ([bf3f8b1](https://github.com/OmegaSquad82/bluebuilds/commit/bf3f8b194ae57ff3d0169f29bed963e07b1e2df2))
+* quoting around print output steps ([e6b6127](https://github.com/OmegaSquad82/bluebuilds/commit/e6b612747f70d718196a7e7a2f14615235a05aa1))
+* Rename composition-analysis to composition-analysis.yml ([65742ba](https://github.com/OmegaSquad82/bluebuilds/commit/65742bafbaf74466ff112ae65e01d75cbb7b9370))
+* stall vuln-scan up to 3min ([ff535fb](https://github.com/OmegaSquad82/bluebuilds/commit/ff535fbf9be326148c24f4b11d5028cc1210a352))
+* Update build-image.yml to exclude recompress-latest.yml ([7ab5213](https://github.com/OmegaSquad82/bluebuilds/commit/7ab5213e1e2ef0e28f0906b8852ae5b07a53f7ea))
+* Update composition-analysis.yml to exclude recompress-latest.yml ([c9c2bea](https://github.com/OmegaSquad82/bluebuilds/commit/c9c2bea02fae8fe1264ad5cf35b3244e8e8bbd57))
+* Update vulnerability-scan.yml to exclude recompress-latest.yml ([1f4aff1](https://github.com/OmegaSquad82/bluebuilds/commit/1f4aff10f05cfc3259c52fb0d4da7324e7825f58))
+* use only latest as singular tag to handle ([a346222](https://github.com/OmegaSquad82/bluebuilds/commit/a346222d051716f694e33db53e14a1518569c0cd))
+
 ## 1.0.0 (2025-02-01)
 
 
