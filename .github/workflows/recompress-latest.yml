@@ -21,6 +21,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
+  IMAGE_REF: ""
   REGISTRY_USERNAME: ${{ github.actor }}
   REGISTRY_PASSWORD: ${{ github.token }}
   REGISTRY_IMG_PATH: ghcr.io/${{ github.repository_owner }}
@@ -41,7 +42,6 @@ jobs:
           - carbonatcyanotrichit
           - flaviramea
     steps:
-      # Gimme more room to unfold
       - name: Maximize build space
         uses: easimon/maximize-build-space@master
         with:
@@ -51,31 +51,12 @@ jobs:
           remove-docker-images: true
           remove-dotnet: true
           remove-haskell: true
-      - name: Convert to compressed filesystem
-        shell: bash
-        run: |
-          set -eux pipefail
-
-          # https://github.com/easimon/maximize-build-space/issues/23
-          # https://github.com/easimon/maximize-build-space/pull/37
-          WORKSPACE_OWNER="$(stat -c '%U:%G' "${GITHUB_WORKSPACE}")"
-          VG_NAME=buildvg
-          LV_NAME="/dev/mapper/${VG_NAME}-buildlv"
-
-          cd ~
-          sudo umount "${LV_NAME}"
-
-          # https://github.com/radxa/armbian-compile-action/commit/82fe40188f2f3b4dbd4ae8fb9c64f49f117085c7
-          sudo mkfs.btrfs -L buildlv -M -m single --force "${LV_NAME}"
-          sudo mount -o defaults,noatime,compress=zstd:1,discard=sync "${LV_NAME}" "${GITHUB_WORKSPACE}"
-
-          sudo chown -R "$WORKSPACE_OWNER" "${GITHUB_WORKSPACE}"
 
       - name: Checkout codeZ
         uses: actions/checkout@v4
 
       - name: Construct lowercase image reference
-        run: echo "IMAGE_REF=${REGISTRY_IMG_PATH@L}/${{ matrix.package }}:latest" >> ${GITHUB_ENV}
+        run: echo "IMAGE_REF=${REGISTRY_IMG_PATH@L}/${{ matrix.package }}:latest" >$GITHUB_ENV
 
       # This is something the community works for quite a long time
       #   but it likely will improve the efficiency of transfers;
