@@ -3,16 +3,17 @@ on:
   workflow_dispatch: # allow manually triggering builds
   push:
     paths-ignore:
-      - '**/build-image.yml'
-      - '**/release-please.yml'
-      - '**/recompress-latest.yml'
-      - '**/vulnerability-scan.yml'
+      - "**/build-image.yml"
+      - "**/release-please.yml"
+      - "**/recompress-latest.yml"
+      - "**/vulnerability-scan.yml"
       - "**.md"
       - "**/.gitkeep"
       - "build-isos"
       - "renovate.json"
   schedule:
-    - cron: "10 07 * * 1,3,5" # scan at 06:10 UTC on Mon, Wed, Fr
+    - cron:
+        "00 07 * * 1,3,5" # scan at 07:00 UTC on Mon, Wed, Fr
         # (1 hour after bluebuild images started building)
 
 concurrency:
@@ -20,14 +21,13 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
-  IMAGE_TAGS: latest
-  REGISTRY_USER: ${{ github.actor }}
+  REGISTRY_USERNAME: ${{ github.actor }}
   REGISTRY_PASSWORD: ${{ github.token }}
+  REGISTRY_IMG_PATH: ghcr.io/${{ github.repository_owner }}
 
 jobs:
   analysis:
-    name: Scan Custom Image
+    name: Analyze Custom Image
     runs-on: ubuntu-24.04
     permissions:
       contents: read
@@ -42,86 +42,30 @@ jobs:
           - carbonatcyanotrichit
           - flaviramea
     steps:
-
-      # Gimme more room to unfold
-      - name: Maximize build space
-        uses: easimon/maximize-build-space@master
-        with:
-          overprovision-lvm: true
-          remove-android: true
-          remove-codeql: true
-          remove-docker-images: true
-          remove-dotnet: true
-          remove-haskell: true
-      - name: Convert to compressed filesystem
-        shell: bash
-        run: |
-          set -eux pipefail
-
-          # https://github.com/easimon/maximize-build-space/issues/23
-          # https://github.com/easimon/maximize-build-space/pull/37
-          WORKSPACE_OWNER="$(stat -c '%U:%G' "${GITHUB_WORKSPACE}")"
-          VG_NAME=buildvg
-          LV_NAME="/dev/mapper/${VG_NAME}-buildlv"
-
-          cd ~
-          sudo umount "${LV_NAME}"
-
-          # https://github.com/radxa/armbian-compile-action/commit/82fe40188f2f3b4dbd4ae8fb9c64f49f117085c7
-          sudo mkfs.btrfs -L buildlv -M -m single --force "${LV_NAME}"
-          sudo mount -o defaults,noatime,compress=zstd:3,discard=sync "${LV_NAME}" "${GITHUB_WORKSPACE}"
-
-          sudo chown -R "$WORKSPACE_OWNER" "${GITHUB_WORKSPACE}"
-
-      # Prepare analysis
       - name: Checkout codeZ
         uses: actions/checkout@v4
-      
-      - name: Get default branch name
-        run: echo "DEFAULT_BRANCH=${{ github.event.repository.default_branch }}" >$GITHUB_ENV
-      
-      - name: Check if on default (main) or test (rechunk) branch to rechunk it
-        run: |
-          if [[ '${{ github.ref_name }}' = "$DEFAULT_BRANCH" || '${{ github.ref_name }}' = 'analyze' ]]; then
-            OUT='IS_DEFAULT=true'
-          else
-            OUT='IS_DEFAULT=false'
-          fi
-          echo "$OUT" >$GITHUB_ENV
 
-      # Workaround bug where capital letters in your GitHub username make it impossible to push to GHCR.
-      # https://github.com/macbre/push-to-ghcr/issues/12
-      - name: Lowercase Registry
-        uses: ASzc/change-string-case-action@v6
-        id: case
-        with:
-          string: ${{ env.IMAGE_REGISTRY }}
+      - name: Construct lowercase image reference
+        run: echo "IMAGE_REF=${REGISTRY_IMG_PATH@L}/${{ matrix.package }}:latest" >> ${GITHUB_ENV}
 
-      - name: Composite image name
-        run: echo "IMAGE_NAME=${{ steps.case.outputs.lowercase }}/${{ matrix.package }}:$IMAGE_TAGS" >$GITHUB_ENV
-
-      # SCA, Vuln and License scanning
       - name: Run GitHub Action for ORT
         uses: oss-review-toolkit/ort-ci-github-action@v1
         id: ort
         with:
           sw-name: ${{ matrix.package }}
 
-      - name: Echo outputs
-        run: |
-          echo "${{ toJSON(steps.ort.outputs) }}"
-
-      - uses: philips-labs/tern-action@v1.1.0
+      - name: Run GitHub Action for Tern
+        uses: philips-labs/tern-action@v1.1.0
         id: tern
         with:
-          image: ${{ env.IMAGE_NAME }}
+          image: ${{ env.IMAGE_REF }}
 
       - uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.package }} 
+          name: ${{ matrix.package }}
           path: ${{ steps.tern.outputs.file }}
 
-      - name: Echo outputs
+      - name: Print outputs
         run: |
-          echo "${{ toJSON(steps.ort.outputs) }}"
-          echo "${{ toJSON(steps.tern.outputs) }}"
+          echo '${{ toJSON(steps.ort.outputs) }}'  | jq .
+          echo '${{ toJSON(steps.tern.outputs) }}' | jq .
