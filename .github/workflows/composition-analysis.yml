@@ -46,7 +46,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Construct lowercase image reference
-        run: echo "IMAGE_REF=${REGISTRY_IMG_PATH@L}/${{ matrix.package }}" >> ${GITHUB_ENV}
+        run: echo "IMAGE_REF=${REGISTRY_IMG_PATH@L}/${{ matrix.package }}:latest" >> ${GITHUB_ENV}
 
       - name: Run GitHub Action for ORT
         uses: oss-review-toolkit/ort-ci-github-action@v1
