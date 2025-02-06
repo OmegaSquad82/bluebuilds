@@ -27,7 +27,7 @@ env:
 
 jobs:
   analysis:
-    name: Scan Custom Image
+    name: Analyze Custom Image
     runs-on: ubuntu-24.04
     permissions:
       contents: read
