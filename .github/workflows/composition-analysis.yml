@@ -55,7 +55,7 @@ jobs:
           sw-name: ${{ matrix.package }}
 
       - name: Run GitHub Action for Tern
-        uses: philips-labs/tern-action@v1.1.0
+        uses: philips-labs/tern-action@v1.3.0
         id: tern
         with:
           image: ${{ env.IMAGE_REF }}
