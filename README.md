@@ -69,7 +69,7 @@ The `podman.service` is enabled on both Buttgenbachit and Flaviramea.
 
 #### Select images
 
- - qemu
+ - Libation
 
 #### Manually
 
