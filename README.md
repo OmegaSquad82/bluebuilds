@@ -12,11 +12,11 @@ All images are built with a selection of common packages, flatpaks as well as so
 
 ### [Aubertit](https://www.mineralienatlas.de/lexikon/index.php/MineralData?lang=en&language=english&mineral=Aubertit)
 
-It is a flavor of [Bazzite](https://bazzite.gg/) for ASUS Laptops with NVIDIA dGPU.
+It is a flavor of [Bazzite](https://bazzite.gg/) Stable for ASUS Laptops with NVIDIA dGPU.
 
 ### [Buttgenbachit](https://www.mineralienatlas.de/lexikon/index.php/MineralData?lang=en&language=english&mineral=Buttgenbachit)
 
-Bazzite Stable for desktop gaming.
+Bazzite Stable for either desktop or laptop gaming.
 
 ### [Carbonatcyanotrichit](https://www.mineralienatlas.de/lexikon/index.php/MineralData?lang=en&language=english&mineral=Carbonatcyanotrichit)
 
