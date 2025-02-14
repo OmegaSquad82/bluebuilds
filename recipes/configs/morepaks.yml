@@ -7,7 +7,7 @@ modules:
     system:
       install:
         - app.devsuite.Ptyxis
-        - com.calibre-ebook.calibre
+        - com.calibre_ebook.calibre
         - com.logseq.Logseq
         - com.vscodium.codium
         - de.bund.ausweisapp.ausweisapp2
