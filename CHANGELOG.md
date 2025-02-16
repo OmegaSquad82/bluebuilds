@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.2.0](https://github.com/OmegaSquad82/bluebuilds/compare/v1.1.0...v1.2.0) (2025-02-14)
+
+
+### Features
+
+* add Calibre for select images ([5beb850](https://github.com/OmegaSquad82/bluebuilds/commit/5beb85078ab2a5c33f999713a41f1ec118aad0d4))
+* add secret, misconfig and license scanners to trivy ([44ea14b](https://github.com/OmegaSquad82/bluebuilds/commit/44ea14bb7793b0c455899346bcbb81afcfc1a5d1))
+* remove install libvirt and qemu as it is provided by Bazzite ([c574f74](https://github.com/OmegaSquad82/bluebuilds/commit/c574f74182f2b43f581e413ef5ef157d45f96fef))
+
+
+### Bug Fixes
+
+* Calibre flatpak name ([6a27ed1](https://github.com/OmegaSquad82/bluebuilds/commit/6a27ed1e63aed18c4818284dc2e1fb5c339f873b))
+* no secret scanning in built image ([797c547](https://github.com/OmegaSquad82/bluebuilds/commit/797c54766de57d3f186440066c6d1888c898523f))
+* set default envs in workflows ([44ea14b](https://github.com/OmegaSquad82/bluebuilds/commit/44ea14bb7793b0c455899346bcbb81afcfc1a5d1))
+
 ## [1.1.0](https://github.com/OmegaSquad82/bluebuilds/compare/v1.0.0...v1.1.0) (2025-02-06)
 
 
