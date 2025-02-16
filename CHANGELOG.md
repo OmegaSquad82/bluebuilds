@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.1](https://github.com/OmegaSquad82/bluebuilds/compare/v1.2.0...v1.2.1) (2025-02-16)
+
+
+### Bug Fixes
+
+* no push trigger for composition analysis ([80655f7](https://github.com/OmegaSquad82/bluebuilds/commit/80655f731ba78c8097c6153f2fcc760b25f6e86f))
+
 ## [1.2.0](https://github.com/OmegaSquad82/bluebuilds/compare/v1.1.0...v1.2.0) (2025-02-14)
 
 
