@@ -1,16 +1,6 @@
 name: composition-analysis
 on:
   workflow_dispatch: # allow manually triggering builds
-  push:
-    paths-ignore:
-      - "**/build-image.yml"
-      - "**/release-please.yml"
-      - "**/recompress-latest.yml"
-      - "**/vulnerability-scan.yml"
-      - "**.md"
-      - "**/.gitkeep"
-      - "build-isos"
-      - "renovate.json"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref || github.run_id }}
