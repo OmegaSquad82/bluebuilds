@@ -36,12 +36,18 @@ The `podman.service` is enabled on both Buttgenbachit and Flaviramea.
 
 #### All images
 
+##### install
+
 - KeepassXC
 - LibreOffice
-- Mozilla Firefox
+- LibreWolf
 - Signal
 - SynologyDrive
 - Warehouse
+
+##### uninstall
+
+- Mozilla Firefox
 
 #### Bazzite images
 
@@ -52,7 +58,9 @@ The `podman.service` is enabled on both Buttgenbachit and Flaviramea.
 
 - AusweisApp2
 - BoxBuddy
+- Calibre
 - Codium
+- Libation
 - MediaWriter
 - Obsidian
 - Ptyxis
@@ -66,10 +74,6 @@ The `podman.service` is enabled on both Buttgenbachit and Flaviramea.
 - htop
 - kitty
 - neovim
-
-#### Select images
-
- - Libation
 
 #### Manually
 
