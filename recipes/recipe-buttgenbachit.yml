@@ -19,6 +19,7 @@ modules:
   - from-file: configs/zram-generator.yml
 
   - from-file: configs/sshd.yml
+  - from-file: configs/clatd.yml
   - from-file: configs/fonts.yml
   - from-file: configs/power.yml
   - from-file: configs/podman.yml
