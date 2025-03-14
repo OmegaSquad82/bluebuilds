@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 ## https://devhints.io/bash
-set -euo pipefail # strict
+set -euxo pipefail # strict
 IFS=$'\n\t'
 
 # ensure installation and configuration
