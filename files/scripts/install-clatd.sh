@@ -24,5 +24,5 @@ cd /tmp
 
 git clone https://github.com/toreanderson/clatd.git
 sed -i 's/ $(SYSTEMCTL) / echo $(SYSTEMCTL) /g' clatd/Makefile
-make -C clatd install installdeps
+make -C clatd install installdeps || true
 /usr/sbin/clatd -h
