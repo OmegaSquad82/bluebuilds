@@ -16,6 +16,11 @@ traperr() {
 set -o errtrace
 trap traperr ERR
 
+# verify dependencies
+dnf5 install -y make
+make --version
+
 cd /tmp
+
 git clone https://github.com/toreanderson/clatd
 make -C clatd install installdeps
