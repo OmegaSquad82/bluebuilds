@@ -17,7 +17,7 @@ set -o errtrace
 trap traperr ERR
 
 # verify dependencies
-dnf5 install -y make pod2man
+dnf5 install -y make pod2man tayga
 make --version
 
 cd /tmp
