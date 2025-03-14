@@ -1,0 +1,8 @@
+modules:
+  - type: script
+    scripts:
+      - install-clatd.sh
+  - type: systemd
+    system:
+      enabled:
+        - clatd@.service
