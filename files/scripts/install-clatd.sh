@@ -22,5 +22,5 @@ make --version
 
 cd /tmp
 
-git clone https://github.com/toreanderson/clatd
+git clone https://github.com/toreanderson/clatd.git
 make -C clatd install installdeps
