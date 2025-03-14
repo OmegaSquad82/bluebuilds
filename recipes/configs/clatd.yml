@@ -5,4 +5,4 @@ modules:
   - type: systemd
     system:
       enabled:
-        - clatd@.service
+        - clatd.service

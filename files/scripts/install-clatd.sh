@@ -17,12 +17,12 @@ set -o errtrace
 trap traperr ERR
 
 # verify dependencies
-dnf5 install -y make pod2man
+dnf5 install -y make pod2man tayga
 make --version
 
 cd /tmp
 
 git clone https://github.com/toreanderson/clatd.git
-sed -i 's/&& $(SYSTEMCTL)/echo && $(SYSTEMCTL)/g' clatd/Makefile
-make -C clatd install installdeps
-clatd -h # check
+sed -i 's/ $(SYSTEMCTL) / echo $(SYSTEMCTL) /g' clatd/Makefile
+make -C clatd install installdeps || true
+/usr/sbin/clatd -h
