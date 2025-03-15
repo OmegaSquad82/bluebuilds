@@ -1,5 +1,35 @@
 # Changelog
 
+## [1.3.0](https://github.com/OmegaSquad82/bluebuilds/compare/v1.2.1...v1.3.0) (2025-03-14)
+
+
+### Features
+
+* build-zram-generator.sh should trace commands ([139a3b2](https://github.com/OmegaSquad82/bluebuilds/commit/139a3b2ee9f8ee838e3d5d6a617127cc757a3dfb))
+* build-zram-generator.sh should trace commands ([6aff7cb](https://github.com/OmegaSquad82/bluebuilds/commit/6aff7cb9947d856bb73825519b2111c01d9eb496))
+* support clatd via TAYGA ([c1f84a6](https://github.com/OmegaSquad82/bluebuilds/commit/c1f84a6eea7a01d5229cb465ad01e3748c2b7fc6))
+* support clatd via TAYGA ([620ca1e](https://github.com/OmegaSquad82/bluebuilds/commit/620ca1e736c66ea7692cea6ca21a4d625d4d4eec))
+
+
+### Bug Fixes
+
+* call clatd for help ([ce459e6](https://github.com/OmegaSquad82/bluebuilds/commit/ce459e66e97618bffbbfd71c6fcd6956486017cc))
+* copy paste error from github repository ([763c4a8](https://github.com/OmegaSquad82/bluebuilds/commit/763c4a883c3cc87c4918af09d0084971a31f5e61))
+* debug install-clatd.sh ([874961b](https://github.com/OmegaSquad82/bluebuilds/commit/874961b5e84384123623e5ca953e1bceb1ddcd7a))
+* enable clatd.service ([52db907](https://github.com/OmegaSquad82/bluebuilds/commit/52db907f0738eb8cd07088fb508b36168018cbcf))
+* executable bit ([173dc53](https://github.com/OmegaSquad82/bluebuilds/commit/173dc53c3088d9dbcd01a7c6f30089e98e87d0fc))
+* it's an ugly workaround ;c) ([4a69ce0](https://github.com/OmegaSquad82/bluebuilds/commit/4a69ce0ede9674ce49bad32549e7eefcc3d13a3d))
+* it's the order of things ([ca92c40](https://github.com/OmegaSquad82/bluebuilds/commit/ca92c400efad0721771c78f021c1edf2aa4f744b))
+* it's the order of things ([1285cd6](https://github.com/OmegaSquad82/bluebuilds/commit/1285cd66c985cbd97af33272f3f73e6717b0bac4))
+* let pod2man convert the manual ([7e9cbbc](https://github.com/OmegaSquad82/bluebuilds/commit/7e9cbbcc6e1277c6edb430de883ec4ffee79bdc0))
+* LibreWolf package name ([3bb48a9](https://github.com/OmegaSquad82/bluebuilds/commit/3bb48a997b68512f32bc205ee74040732f835446))
+* lol ([ce8c15c](https://github.com/OmegaSquad82/bluebuilds/commit/ce8c15c34ac240179952a8854c8ab950ef50e669))
+* manipulation of Makefile ([c1cc90c](https://github.com/OmegaSquad82/bluebuilds/commit/c1cc90c9ad9cc00a79e8dc5562d4e6ed8f80bf63))
+* need make to install clatd ([4b70d3d](https://github.com/OmegaSquad82/bluebuilds/commit/4b70d3d07731cdfd424f01a9b47d9286c87a2902))
+* provide TAYGA via dnf5 ([5f16056](https://github.com/OmegaSquad82/bluebuilds/commit/5f160564cc07c6cba6a95fff146a3418cd1ad95b))
+* update Makefile of clatd ([39f4930](https://github.com/OmegaSquad82/bluebuilds/commit/39f4930ea18ff455e992daa9e6659e7ce55d23c4))
+* work around a Makefile?! ([5e6811c](https://github.com/OmegaSquad82/bluebuilds/commit/5e6811c78561e66f4ca3b9f038c0adde494f3b24))
+
 ## [1.2.1](https://github.com/OmegaSquad82/bluebuilds/compare/v1.2.0...v1.2.1) (2025-02-16)
 
 
