@@ -28,4 +28,9 @@ modules:
   - from-file: configs/flatpaks.yml
   - from-file: configs/homebrew.yml
 
+  - type: rpm-ostree
+    remove:
+      - firefox
+      - firefox-langpacks
+ 
   - type: signing

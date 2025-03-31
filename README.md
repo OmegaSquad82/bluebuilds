@@ -70,14 +70,24 @@ The `podman.service` is enabled on both Buttgenbachit and Flaviramea.
 
 #### All images
 
+##### install
+
 - byobu
 - htop
 - kitty
 - neovim
 
+#### Select Images
+
+##### uninstall
+
+- firefox
+
 #### Manually
 
-`brew install pdfgrep`
+##### execute
+
+- `brew install pdfgrep`
 
 ### Swap on ZRAM
 
