@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.4.0](https://github.com/OmegaSquad82/bluebuilds/compare/v1.3.0...v1.4.0) (2025-03-31)
+
+
+### Features
+
+* get rid of Firefox in Flaviramea ([b122949](https://github.com/OmegaSquad82/bluebuilds/commit/b1229490991ed86aebd251e1538afb44945c8f49))
+* Update README.md ([ed296d4](https://github.com/OmegaSquad82/bluebuilds/commit/ed296d4fa60f0854f58e9478fa35ead59cc1b528))
+
 ## [1.3.0](https://github.com/OmegaSquad82/bluebuilds/compare/v1.2.1...v1.3.0) (2025-03-14)
 
 
