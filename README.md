@@ -89,6 +89,12 @@ The `podman.service` is enabled on both Buttgenbachit and Flaviramea.
 
 - `brew install pdfgrep`
 
+### 464XLAT for IPv6-only
+
+Fedora packages [clatd](https://packages.fedoraproject.org/pkgs/clatd/clatd/index.html) to translates flows from an IPv6-only client to IPv4 hosts via NAT46, so it can be transmitted and translated back via NAT64 in a PLAT device, e.g. at the edge in a CPE or in an ISP network.
+
+This feature likely is not functional, yet.
+
 ### Swap on ZRAM
 
 Fedora uses [Swap on ZRAM](https://fedoraproject.org/wiki/Changes/SwapOnZRAM) by default on all Spins, the [systemd-zram-generator](https://github.com/systemd/zram-generator) was available to configure compressed drives, including setting it up as swap. Starting with v1.2.1 the zram-generator supports (via https://github.com/systemd/zram-generator/issues/178 and https://github.com/systemd/zram-generator/pull/200) configuring recompression, which allows to set secondary compression algorithms to recompress some or all of the pages on any zram drive after a user controlled trigger (e.g. touch a knob in sysfs). For the images built from this repository the [zram-recompression.timer](files/system/etc/systemd/system/zram-recompression.timer) orchestrates said trigger, and zram is configured to use both [`zstd` and `lz4hc`](files/system/etc/systemd/zram-generator.conf) to try to recompress first idle and then huge (=_incompressible_ in specifically zram terms; the Memory Management subsystem also knows huge pages but means something [entirely different](https://docs.kernel.org/admin-guide/mm/concepts.html#huge-pages)) pages. I suppose it would be possible to try to recompress all pages (which are currently not marked as incompressible after actually trying to recompress those) in ZRAM, but this is currently not being implemented here.
