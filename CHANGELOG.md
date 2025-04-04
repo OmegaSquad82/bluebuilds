@@ -1,5 +1,24 @@
 # Changelog
 
+## [1.5.0](https://github.com/OmegaSquad82/bluebuilds/compare/v1.4.0...v1.5.0) (2025-04-04)
+
+
+### Features
+
+* have all pages be marked as idle ([37c6c5f](https://github.com/OmegaSquad82/bluebuilds/commit/37c6c5f039a12e1768e8cd9afb809706f5e0c0af))
+* increase frequency of zram-recompression to once per minute. ([3d25ec6](https://github.com/OmegaSquad82/bluebuilds/commit/3d25ec6fe046df007e047cf62a1ce61e3f457362))
+* increase frequency of zram-recompression to once per minute. ([37c6c5f](https://github.com/OmegaSquad82/bluebuilds/commit/37c6c5f039a12e1768e8cd9afb809706f5e0c0af))
+* set it to try to recompress 1024 pages ([37c6c5f](https://github.com/OmegaSquad82/bluebuilds/commit/37c6c5f039a12e1768e8cd9afb809706f5e0c0af))
+* use intrinsic parameter of recompress-zram only instead of handing it over in the service. ([37c6c5f](https://github.com/OmegaSquad82/bluebuilds/commit/37c6c5f039a12e1768e8cd9afb809706f5e0c0af))
+
+
+### Bug Fixes
+
+* remove push trigger in recompress-latest.yml ([499adf1](https://github.com/OmegaSquad82/bluebuilds/commit/499adf1237a3ea37a83578873856e96d3314056a))
+* remove push trigger in recompress-latest.yml ([1d52800](https://github.com/OmegaSquad82/bluebuilds/commit/1d528007daa70bf4f176de77a5f814e74d95cc05))
+* update README.md with 464xlat info ([eab423d](https://github.com/OmegaSquad82/bluebuilds/commit/eab423dd307252c320c1e84d59b4e0cb574b73d7))
+* update README.md with 464xlat info ([8b431b0](https://github.com/OmegaSquad82/bluebuilds/commit/8b431b0685208bcfa0d1b9d9557bb68e5c0f1669))
+
 ## [1.4.0](https://github.com/OmegaSquad82/bluebuilds/compare/v1.3.0...v1.4.0) (2025-03-31)
 
 
