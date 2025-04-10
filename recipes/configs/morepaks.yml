@@ -1,7 +1,18 @@
 modules:
   - type: rpm-ostree
     install:
-      - https://github.com/rmcrackan/Libation/releases/download/v11.6.4/Libation.11.6.4-linux-chardonnay-amd64.rpm
+      - https://github.com/rmcrackan/Libation/releases/download/v12.2.0/Libation.12.2.0-linux-chardonnay-arm64.rpm
+  - type: rpm-ostree
+    repos:
+      - https://copr.fedorainfracloud.org/coprs/hhd-dev/hhd/repo/fedora-%OS_VERSION%/hhd-dev-hhd-fedora-%OS_VERSION%.repo
+    install:
+      - adjustor
+      - hhd
+      - hhd-ui
+  - type: systemd
+    user:
+      enabled:
+        - hhd
   - type: default-flatpaks
     notify: true
     system:
