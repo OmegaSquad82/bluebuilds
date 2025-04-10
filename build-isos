@@ -9,11 +9,12 @@ if ! command -v bluebuild >/dev/null; then
 fi
 
 if [ "$EUID" -ne 0 ]; then
-	sudo $0
+	sudo $0 "$*"
 	exit $?
 fi
 
-outdir=./isos
+prfrrd="${1:-}"
+outdir="${2:-$HOME/Images}"
 mkdir -p "$outdir"
 RECIPES=()
 here="$PWD"
@@ -23,6 +24,9 @@ RECIPES+=(recipe-*.yml)
 for recipe in "${RECIPES[@]}"; do
 	image="${recipe#recipe-}"
 	image="${image%.yml}"
+	if [[ -n "$prfrrd" ]] && ! [[ "$image" == "$prfrrd" ]]; then
+		continue;
+	fi
 	cd "$here"
 	if bluebuild generate "recipes/$recipe" --output "$outdir/$image-$today".yaml --display-full-recipe &&
 		bluebuild generate "recipes/$recipe" --output "$outdir/$image-$today".Containerfile &&
