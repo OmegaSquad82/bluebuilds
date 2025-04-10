@@ -11,9 +11,15 @@ function traperr() {
 set -o errtrace
 trap traperr ERR
 
+# ensure sysfs knobs can be meddled with
+if [[ $(/usr/bin/id -u) -ne 0 ]]; then
+    sudo $0 "$*"
+    exit $?
+fi
+
 # settings
 TIMEFORMAT=$'real: %3lR\tuser: %3lU\tsys: %3lS'
-TYPE="${PARM:=max_pages=1024}"
+TYPE="${PARM:-type=huge_idle max_pages=4096}"
 
 # comment stuff out on the fly
 DEBG=${DEBUG-:} # print statistics
@@ -31,18 +37,12 @@ while [[ $# -gt 0 ]]; do
     shift
 done
 
-# ensure sysfs knobs can be meddled with
-if [[ $(/usr/bin/id -u) -ne 0 ]]; then
-    $NOOP sudo $0
-    $NOOP exit $?
-fi
-
 function print_states() {
     device="${1:?Need a '/dev/zram<n>' device path.}"
     zramno="${device##*/}" # isolate device name
 
-    # it always passes || inter+post on action
-    if [[ "$ONCE" = '' || "$NOOP" != ':' ]]; then
+    # it'll pass, always || inter+post on action
+    if [[ "$ONCE" != ':' || "$NOOP" != ':' ]]; then
         recomp_path="/sys/block/$zramno/recomp_algorithm"
         $ONCE echo -en "$recomp_path = "
         $ONCE echo "$(grep -Eo "(#.*:|\[.*\])" "$recomp_path" | xargs echo)"
@@ -81,7 +81,7 @@ function turns_a_knob() {
     $DEBG $NOOP echo
     if [[ -f "$knob" ]]; then
         echo -e "λ${NOOP:+ #} echo ${valu} >$knob"
-        if [[ "$NOOP" = '' ]]; then
+        if [[ "$NOOP" != ':' ]]; then
             time echo "${valu}" >"$knob"
         fi
     else
