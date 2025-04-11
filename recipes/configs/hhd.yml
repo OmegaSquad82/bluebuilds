@@ -7,6 +7,6 @@ modules:
       - hhd
       - hhd-ui
   - type: systemd
-    system:
+    user:
       enabled:
-        - hhd@
+        - hhd-user
