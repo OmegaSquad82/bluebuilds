@@ -25,10 +25,12 @@ modules:
   - from-file: configs/podman.yml
   - from-file: configs/tailscale.yml
 
+  - from-file: configs/hhd.yml
   - from-file: configs/amdgpu.yml
   - from-file: configs/bazzite.yml
   - from-file: configs/packages.yml
   - from-file: configs/flatpaks.yml
   - from-file: configs/morepaks.yml
+  - from-file: configs/libation.yml
 
   - type: signing

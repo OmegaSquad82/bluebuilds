@@ -1,0 +1,12 @@
+modules:
+  - type: rpm-ostree
+    repos:
+      - https://copr.fedorainfracloud.org/coprs/hhd-dev/hhd/repo/fedora-%OS_VERSION%/hhd-dev-hhd-fedora-%OS_VERSION%.repo
+    install:
+      - adjustor
+      - hhd
+      - hhd-ui
+  # - type: systemd
+  #   user:
+  #     enabled:
+  #       - hhd-user

@@ -60,6 +60,7 @@ The `podman.service` is enabled on both Buttgenbachit and Flaviramea.
 - BoxBuddy
 - Calibre
 - Codium
+- HandHeldDaemon
 - Libation
 - MediaWriter
 - Obsidian
