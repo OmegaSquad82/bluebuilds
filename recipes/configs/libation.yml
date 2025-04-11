@@ -1,0 +1,4 @@
+modules:
+  - type: rpm-ostree
+    install:
+      - https://github.com/rmcrackan/Libation/releases/download/v12.2.0/Libation.12.2.0-linux-chardonnay-amd64.rpm
