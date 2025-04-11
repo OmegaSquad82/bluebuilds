@@ -1,5 +1,39 @@
 # Changelog
 
+## [1.5.0](https://github.com/OmegaSquad82/bluebuilds/compare/v1.4.0...v1.5.0) (2025-04-11)
+
+
+### Features
+
+* decompose morepaks.yml and yield separate libation and hhd ([8cc9f20](https://github.com/OmegaSquad82/bluebuilds/commit/8cc9f2009feecc4bf152e30181cdf1b34c1db437))
+* have all pages be marked as idle ([37c6c5f](https://github.com/OmegaSquad82/bluebuilds/commit/37c6c5f039a12e1768e8cd9afb809706f5e0c0af))
+* include HandHeldDaemon in buttgenbachit ([35cd833](https://github.com/OmegaSquad82/bluebuilds/commit/35cd8339e4a1bdd86081b81c24cb1be0c165671e))
+* increase frequency of zram-recompression to once per minute. ([3d25ec6](https://github.com/OmegaSquad82/bluebuilds/commit/3d25ec6fe046df007e047cf62a1ce61e3f457362))
+* increase frequency of zram-recompression to once per minute. ([37c6c5f](https://github.com/OmegaSquad82/bluebuilds/commit/37c6c5f039a12e1768e8cd9afb809706f5e0c0af))
+* set it to try to recompress 1024 pages ([37c6c5f](https://github.com/OmegaSquad82/bluebuilds/commit/37c6c5f039a12e1768e8cd9afb809706f5e0c0af))
+* update build-isos to build outside of repository dir ([2fb46e4](https://github.com/OmegaSquad82/bluebuilds/commit/2fb46e479d049ccbdb0d6b89490ae7d7be50a63a))
+* update build-isos to select an image to build ([83fddf3](https://github.com/OmegaSquad82/bluebuilds/commit/83fddf398150509ff05cd0f729a1bbd96b97dcb7))
+* update build-isos to select an image to build ([2fb46e4](https://github.com/OmegaSquad82/bluebuilds/commit/2fb46e479d049ccbdb0d6b89490ae7d7be50a63a))
+* upgrade Libation from v11.6.4 to v12.2.0 ([528db77](https://github.com/OmegaSquad82/bluebuilds/commit/528db779b8c62bf707583be5d4d91ebd5ca87833))
+* upgrade Libation from v11.6.4 to v12.2.0 ([35cd833](https://github.com/OmegaSquad82/bluebuilds/commit/35cd8339e4a1bdd86081b81c24cb1be0c165671e))
+* use intrinsic parameter of recompress-zram only instead of handing it over in the service. ([37c6c5f](https://github.com/OmegaSquad82/bluebuilds/commit/37c6c5f039a12e1768e8cd9afb809706f5e0c0af))
+
+
+### Bug Fixes
+
+* changed from systemd unit "hhd" to "hhd@" ([dcfbb4e](https://github.com/OmegaSquad82/bluebuilds/commit/dcfbb4e7722b61bd81ae2c1c712068f878118f48))
+* hhd@ is a system- instead of a user service unit ([8cc9f20](https://github.com/OmegaSquad82/bluebuilds/commit/8cc9f2009feecc4bf152e30181cdf1b34c1db437))
+* remove push trigger in recompress-latest.yml ([499adf1](https://github.com/OmegaSquad82/bluebuilds/commit/499adf1237a3ea37a83578873856e96d3314056a))
+* remove push trigger in recompress-latest.yml ([1d52800](https://github.com/OmegaSquad82/bluebuilds/commit/1d528007daa70bf4f176de77a5f814e74d95cc05))
+* single source of truth for recompression parameters ([e063190](https://github.com/OmegaSquad82/bluebuilds/commit/e063190dfb8516f987b075b05f256b5f3ef8ce1b))
+* try the hhd-user unit... ([5786986](https://github.com/OmegaSquad82/bluebuilds/commit/5786986d4b6e981d7ad928ae05f3bea5ae0cc2f5))
+* update documentation on zram recompression ([29d6f47](https://github.com/OmegaSquad82/bluebuilds/commit/29d6f4789a74b0a204fdd40b74afcf106ed8d50d))
+* update documentation on zram recompression ([e063190](https://github.com/OmegaSquad82/bluebuilds/commit/e063190dfb8516f987b075b05f256b5f3ef8ce1b))
+* update README.md with 464xlat info ([eab423d](https://github.com/OmegaSquad82/bluebuilds/commit/eab423dd307252c320c1e84d59b4e0cb574b73d7))
+* update README.md with 464xlat info ([8b431b0](https://github.com/OmegaSquad82/bluebuilds/commit/8b431b0685208bcfa0d1b9d9557bb68e5c0f1669))
+* use correct computing architecture for Libation ([426c63a](https://github.com/OmegaSquad82/bluebuilds/commit/426c63aac8c4077eb68a16db886d05f17f042717))
+* verbose parameter for recompress-zram was shifted away ([e063190](https://github.com/OmegaSquad82/bluebuilds/commit/e063190dfb8516f987b075b05f256b5f3ef8ce1b))
+
 ## [1.4.0](https://github.com/OmegaSquad82/bluebuilds/compare/v1.3.0...v1.4.0) (2025-03-31)
 
 
