@@ -7,9 +7,8 @@ modules:
       - hhd
       - hhd-ui
   - type: systemd
-    user:
-      enabled:
-        - hhd@bazzite
-        - hhd@chris
+    system:
       masked:
+        - cpupower.service
+        - power-profiles-daemon.service
         - tuned.service
