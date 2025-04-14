@@ -30,7 +30,7 @@ Fedora (Sericea/)Sway Atomic suitable for low resource footprint devices (e.g. n
 
 ### Podman
 
-The `podman.service` is enabled on both Buttgenbachit and Flaviramea.
+The `podman.service` is enabled on Buttgenbachit.
 
 ### Flatpaks
 

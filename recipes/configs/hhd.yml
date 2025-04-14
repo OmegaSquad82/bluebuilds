@@ -6,7 +6,10 @@ modules:
       - adjustor
       - hhd
       - hhd-ui
-  # - type: systemd
-  #   user:
-  #     enabled:
-  #       - hhd-user
+  - type: systemd
+    user:
+      enabled:
+        - hhd@bazzite
+        - hhd@chris
+      masked:
+        - tuned.service
