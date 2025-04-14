@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.1](https://github.com/OmegaSquad82/bluebuilds/compare/v1.5.0...v1.5.1) (2025-04-14)
+
+
+### Bug Fixes
+
+* mask system services ([5b3dcf8](https://github.com/OmegaSquad82/bluebuilds/commit/5b3dcf8159dc26607f70d81a369bb9c9d105ee3d))
+
 ## [1.5.0](https://github.com/OmegaSquad82/bluebuilds/compare/v1.4.0...v1.5.0) (2025-04-11)
 
 
