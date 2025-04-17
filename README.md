@@ -110,7 +110,7 @@ It is important to know that in zram terms _incompressible_ pages are called hug
 
 zram is [configured](files/system/etc/systemd/zram-generator.conf) to use `lz4` as a fast, low-latency compression algorithm and both `zstd` and `lz4hc` were selected for recompression. A default to recompress both `huge` and `idle` pages is used and a maximum of `4096` pages (up to 16 MiB) was selected to not produce unduly burden on the CPU.
 
-The system uses a [zram-recompression.timer](files/system/etc/systemd/system/zram-recompression.timer) to orchestrate the one-off execution of [zram-recompression.service](files/system/etc/systemd/system/zram-recompression.service) which in turn calls [recompress-zram](files/system/usr/sbin/recompress-zram) script. It has grown quite a bit, most functionality exists for debugging purposes. It will first mark `all` pages as idle, then trigger recompression and finally memory compaction.
+The system uses a [zram-recompression.timer](files/system/etc/systemd/system/zram-recompression.timer) to orchestrate the one-off execution of [zram-recompression.service](files/system/etc/systemd/system/zram-recompression.service) which in turn calls [recompress-zram](files/system/usr/bin/recompress-zram) script. It has grown quite a bit, most functionality exists for debugging purposes. It will first mark `all` pages as idle, then trigger recompression and finally memory compaction.
 
 #### Outcome
 
