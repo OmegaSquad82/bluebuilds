@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.6.0](https://github.com/OmegaSquad82/bluebuilds/compare/v1.5.1...v1.6.0) (2025-04-17)
+
+
+### Features
+
+* rebase to bazzite 42 by trying to move /usr/sbin to /usr/bin ;c) ([710e382](https://github.com/OmegaSquad82/bluebuilds/commit/710e38294bd22b5458bdb866289bd4d541e0c54f))
+
+
+### Bug Fixes
+
+* rebase to bazzite 42 by trying to move /usr/sbin to /usr/bin ;c) ([5770f6f](https://github.com/OmegaSquad82/bluebuilds/commit/5770f6f7a8f78db4084b01fc761aa22a68d42bf2))
+
 ## [1.5.1](https://github.com/OmegaSquad82/bluebuilds/compare/v1.5.0...v1.5.1) (2025-04-14)
 
 
