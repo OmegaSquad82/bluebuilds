@@ -6,4 +6,4 @@ StopWhenUnneeded=yes
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-ExecStart=/usr/sbin/recompress-zram
+ExecStart=/usr/bin/recompress-zram
