@@ -17,6 +17,10 @@ modules:
   - from-file: configs/udevrules.yml
   - from-file: configs/systemfiles.yml
   - from-file: configs/zram-generator.yml
+  - type: copy
+    from: zram-generator
+    src: /root/.cargo/bin/zram-generator
+    dest: /usr/lib/systemd/system-generators/zram-generator
 
   - from-file: configs/clatd.yml
   - from-file: configs/power.yml

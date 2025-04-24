@@ -1,8 +1,7 @@
 modules:
-  - type: copy
-    from: zram-generator
-    src: /root/.cargo/bin/zram-generator
-    dest: /usr/lib/systemd/system-generators/zram-generator
+  - type: rpm-ostree
+    install:
+      - zram-generator-defaults
   - type: systemd
     system:
       enabled:
