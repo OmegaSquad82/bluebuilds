@@ -1,7 +1,7 @@
 modules:
-  - type: script
-    scripts:
-      - install-clatd.sh
+  - type: rpm-ostree
+    install:
+      - https://dl.fedoraproject.org/pub/fedora/linux/development/rawhide/Everything/x86_64/os/Packages/c/clatd-2.1.0-1.fc43.noarch.rpm
   - type: systemd
     system:
       enabled:
