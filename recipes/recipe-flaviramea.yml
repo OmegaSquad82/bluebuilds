@@ -2,25 +2,13 @@
 # yaml-language-server: $schema=https://schema.blue-build.org/recipe-v1.json
 name: flaviramea
 description: My personal flavor of Fedora Sway Atomic.
-base-image: ghcr.io/ublue-os/sericea-main
+base-image: ghcr.io/ublue-os/sway-atomic-main
 image-version: latest
-
-stages:
-  - name: zram-generator
-    from: fedora
-    modules:
-      - type: script
-        scripts:
-          - build-zram-generator.sh
 
 modules:
   - from-file: configs/udevrules.yml
   - from-file: configs/systemfiles.yml
   - from-file: configs/zram-generator.yml
-  - type: copy
-    from: zram-generator
-    src: /root/.cargo/bin/zram-generator
-    dest: /usr/lib/systemd/system-generators/zram-generator
 
   - from-file: configs/clatd.yml
   - from-file: configs/power.yml
