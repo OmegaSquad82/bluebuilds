@@ -1,4 +1,7 @@
 modules:
+  - type: rpm-ostree
+    install:
+      - zram-generator-defaults
   - type: copy
     from: zram-generator
     src: /root/.cargo/bin/zram-generator
