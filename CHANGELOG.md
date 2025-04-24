@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.7.0](https://github.com/OmegaSquad82/bluebuilds/compare/v1.6.0...v1.7.0) (2025-04-24)
+
+
+### Features
+
+* rebase Flaviramea onto gchr.io/ublue-os/sway-atomic-main ([0f19fc9](https://github.com/OmegaSquad82/bluebuilds/commit/0f19fc974ec7dae24919d9c3abecaa1e07d61b08))
+* rebase Flaviramea onto gchr.io/ublue-os/sway-atomic-main ([784060f](https://github.com/OmegaSquad82/bluebuilds/commit/784060f8c91360343ba0ec423830102696fdf89e))
+* use clatd from Fedora Rawhide (43) ([0b423aa](https://github.com/OmegaSquad82/bluebuilds/commit/0b423aa63018621f39f30133295a17f6418e37d5))
+* use clatd from Fedora Rawhide (fc43) ([59460d7](https://github.com/OmegaSquad82/bluebuilds/commit/59460d72fb7d72d0375894ea5ed5ec9e1905a978))
+* use fedora's build of the zram-generator ([7763912](https://github.com/OmegaSquad82/bluebuilds/commit/776391219a6ceb8355f87f5d15ff80c0481f64ce))
+* use fedora's build of the zram-generator ([1cdea88](https://github.com/OmegaSquad82/bluebuilds/commit/1cdea8800981c9617540ddca5ab0283370a98165))
+
+
+### Bug Fixes
+
+* fix all images and use built zram-generator in flaviramea ([07d597f](https://github.com/OmegaSquad82/bluebuilds/commit/07d597fd0a71d86cd5f8346df862f1704650f7c7))
+
 ## [1.6.0](https://github.com/OmegaSquad82/bluebuilds/compare/v1.5.1...v1.6.0) (2025-04-17)
 
 
