@@ -6,4 +6,4 @@ StopWhenUnneeded=yes
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-ExecStart=/usr/bin/bash -c 'for device in /dev/zram*; do printf " " >/sys/block/"${device##*/}"/compact; done'
+ExecStart=/usr/bin/bash -c 'printf " " >/sys/block/zram*/compact'

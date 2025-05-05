@@ -6,4 +6,4 @@ StopWhenUnneeded=yes
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-ExecStart=/usr/bin/bash -c 'for device in /dev/zram*; do printf "max_pages=4096" >/sys/block/"${device##*/}"/recompress; done'
+ExecStart=/usr/bin/bash -c 'printf "max_pages=4096" >/sys/block/zram*/recompress'
