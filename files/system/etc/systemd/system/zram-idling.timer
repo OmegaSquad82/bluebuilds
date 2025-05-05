@@ -1,0 +1,11 @@
+[Unit]
+Description=Control timing to mark zram pages as idle
+
+[Timer]
+OnBootSec=15min
+OnUnitActiveSec=10min
+RandomizedDelaySec=1min
+Unit=zram-idling.service
+
+[Install]
+WantedBy=multi-user.target

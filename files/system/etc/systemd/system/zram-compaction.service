@@ -1,0 +1,9 @@
+[Unit]
+Description=Defragment zram memory
+Documentation="https://docs.kernel.org/admin-guide/blockdev/zram.html#stats"
+StopWhenUnneeded=yes
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/bin/bash -c 'for device in /dev/zram*; do printf " " >/sys/block/"${device##*/}"/compact; done'

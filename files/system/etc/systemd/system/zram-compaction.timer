@@ -1,0 +1,11 @@
+[Unit]
+Description=Control timing to defragment zram memory
+
+[Timer]
+OnBootSec=15min
+OnUnitActiveSec=1h
+RandomizedDelaySec=6min
+Unit=zram-compaction.service
+
+[Install]
+WantedBy=multi-user.target

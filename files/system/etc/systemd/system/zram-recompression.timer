@@ -1,10 +1,10 @@
 [Unit]
-Description=Control timing to recompress zram devices
+Description=Control timing to recompress zram pages
 
 [Timer]
 OnBootSec=2min
 OnUnitActiveSec=1min
-RandomizedDelaySec=10s
+RandomizedDelaySec=6s
 Unit=zram-recompression.service
 
 [Install]

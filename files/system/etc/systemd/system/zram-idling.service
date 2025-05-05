@@ -1,0 +1,9 @@
+[Unit]
+Description=Mark all pages of all zram devices as idle.
+Documentation="https://docs.kernel.org/admin-guide/blockdev/zram.html#optional-feature"
+StopWhenUnneeded=yes
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/bin/bash -c 'for device in /dev/zram*; do printf "all" >/sys/block/"${device##*/}"/idle; done'
