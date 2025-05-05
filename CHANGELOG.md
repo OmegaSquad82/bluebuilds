@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.8.0](https://github.com/OmegaSquad82/bluebuilds/compare/v1.7.0...v1.8.0) (2025-05-05)
+
+
+### Features
+
+* new zram-compaction Service and Timer ([6194abb](https://github.com/OmegaSquad82/bluebuilds/commit/6194abbb039504500c0b28df19455d2b59bee08f))
+* new zram-idling Service and Timer ([fd46c18](https://github.com/OmegaSquad82/bluebuilds/commit/fd46c18aac5a3b5d9d122facaec2a01b2147a915))
+* zram-recompression.service writes to sysfs without calling recompress-zram script ([f13a171](https://github.com/OmegaSquad82/bluebuilds/commit/f13a171bf827507086931db7247b086b41724a2c))
+
+
+### Bug Fixes
+
+* LACT can now be installed as a flatpak and bazzite removed the COPR ([e68e5fd](https://github.com/OmegaSquad82/bluebuilds/commit/e68e5fd9b40104af5f8d8f29808e19d915422a0e))
+* parameter handling in recompress-zram ([66d0b2b](https://github.com/OmegaSquad82/bluebuilds/commit/66d0b2b239d7af9cabe03744521c012f39575e96))
+
 ## [1.7.0](https://github.com/OmegaSquad82/bluebuilds/compare/v1.6.0...v1.7.0) (2025-04-24)
 
 
