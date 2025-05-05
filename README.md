@@ -93,7 +93,7 @@ The `podman.service` is enabled on Buttgenbachit.
 
 ### 464XLAT for IPv6-only
 
-Fedora packages [clatd](https://packages.fedoraproject.org/pkgs/clatd/clatd/index.html) to translates flows from an IPv6-only client to IPv4 hosts via NAT46, so it can be transmitted and translated back via NAT64 in a PLAT device, e.g. at the edge in a CPE or in an ISP network. Although `clatd` is functional there was no actual testing in my networks, yet.
+Fedora packages [clatd](https://packages.fedoraproject.org/pkgs/clatd/clatd/index.html) to translate flows from an IPv6-only client to IPv4 hosts via NAT46, so it can be transmitted and then translated back via NAT64 in a PLAT device, e.g. at the edge in a CPE or in an ISP network. Although `clatd` is functional there was no actual testing in my networks, yet.
 
 ### Swap on ZRAM
 
