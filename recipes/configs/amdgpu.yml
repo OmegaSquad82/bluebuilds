@@ -1,8 +1,6 @@
 modules:
-  - type: rpm-ostree
-    install:
-      - lact
-  - type: systemd
+  - type: default-flatpaks
+    notify: true
     system:
-      enabled:
-        - lactd.service
+      install:
+        - io.github.ilya_zlobintsev.LACT
