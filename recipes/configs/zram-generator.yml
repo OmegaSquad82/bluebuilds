@@ -5,6 +5,5 @@ modules:
   - type: systemd
     system:
       enabled:
-        - zram-idling.timer
         - zram-compaction.timer
         - zram-recompression.timer

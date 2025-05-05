@@ -3,8 +3,8 @@ Description=Control timing to defragment zram memory
 
 [Timer]
 OnBootSec=15min
-OnUnitActiveSec=1h
-RandomizedDelaySec=6min
+OnUnitActiveSec=15min
+RandomizedDelaySec=90s
 Unit=zram-compaction.service
 
 [Install]
