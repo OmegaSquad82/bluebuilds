@@ -13,7 +13,7 @@ trap traperr ERR
 
 # ensure sysfs knobs can be meddled with
 if [[ $(/usr/bin/id -u) -ne 0 ]]; then
-    sudo $0 "$*"
+    sudo "$0" "$@"
     exit $?
 fi
 
