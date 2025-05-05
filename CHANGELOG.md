@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.1](https://github.com/OmegaSquad82/bluebuilds/compare/v1.8.0...v1.8.1) (2025-05-05)
+
+
+### Bug Fixes
+
+* further simplify zram recompression ([aaa442b](https://github.com/OmegaSquad82/bluebuilds/commit/aaa442bc0399e1e914e6996f5f4d39d387c648bc))
+
 ## [1.8.0](https://github.com/OmegaSquad82/bluebuilds/compare/v1.7.0...v1.8.0) (2025-05-05)
 
 
