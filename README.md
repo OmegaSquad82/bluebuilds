@@ -61,6 +61,7 @@ The `podman.service` is enabled on Buttgenbachit.
 - Calibre
 - Codium
 - HandHeldDaemon
+- LACT
 - Libation
 - MediaWriter
 - Obsidian
@@ -92,29 +93,27 @@ The `podman.service` is enabled on Buttgenbachit.
 
 ### 464XLAT for IPv6-only
 
-Fedora packages [clatd](https://packages.fedoraproject.org/pkgs/clatd/clatd/index.html) to translates flows from an IPv6-only client to IPv4 hosts via NAT46, so it can be transmitted and translated back via NAT64 in a PLAT device, e.g. at the edge in a CPE or in an ISP network.
-
-This feature likely is not functional, yet.
+Fedora packages [clatd](https://packages.fedoraproject.org/pkgs/clatd/clatd/index.html) to translates flows from an IPv6-only client to IPv4 hosts via NAT46, so it can be transmitted and translated back via NAT64 in a PLAT device, e.g. at the edge in a CPE or in an ISP network. Although `clatd` is functional there was no actual testing in my networks, yet.
 
 ### Swap on ZRAM
 
-Fedora uses [Swap on ZRAM](https://fedoraproject.org/wiki/Changes/SwapOnZRAM) by default on all Spins, the [systemd-zram-generator](https://github.com/systemd/zram-generator) is available to configure compressed drives, including setting it up as swap.
+Fedora uses [Swap on ZRAM](https://fedoraproject.org/wiki/Changes/SwapOnZRAM) by default on all Spins, the derivatives used here are generally no different. There exist several packages to configure compressed drives and setting one up for swap. We're using the [systemd-zram-generator](https://github.com/systemd/zram-generator) by installing `zram-generator-defaults` package.
 
-Starting with v1.2.1 the zram-generator supports (via https://github.com/systemd/zram-generator/issues/178 and https://github.com/systemd/zram-generator/pull/200) configuring secondary compression algorithms and associated parameters to recompress pages on a zram drive triggering it by touching a knob in sysfs. This allows for some flexibility.
+Starting with v1.2.1 the zram-generator supports (via https://github.com/systemd/zram-generator/issues/178 and https://github.com/systemd/zram-generator/pull/200) configuring secondary compression algorithms and associated parameters to recompress pages on a zram drive, which needs to be triggered by touching a knob in sysfs.
 
-A first scenario would've only compressed huge pages once every three minutes, now a second but more generic use case lets zram absorb swapped out pages quickly but over time would try to recompress every single one of them in batches.
+This allows for some flexibility. Here the system is configured for zram to absorb swapped out pages quickly and over time it should try to recompress all pages in small batches.
 
-It is important to know that in zram terms _incompressible_ pages are called huge; the Memory Management subsystem also knows [`huge pages`](https://docs.kernel.org/admin-guide/mm/concepts.html#huge-pages) but means something different.
+It is important to know that in zram terms _incompressible_ pages are called huge; the Memory Management subsystem also knows [`huge pages`](https://docs.kernel.org/admin-guide/mm/concepts.html#huge-pages) but means something entirely different.
 
 #### Implementation
 
-zram is [configured](files/system/etc/systemd/zram-generator.conf) to use `lz4` as a fast, low-latency compression algorithm and both `zstd` and `lz4hc` were selected for recompression. A default to recompress both `huge` and `idle` pages is used and a maximum of `4096` pages (up to 16 MiB) was selected to not produce unduly burden on the CPU.
+zram is [configured](files/system/etc/systemd/zram-generator.conf) to use `lz4` as a fast, low-latency compression algorithm and both `zstd` and `lz4hc` were selected as secondary ones. A default to once every minute try to recompress a maximum of `4096` pages (up to 16 MiB) was selected to not produce unduly burden on the CPU. Any previous discrimination between either idle and huge pages has been removed for simplicity.
 
-The system uses a [zram-recompression.timer](files/system/etc/systemd/system/zram-recompression.timer) to orchestrate the one-off execution of [zram-recompression.service](files/system/etc/systemd/system/zram-recompression.service) which in turn calls [recompress-zram](files/system/usr/bin/recompress-zram) script. It has grown quite a bit, most functionality exists for debugging purposes. It will first mark `all` pages as idle, then trigger recompression and finally memory compaction.
+The system uses a [zram-recompression.timer](files/system/etc/systemd/system/zram-recompression.timer) to orchestrate the one-off execution of [zram-recompression.service](files/system/etc/systemd/system/zram-recompression.service). Since freed memory is likely to become fragmented another set of systemd units, [zram-compaction.service](files/system/etc/systemd/system/zram-compaction.service) and [zram-compaction.timer](files/system/etc/systemd/system/zram-compaction.timer) have been created. The Service units are designed to trigger either compaction or recompression for all existing zram devices.
 
 #### Outcome
 
-On a severely memory constrained device with only 4 GiB, I've observed ratios of roughly 30..40% during normal usage scenarios (Browser, Electron Shells, E-Mail, Password Databases, Synchronization, ...) while the system stays _mostly_ reactive. With this configuration I try to achieve a good user experience, but the capabilities of it are still limited.
+On a severely memory constrained device with only 4 GiB, I've observed ratios of roughly 30..40% during normal usage scenarios (Browser, Electron Shells, E-Mail, Password Databases, Synchronization, ...) while the system stays _mostly_ reactive. With this configuration I try to achieve a good user experience, but the capabilities of this system are still limited.
 
 #### Blogs
 
