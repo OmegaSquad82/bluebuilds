@@ -6,4 +6,4 @@ StopWhenUnneeded=yes
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-ExecStart=/usr/bin/bash -c "printf 'max_pages=1024' >/sys/block/zram*/recompress"
+ExecStart=/usr/bin/bash -c "printf 'max_pages=4096' >/sys/block/zram*/recompress"
