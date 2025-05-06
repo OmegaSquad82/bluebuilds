@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.4](https://github.com/OmegaSquad82/bluebuilds/compare/v1.8.3...v1.8.4) (2025-05-06)
+
+
+### Bug Fixes
+
+* remove lz4hc as secondary compression algorithm and update documentation ([1ef5262](https://github.com/OmegaSquad82/bluebuilds/commit/1ef5262b8f823110f102d6f5146cd6d2d988b150))
+
 ## [1.8.3](https://github.com/OmegaSquad82/bluebuilds/compare/v1.8.2...v1.8.3) (2025-05-06)
 
 
