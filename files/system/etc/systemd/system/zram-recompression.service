@@ -1,9 +1,9 @@
 [Unit]
-Description=Recompress pages of zram devices
+Description=Recompress some pages of all ZRAM devices
 Documentation="https://docs.kernel.org/admin-guide/blockdev/zram.html#recompression"
 StopWhenUnneeded=yes
 
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-ExecStart=/usr/bin/bash -c 'printf "max_pages=4096" >/sys/block/zram*/recompress'
+ExecStart=/usr/bin/bash -c "printf 'max_pages=1024' >/sys/block/zram*/recompress"
