@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.3](https://github.com/OmegaSquad82/bluebuilds/compare/v1.8.2...v1.8.3) (2025-05-06)
+
+
+### Bug Fixes
+
+* slow down zram recompression timer but process more pages (33% net increase) ([7b39b70](https://github.com/OmegaSquad82/bluebuilds/commit/7b39b70f4511765b89f94af4081f8a5c5bb250bc))
+
 ## [1.8.2](https://github.com/OmegaSquad82/bluebuilds/compare/v1.8.1...v1.8.2) (2025-05-06)
 
 
