@@ -107,7 +107,7 @@ It is important to know that in ZRAM terms _incompressible_ pages are called `hu
 
 #### Implementation
 
-ZRAM is [configured](files/system/etc/systemd/zram-generator.conf) to use `lz4` as a fast, low-latency compression algorithm and both `zstd` and `lz4hc` were selected as secondary ones. A default to once every `3s` try to recompress a maximum of `4096` pages (up to 16 MiB) was selected to not produce unduly burden on the CPU. Any previous discrimination between either `idle` or `huge` pages has been removed for simplicity and no script files are being used.
+ZRAM is [configured](files/system/etc/systemd/zram-generator.conf) to use `lz4` as a fast, low-latency compression algorithm and `zstd` was selected as secondary. A default to once every `3s` try to recompress a maximum of `4096` pages (up to 16 MiB) was selected to not produce unduly burden on the CPU. Any previous discrimination between either `idle` or `huge` pages and `lz4hc` as tertiary compression algorithm have been removed for simplicity and no script files are being used to control recompression behavior.
 
 The system uses a [zram-recompression.timer](files/system/etc/systemd/system/zram-recompression.timer) to orchestrate the one-off execution of a [zram-recompression.service](files/system/etc/systemd/system/zram-recompression.service). Since freed memory is likely to become fragmented over time another set of systemd units, a [zram-compaction.service](files/system/etc/systemd/system/zram-compaction.service) and a [zram-compaction.timer](files/system/etc/systemd/system/zram-compaction.timer) have been created. The Service units are designed to trigger either compaction or recompression for all existing ZRAM devices. Timers add a randomized delay of up to 10% to the cycle time.
 
