@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.2](https://github.com/OmegaSquad82/bluebuilds/compare/v1.8.1...v1.8.2) (2025-05-06)
+
+
+### Bug Fixes
+
+* remove for loop and use glob to select all zram devices ([e4e7817](https://github.com/OmegaSquad82/bluebuilds/commit/e4e781721cdeea8c04c08f4838800984590674c4))
+
 ## [1.8.1](https://github.com/OmegaSquad82/bluebuilds/compare/v1.8.0...v1.8.1) (2025-05-05)
 
 
