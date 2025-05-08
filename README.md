@@ -107,13 +107,13 @@ It is important to know that in ZRAM terms _incompressible_ pages are called `hu
 
 #### Implementation
 
-ZRAM is [configured](files/system/etc/systemd/zram-generator.conf) to use `lz4` as a fast, low-latency compression algorithm and `zstd` was selected as secondary. A default to once every `3s` try to recompress a maximum of `4096` pages (up to 16 MiB) was selected to not produce unduly burden on the CPU.
+ZRAM is [configured](files/system/etc/systemd/zram-generator.conf) to use `lz4` as a fast, low-latency compression algorithm and `zstd` in compression level 1 was selected as secondary one. The system will try to recompress some amount of pages, which statically scale with the system's resources, once every few seconds.
 
-The system uses a [zram-recompression.timer](files/system/etc/systemd/system/zram-recompression.timer) to orchestrate the one-off execution of a [zram-recompression.service](files/system/etc/systemd/system/zram-recompression.service). Since freed memory is likely to become fragmented over time another set of systemd units, a [zram-compaction.service](files/system/etc/systemd/system/zram-compaction.service) and a [zram-compaction.timer](files/system/etc/systemd/system/zram-compaction.timer) have been created. The Service units are designed to trigger either compaction or recompression for all existing ZRAM devices. Timers add a randomized delay of up to 10% to the cycle time.
+To actually facilitate recompression it uses a [zram-recompression.timer](files/system/etc/systemd/system/zram-recompression.timer) to orchestrate the one-off execution of a [zram-recompression.service](files/system/etc/systemd/system/zram-recompression.service). Since freed memory is likely to become fragmented over time another set of systemd units, a [zram-compaction.service](files/system/etc/systemd/system/zram-compaction.service) and a [zram-compaction.timer](files/system/etc/systemd/system/zram-compaction.timer) have been created. The Service units are configured to trigger either compaction for all existing ZRAM devices or recompression for the ZRAM swap drive. Timers add a randomized delay of up to 10% to the cycle time.
 
 #### Outcome
 
-On a device with <4 GiB usable memory, I've observed ratios of roughly 30..40% during normal usage scenarios (Browser, several Electron shells, E-Mail, password databases, office application, file synchronization, ...) while the system stays _mostly_ reactive. With this configuration I try to achieve a good user experience, but the capabilities of my system are still limited.
+On a device with <4 GiB usable memory, I've observed ratios up to ~4:1 during both normal and heavier usage scenarios (Browser, several Electron shells, E-Mail, password databases, office application, file synchronization, ...) while the system stays _mostly_ reactive. With this configuration I try to achieve a good user experience, but the capabilities of my system are still limited. Furthermore zram seems to use a single thread for recompression, this may or may not be a flaw in the [zram module|https://github.com/torvalds/linux/tree/master/drivers/block/zram].
 
 #### Blogs
 
