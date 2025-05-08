@@ -97,23 +97,23 @@ Fedora packages [clatd](https://packages.fedoraproject.org/pkgs/clatd/clatd/inde
 
 ### Swap on ZRAM
 
-Fedora uses [Swap on ZRAM](https://fedoraproject.org/wiki/Changes/SwapOnZRAM) by default on all Spins, the derivatives used here are generally no different. There exist several packages to configure compressed drives and setting one up for swap.
+The [ZRAM](https://github.com/torvalds/linux/tree/master/drivers/block/zram) Linux kernel module is capable of creating compressed ram disks. Since being block devices they can be formatted with any filesystem. Fedora uses [Swap on ZRAM](https://fedoraproject.org/wiki/Changes/SwapOnZRAM) by default on all Spins.
 
-The custom images use the [systemd-zram-generator](https://github.com/systemd/zram-generator) by installing `zram-generator-defaults` package. Starting with v1.2.1 it supports (via https://github.com/systemd/zram-generator/issues/178 and https://github.com/systemd/zram-generator/pull/200) the configuration of secondary compression algorithms to recompress pages on a ZRAM drive. Furthermore ZRAM requires recompression to be triggered by touching a knob in sysfs.
+There exist several packages to configure compressed ZRAM drives and some are conveniently setting one up as swap. Fedora uses the [systemd-zram-generator](https://github.com/systemd/zram-generator) via its `zram-generator-defaults` package. Starting with v1.2.1 it supports (via https://github.com/systemd/zram-generator/issues/178 and https://github.com/systemd/zram-generator/pull/200) the configuration of secondary compression algorithms to recompress pages on a ZRAM drive. Furthermore ZRAM requires recompression to be triggered by touching a knob in sysfs, which is out of scope of the systemd-zram-generator.
 
-This allows for some flexibility. Here the system is configured for ZRAM to absorb swapped out pages very quickly and over time it should try to recompress all pages once in small batches.
+This allows for some flexibility. Here the system is configured for ZRAM to absorb swapped out pages very quickly and over time it should try to recompress all pages in small batches.
 
-It is important to know that in ZRAM terms _incompressible_ pages are called `huge`; the Memory Management subsystem also knows [`huge pages`](https://docs.kernel.org/admin-guide/mm/concepts.html#huge-pages) but means something entirely different. Also marking pages as `idle` requires memory tracking which Fedora / Bazzite currently deactivates in production kernels.
+It is important to know that in ZRAM terms _incompressible_ pages are called `huge`; Linux's Memory Management subsystem also knows [`huge pages`](https://docs.kernel.org/admin-guide/mm/concepts.html#huge-pages) but means something entirely different. Also marking pages as `idle` requires memory tracking which Fedora / Bazzite currently deactivates in production kernels.
 
 #### Implementation
 
-ZRAM is [configured](files/system/etc/systemd/zram-generator.conf) to use `lz4` as a fast, low-latency compression algorithm and `zstd` was selected as secondary. A default to once every `3s` try to recompress a maximum of `4096` pages (up to 16 MiB) was selected to not produce unduly burden on the CPU.
+ZRAM is [configured](files/system/etc/systemd/zram-generator.conf) to use `lz4` as a fast, low-latency compression algorithm and `zstd` in compression level 1 was selected as secondary one. The system will try to recompress some amount of pages, which statically scale with the system's resources, once every few seconds.
 
-The system uses a [zram-recompression.timer](files/system/etc/systemd/system/zram-recompression.timer) to orchestrate the one-off execution of a [zram-recompression.service](files/system/etc/systemd/system/zram-recompression.service). Since freed memory is likely to become fragmented over time another set of systemd units, a [zram-compaction.service](files/system/etc/systemd/system/zram-compaction.service) and a [zram-compaction.timer](files/system/etc/systemd/system/zram-compaction.timer) have been created. The Service units are designed to trigger either compaction or recompression for all existing ZRAM devices. Timers add a randomized delay of up to 10% to the cycle time.
+To actually facilitate recompression it uses a [zram-recompression.timer](files/system/etc/systemd/system/zram-recompression.timer) to orchestrate the one-off execution of a [zram-recompression.service](files/system/etc/systemd/system/zram-recompression.service). Since freed memory is likely to become fragmented over time another set of systemd units, a [zram-compaction.service](files/system/etc/systemd/system/zram-compaction.service) and a [zram-compaction.timer](files/system/etc/systemd/system/zram-compaction.timer) have been created. The Service units are configured to trigger either compaction for all existing ZRAM devices or recompression for the ZRAM swap drive. Timers add a randomized delay of up to 10% to the cycle time.
 
 #### Outcome
 
-On a device with <4 GiB usable memory, I've observed ratios of roughly 30..40% during normal usage scenarios (Browser, several Electron shells, E-Mail, password databases, office application, file synchronization, ...) while the system stays _mostly_ reactive. With this configuration I try to achieve a good user experience, but the capabilities of my system are still limited.
+On a device with <4 GiB usable memory, I've observed ratios up to ~4:1 during both normal and heavier usage scenarios (Browser, several Electron shells, E-Mail, password databases, office application, file synchronization, screen capture, image manipulation, ...) while the system stays _mostly_ reactive. With this configuration I try to achieve a good user experience, but the capabilities of my system are still limited. At the very least it is fun to work with. ;c)
 
 #### Blogs
 
