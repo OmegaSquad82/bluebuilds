@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.8.5](https://github.com/OmegaSquad82/bluebuilds/compare/v1.8.4...v1.8.5) (2025-05-08)
+
+
+### Bug Fixes
+
+* scale recompression with available ram per cpu core ([b1292b2](https://github.com/OmegaSquad82/bluebuilds/commit/b1292b212a4e7b5c88a156233bfb2ff19631bcf0))
+* use zstd level 1 for near realtime recompression ([c80e72d](https://github.com/OmegaSquad82/bluebuilds/commit/c80e72d6363219e16782345649dbbee1b2bf8f06))
+* use zstd level 1 for near realtime recompression ([b1292b2](https://github.com/OmegaSquad82/bluebuilds/commit/b1292b212a4e7b5c88a156233bfb2ff19631bcf0))
+
 ## [1.8.4](https://github.com/OmegaSquad82/bluebuilds/compare/v1.8.3...v1.8.4) (2025-05-06)
 
 
