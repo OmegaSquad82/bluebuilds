@@ -1,5 +1,5 @@
 [Unit]
-Description=Recompress Percpu kB-Memory amount of pages of the ZRAM swap device
+Description=Recompress some pages of the ZRAM swap device
 Documentation="https://docs.kernel.org/admin-guide/blockdev/zram.html#recompression"
 StopWhenUnneeded=yes
 
