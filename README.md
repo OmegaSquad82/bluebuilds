@@ -138,6 +138,7 @@ On a device with <4 GiB usable memory, I've observed ratios up to ~4:1 during bo
 
 - [Arch Wiki - Zram](https://wiki.archlinux.org/title/Zram)
 - [Fedora Wiki - Changes/Scale ZRAM to full memory size](https://fedoraproject.org/wiki/Changes/Scale_ZRAM_to_full_memory_size)
+- [Fedora Wiki - Changes/Swap on ZRAM](https://fedoraproject.org/wiki/Changes/SwapOnZRAM)
 
 ## Installation
 
