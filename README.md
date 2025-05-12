@@ -113,7 +113,7 @@ To actually facilitate recompression it uses a [zram-recompression.timer](files/
 
 #### Outcome
 
-On an old device with less than 4 GiB of system memory, I've observed that the ZRAM swap converged from a ratio of minimum 2:1 to ratios of roughly 3:1 during normal and up to 4:1 during stressing usage scenarios (Browser, several Electron shells, E-Mail, password databases, office application, file synchronization, screen capture, image manipulation, ...) while the system stays _mostly_ reactive. With this configuration I try to achieve a good user experience, but the capabilities of my system are still limited. At the very least it is fun to work with. ;c)
+On an old device with less than 4 GiB of system memory, I've observed that the ZRAM swap converged from a ratio of minimum 2:1 to ratios of roughly 3:1 during "normal" and up to 4:1 during certain excessive usage scenarios (Browser, several Electron shells e.g. for code editing + communication, E-Mail, password databases, office application(s), file synchronization application(s), screen capture, image manipulation, ...) while the system stays _mostly_ reactive, as much as one can expect from this outdated machine. With this configuration I try to achieve an amenable user experience, but the capabilities of my system are still limited. At the very least it is more fun and less frustrating to work with than ever before. ;c)
 
 TODO: insert some proof here
 
