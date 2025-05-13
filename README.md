@@ -117,6 +117,10 @@ On an old device with less than 4 GiB of system memory, I've observed that the Z
 
 TODO: insert some proof here
 
+#### Improvements
+
+Regularly trying to recompress some fixed number of pages may not be sufficient. One next step could be to enable [memory tracking](https://docs.kernel.org/admin-guide/blockdev/zram.html#memory-tracking) which allows to set a duration after which an unused page would be marked as idle. Recompression could thus be limited to such idle pages which were swapped out for a time, limiting the chance to recompress pages which are going to be evicted qickly. More compression algorithms and levels could be added as well to account for remaining huge (=incompressible) pages, subsequently using `zstd3` or `lz4hc`, for instance.
+
 #### Blogs
 
 - [Free vs. Available Memory in Linux; August 30, 2024 by Hayden James, in Blog Linux](https://linuxblog.io/free-vs-available-memory-in-linux/)
