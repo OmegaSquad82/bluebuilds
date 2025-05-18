@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.8.6](https://github.com/OmegaSquad82/bluebuilds/compare/v1.8.5...v1.8.6) (2025-05-17)
+
+
+### Bug Fixes
+
+* missing package rmlint for btrfs-dedup@var-home.service ([82e8c53](https://github.com/OmegaSquad82/bluebuilds/commit/82e8c534ee45dfb419dd1b1d229325776753acf5))
+* missing package rmlint for btrfs-dedup@var-home.service ([fb4d607](https://github.com/OmegaSquad82/bluebuilds/commit/fb4d60786849032f0f698d0a7264c75c20fec4ed))
+
 ## [1.8.5](https://github.com/OmegaSquad82/bluebuilds/compare/v1.8.4...v1.8.5) (2025-05-08)
 
 
