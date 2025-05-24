@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.8.7](https://github.com/OmegaSquad82/bluebuilds/compare/v1.8.6...v1.8.7) (2025-05-24)
+
+
+### Bug Fixes
+
+* add some shots of htop's cpu, memory, swap and zram meter bars ([5716a35](https://github.com/OmegaSquad82/bluebuilds/commit/5716a359fe71ffaea8d0488aa238c46161a59be0))
+* add some shots of htop's cpu, memory, swap and zram meter bars ([6e3c6c7](https://github.com/OmegaSquad82/bluebuilds/commit/6e3c6c7a2dcd30621500c5c24e6e270ff17f5d33))
+
 ## [1.8.6](https://github.com/OmegaSquad82/bluebuilds/compare/v1.8.5...v1.8.6) (2025-05-17)
 
 
