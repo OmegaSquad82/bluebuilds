@@ -115,7 +115,18 @@ To actually facilitate recompression it uses a [zram-recompression.timer](files/
 
 On an old device with less than 4 GiB of system memory, I've observed that the ZRAM swap converged from a ratio of minimum 2:1 to ratios of roughly 3:1 during "normal" and up to 4:1 during certain excessive usage scenarios (Browser, several Electron shells e.g. for code editing + communication, E-Mail, password databases, office application(s), file synchronization application(s), screen capture, image manipulation, ...) while the system stays _mostly_ reactive, as much as one can expect from this outdated machine. With this configuration I try to achieve an amenable user experience, but the capabilities of my system are still limited. At the very least it is more fun and less frustrating to work with than ever before. ;c)
 
-TODO: insert some proof here
+##### Just LZ4 and no recompression under heavier usage
+
+![ratio ~2.6:1](images/ratio-2,6-to-1-recompression-off.png)
+
+##### Using zstd:1 as recompression algorightm, from light to heavy usage
+
+![ratio ~4,1:1](images/ratio-4,1-to-1-recompression-on.png)
+
+![ratio ~3,8:1](images/ratio-3,8-to-1-recompression-on.png)
+
+![ratio ~3,2:1](images/ratio-3,2-to-1-recompression-on.png)
+
 
 #### Improvements
 
