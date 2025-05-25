@@ -1,4 +1,7 @@
 modules:
+  - type: rpm-ostree
+    install:
+      - podman-docker
   - type: systemd
     user:
       enabled:
