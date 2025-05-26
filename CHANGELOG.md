@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.0](https://github.com/OmegaSquad82/bluebuilds/compare/v1.8.7...v1.9.0) (2025-05-25)
+
+
+### Features
+
+* add podman-docker for funsies but not profits ([7a3ecfd](https://github.com/OmegaSquad82/bluebuilds/commit/7a3ecfd439a7e2cdc59529c415eaba6cf9fa9a9f))
+
 ## [1.8.7](https://github.com/OmegaSquad82/bluebuilds/compare/v1.8.6...v1.8.7) (2025-05-24)
 
 
