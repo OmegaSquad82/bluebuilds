@@ -115,6 +115,10 @@ jobs:
         run: |
           set -euo pipefail
 
+          docker system prune -af
+          podman system prune -af
+          rpm-ostree cleanup -bm
+
           echo "${{ secrets.SIGNING_SECRET }}" >cosign.key
           IMAGE_REF=${REGISTRY_IMG_PATH@L}/${{ matrix.package }}:latest
 
@@ -122,7 +126,6 @@ jobs:
             --username ${{ env.REGISTRY_USERNAME }} \
             --password ${{ env.REGISTRY_PASSWORD }}
 
-          podman system prune -af
           podman pull "${IMAGE_REF}"
           podman tag  "${IMAGE_REF}" "${IMAGE_REF}-zstchd" # zstd:chunked
           podman images --digests
