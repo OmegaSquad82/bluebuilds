@@ -67,7 +67,7 @@ jobs:
           # https://github.com/radxa/armbian-compile-action/commit/82fe40188f2f3b4dbd4ae8fb9c64f49f117085c7
           sudo mkfs.btrfs -L buildlv -M -m single --force "${LV_NAME}"
 
-          mkdir -p /buildvg /sysroot
+          sudo mkdir -p /buildvg /sysroot
           sudo mount -o defaults,noatime,compress=zstd,discard=sync "${LV_NAME}" /buildvg
           sudo btrfs subvolume create /buildvg/workspace
           sudo btrfs subvolume create /buildvg/sysroot
