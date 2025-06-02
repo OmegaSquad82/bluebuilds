@@ -22,6 +22,8 @@ concurrency:
 
 env:
   IS_DEFAULT: false
+  REGISTRY_USERNAME: ${{ github.actor }}
+  REGISTRY_PASSWORD: ${{ github.token }}
 
 jobs:
   imagebuild:
@@ -77,7 +79,8 @@ jobs:
             echo 'IS_DEFAULT=true'>$GITHUB_ENV
           fi
 
-      - name: Build Custom Image
+      - id: build
+        name: Build Custom Image
         uses: blue-build/github-action@v1.8.1
         with:
           cosign_private_key: ${{ secrets.SIGNING_SECRET }}
@@ -87,10 +90,26 @@ jobs:
           recipe: recipe-${{ matrix.package }}.yml
           registry_token: ${{ github.token }}
           # build_args: |
-          #   --compression-format=zstd:chunked
+          #   --compression-format zstd:chunked
 
-      - name: Recompress to zstd:chunked
-        id: pull
+      # This is something the community worked on for quite some time
+      #   but it likely will improve the efficiency of transfers;
+      #    this was made to workaround the fact that blue-build
+      #     does not yet support zstd:chunked and it depends
+      #      on bootc/rpm-ostree having implemented this,
+      #       which according to my tests is now good.
+      #
+      # Changetracker
+      #   https://fedoraproject.org/wiki/Changes/zstd:chunked
+      #   https://github.com/containers/storage/pull/775
+      # Documentation
+      #   https://bootc-dev.github.io/bootc/filesystem-storage.html
+      # Projectstuffz
+      #   https://github.com/blue-build/cli/issues/112
+      #   https://github.com/containers/bootc/issues/20
+      #   https://github.com/containers/bootc/issues/963
+      - id: recmp
+        name: Recompress to zstd:chunked
         run: |
           echo "${{ env.COSIGN_PRIVATE_KEY }}" >cosign.key
           set -euxo pipefail
@@ -106,3 +125,8 @@ jobs:
             --compression-format=zstd:chunked \
             --sign-by-sigstore-private-key=cosign.key \
             "$(podman image list --digests --format json | jq -r '.[0].Id')" "${{ env.IMAGE_REF }}"-zstchd
+
+      - name: Print outputs
+        run: |
+          echo '${{ toJSON(steps.build.outputs) }}' | jq .
+          echo '${{ toJSON(steps.recmp.outputs) }}' | jq .
