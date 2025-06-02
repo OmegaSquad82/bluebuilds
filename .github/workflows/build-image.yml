@@ -120,6 +120,16 @@ jobs:
           echo "${{ secrets.SIGNING_SECRET }}" >cosign.key
           IMAGE_REF=${REGISTRY_IMG_PATH@L}/${{ matrix.package }}:latest
 
+          PODMAN_CONFDIR="$HOME/.config/containers/registries.d/"
+          PODMAN_CONFIG="${PODMAN_CONFDIR}/registries.yaml"
+
+          mkdir -p "${PODMAN_CONFDIR}"
+          echo "creating: ${PODMAN_CONFIG}"
+          tee "${PODMAN_CONFIG}" <<EOF
+          default-docker:
+            use-sigstore-attachments: true
+          EOF
+
           podman login ghcr.io \
             --username ${{ env.REGISTRY_USERNAME }} \
             --password ${{ env.REGISTRY_PASSWORD }}
@@ -127,6 +137,7 @@ jobs:
           podman pull "${IMAGE_REF}"
           podman tag  "${IMAGE_REF}" "${IMAGE_REF}-zstchd" # zstd:chunked
           podman images --digests
+
           podman push \
             --compression-format=zstd:chunked \
             --sign-by-sigstore-private-key=cosign.key \
