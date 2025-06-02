@@ -13,8 +13,8 @@ on:
       - "renovate.json"
   schedule:
     - cron:
-        "10 06 * * 1,3,5" # build at 06:10 UTC on Mon, Wed, Fr
-        # (30 minutes after last ublue images start building)
+        "25 06 * * 1,3,5" # build at 06:10 UTC on Mon, Wed, Fr
+        # (45 minutes after last ublue images start building)
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref || github.run_id }}
@@ -51,7 +51,7 @@ jobs:
       - name: Convert to compressed filesystem
         shell: bash
         run: |
-          set -eux pipefail
+          set -euxo pipefail
 
           # https://github.com/easimon/maximize-build-space/issues/23
           # https://github.com/easimon/maximize-build-space/pull/37
@@ -86,3 +86,23 @@ jobs:
           rechunk: ${{ env.IS_DEFAULT }}
           recipe: recipe-${{ matrix.package }}.yml
           registry_token: ${{ github.token }}
+          # build_args: |
+          #   --compression-format=zstd:chunked
+
+      - name: Recompress to zstd:chunked
+        id: pull
+        run: |
+          echo "${{ env.COSIGN_PRIVATE_KEY }}" >cosign.key
+          set -euxo pipefail
+
+          podman login ghcr.io \
+            --username ${{ env.REGISTRY_USERNAME }} \
+            --password ${{ env.REGISTRY_PASSWORD }}
+
+          podman pull "${{ env.IMAGE_REF }}"
+          podman tag  "${{ env.IMAGE_REF }}" "${{ env.IMAGE_REF }}-zstchd" # zstd:chunked
+          podman images --digests
+          podman push \
+            --compression-format=zstd:chunked \
+            --sign-by-sigstore-private-key=cosign.key \
+            "$(podman image list --digests --format json | jq -r '.[0].Id')" "${{ env.IMAGE_REF }}"-zstchd
