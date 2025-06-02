@@ -75,7 +75,7 @@ jobs:
           LV2_NAME=sysroot
           LV2_PATH="/dev/mapper/${VG0_NAME}-${LV2_NAME}"
 
-          sudo mkdir -p "${LV2_NAME}"
+          sudo mkdir -p /"${LV2_NAME}"
           sudo lvcreate -L 32GiB -n "${LV2_NAME}" "${VG0_NAME}" -ay
           sudo mkfs.btrfs -L "${LV2_NAME}" -M -m single --force "${LV2_PATH}"
           sudo mount -o defaults,noatime,compress=zstd,discard=sync "${LV2_PATH}" /"${LV2_NAME}"
