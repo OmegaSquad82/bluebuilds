@@ -37,8 +37,8 @@ jobs:
       fail-fast: true
       matrix:
         package:
-          - aubertit
-          - buttgenbachit
+          #- aubertit
+          #- buttgenbachit
           - carbonatcyanotrichit
           - flaviramea
     steps:
