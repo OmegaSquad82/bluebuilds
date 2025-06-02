@@ -58,24 +58,22 @@ jobs:
           # https://github.com/easimon/maximize-build-space/issues/23
           # https://github.com/easimon/maximize-build-space/pull/37
           WORKSPACE_OWNER="$(stat -c '%U:%G' "${GITHUB_WORKSPACE}")"
-          VG_NAME=buildvg
-          LV_NAME="/dev/mapper/${VG_NAME}-buildlv"
+          VG0_NAME=buildvg
+          LV1_NAME=buildlv
+          LV1_PATH="/dev/mapper/${VG0_NAME}-${LV1_NAME}"
 
           cd ~
-          sudo umount "${LV_NAME}"
+          sudo umount "${LV1_PATH}"
 
           # https://github.com/radxa/armbian-compile-action/commit/82fe40188f2f3b4dbd4ae8fb9c64f49f117085c7
-          sudo mkfs.btrfs -L buildlv -M -m single --force "${LV_NAME}"
-
-          sudo mkdir -p /buildvg /sysroot
-          sudo mount -o defaults,noatime,compress=zstd,discard=sync "${LV_NAME}" /buildvg
-          sudo btrfs subvolume create /buildvg/workspace
-          sudo btrfs subvolume create /buildvg/sysroot
-
-          sudo mount -o defaults,noatime,compress=zstd,discard=sync,subvol=workspace "${LV_NAME}" "${GITHUB_WORKSPACE}"
-          sudo mount -o defaults,noatime,compress=zstd,discard=sync,subvol=sysroot "${LV_NAME}" /sysroot
-
+          sudo mkfs.btrfs -L "${LV1_NAME}" -M -m single --force "${LV1_PATH}"
+          sudo mount -o defaults,noatime,compress=zstd,discard=sync "${LV1_PATH}" "${GITHUB_WORKSPACE}"
           sudo chown -R "$WORKSPACE_OWNER" "${GITHUB_WORKSPACE}"
+
+          LV2_NAME=sysroot
+          LV2_PATH="/dev/mapper/${VG0_NAME}-${LV2_NAME}"
+          sudo lvcreate -L 64GiB ${VG0_NAME}/${LV2_NAME} -ay
+          sudo mount -o defaults,noatime,compress=zstd,discard=sync "${LV2_PATH}" /"${LV2_NAME}"
 
       - name: Checkout codeZ
         uses: actions/checkout@v4
