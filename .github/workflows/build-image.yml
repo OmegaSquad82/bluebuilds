@@ -66,12 +66,16 @@ jobs:
 
           # https://github.com/radxa/armbian-compile-action/commit/82fe40188f2f3b4dbd4ae8fb9c64f49f117085c7
           sudo mkfs.btrfs -L buildlv -M -m single --force "${LV_NAME}"
-          sudo mount -o defaults,noatime,compress=zstd,discard=sync "${LV_NAME}" "${GITHUB_WORKSPACE}"
+
+          mkdir -p /buildvg /sysroot
+          sudo mount -o defaults,noatime,compress=zstd,discard=sync "${LV_NAME}" /buildvg
+          sudo btrfs subvolume create /buildvg/workspace
+          sudo btrfs subvolume create /buildvg/sysroot
+
+          sudo mount -o defaults,noatime,compress=zstd,discard=sync,subvol=workspace "${LV_NAME}" "${GITHUB_WORKSPACE}"
+          sudo mount -o defaults,noatime,compress=zstd,discard=sync,subvol=sysroot "${LV_NAME}" /sysroot
 
           sudo chown -R "$WORKSPACE_OWNER" "${GITHUB_WORKSPACE}"
-
-          sudo mkdir -p "${GITHUB_WORKSPACE}"/ostree /sysroot/
-          sudo ln -ds "${GITHUB_WORKSPACE}" /sysroot/ostree
 
       - name: Checkout codeZ
         uses: actions/checkout@v4
@@ -137,14 +141,14 @@ jobs:
             --password ${{ env.REGISTRY_PASSWORD }}
 
           podman pull "${IMAGE_REF}"
-          podman tag  "${IMAGE_REF}" "${IMAGE_REF}-zstchd" # zstd:chunked
           podman images --digests
 
           podman push \
             --remove-signatures \
             --compression-format=zstd:chunked \
             --sign-by-sigstore-private-key=cosign.key \
-            "$(podman image list --digests --format json | jq -r '.[0].Id')" "${IMAGE_REF}"-zstchd
+            "$(podman image list --digests --format json | jq -r '.[0].Id')" \
+            "${IMAGE_REF}"-zstchd
 
       - name: Print outputs
         run: |
