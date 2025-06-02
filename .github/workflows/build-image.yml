@@ -4,7 +4,6 @@ on:
   push:
     paths-ignore:
       - "**/release-please.yml"
-      - "**/recompress-latest.yml"
       - "**/vulnerability-scan.yml"
       - "**/composition-analysis.yml"
       - "**.md"
@@ -37,8 +36,8 @@ jobs:
       fail-fast: true
       matrix:
         package:
-          #- aubertit
-          #- buttgenbachit
+          - aubertit
+          - buttgenbachit
           - carbonatcyanotrichit
           - flaviramea
     steps:
