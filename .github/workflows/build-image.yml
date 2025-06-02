@@ -105,6 +105,7 @@ jobs:
       #   https://github.com/containers/storage/pull/775
       # Documentation
       #   https://bootc-dev.github.io/bootc/filesystem-storage.html
+      #   https://eu-os.eu/goals#goals # interesting new project
       # Projectstuffz
       #   https://github.com/blue-build/cli/issues/112
       #   https://github.com/containers/bootc/issues/20
@@ -121,6 +122,7 @@ jobs:
             --username ${{ env.REGISTRY_USERNAME }} \
             --password ${{ env.REGISTRY_PASSWORD }}
 
+          podman images --digests
           podman pull "${IMAGE_REF}"
           podman tag  "${IMAGE_REF}" "${IMAGE_REF}-zstchd" # zstd:chunked
           podman images --digests
