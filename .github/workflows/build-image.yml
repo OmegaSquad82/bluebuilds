@@ -120,6 +120,8 @@ jobs:
           echo "${{ secrets.SIGNING_SECRET }}" >cosign.key
           IMAGE_REF=${REGISTRY_IMG_PATH@L}/${{ matrix.package }}:latest
 
+          # https://github.com/containers/image/issues/1613#issuecomment-1188923320
+          # https://github.com/containers/image/blob/main/docs/containers-registries.d.5.md#individual-configuration-sections
           PODMAN_CONFDIR="$HOME/.config/containers/registries.d/"
           PODMAN_CONFIG="${PODMAN_CONFDIR}/registries.yaml"
 
@@ -139,6 +141,7 @@ jobs:
           podman images --digests
 
           podman push \
+            --remove-signatures \
             --compression-format=zstd:chunked \
             --sign-by-sigstore-private-key=cosign.key \
             "$(podman image list --digests --format json | jq -r '.[0].Id')" "${IMAGE_REF}"-zstchd
