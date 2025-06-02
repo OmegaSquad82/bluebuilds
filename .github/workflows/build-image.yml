@@ -71,6 +71,9 @@ jobs:
 
           sudo chown -R "$WORKSPACE_OWNER" "${GITHUB_WORKSPACE}"
 
+          sudo mkdir -p /sysroot/ostree/ "${GITHUB_WORKSPACE}"/repo
+          sudo ln -ds "${GITHUB_WORKSPACE}"/repo /sysroot/ostree/repo
+
       - name: Checkout codeZ
         uses: actions/checkout@v4
 
@@ -114,10 +117,6 @@ jobs:
         name: Recompress to zstd:chunked
         run: |
           set -euo pipefail
-
-          docker system prune -af
-          podman system prune -af
-          rpm-ostree cleanup -bm
 
           echo "${{ secrets.SIGNING_SECRET }}" >cosign.key
           IMAGE_REF=${REGISTRY_IMG_PATH@L}/${{ matrix.package }}:latest
