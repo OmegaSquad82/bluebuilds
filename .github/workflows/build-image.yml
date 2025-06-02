@@ -73,6 +73,7 @@ jobs:
           LV2_NAME=sysroot
           LV2_PATH="/dev/mapper/${VG0_NAME}-${LV2_NAME}"
           sudo lvcreate -L 64GiB ${VG0_NAME}/${LV2_NAME} -ay
+          sudo mkfs.btrfs -L "${LV2_NAME}" -M -m single --force "${LV2_PATH}"
           sudo mount -o defaults,noatime,compress=zstd,discard=sync "${LV2_PATH}" /"${LV2_NAME}"
 
       - name: Checkout codeZ
