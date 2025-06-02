@@ -70,8 +70,8 @@ jobs:
 
           sudo chown -R "$WORKSPACE_OWNER" "${GITHUB_WORKSPACE}"
 
-          sudo mkdir -p "${GITHUB_WORKSPACE}"/repo /sysroot/ostree/
-          sudo ln -ds "${GITHUB_WORKSPACE}"/repo /sysroot/ostree/repo
+          sudo mkdir -p "${GITHUB_WORKSPACE}"/ostree /sysroot/
+          sudo ln -ds "${GITHUB_WORKSPACE}" /sysroot/ostree
 
       - name: Checkout codeZ
         uses: actions/checkout@v4
