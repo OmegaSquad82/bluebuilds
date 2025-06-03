@@ -80,9 +80,6 @@ jobs:
           fi
 
           sudo mkdir -p /var/lib/containers
-          sudo semanage fcontext -a -e /var/lib/containers.bak /var/lib/containers
-          sudo restorecon -R -v /var/lib/containers
-
           sudo lvcreate -L 32GiB -n "${LV2_NAME}" "${VG0_NAME}" -ay
           sudo mkfs.btrfs -L "${LV2_NAME}" -M -m single --force "${LV2_PATH}"
           sudo mount -o defaults,noatime,compress=zstd,discard=sync "${LV2_PATH}" /var/lib/containers
