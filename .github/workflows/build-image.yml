@@ -75,10 +75,12 @@ jobs:
           LV2_NAME=containerlv
           LV2_PATH="/dev/mapper/${VG0_NAME}-${LV2_NAME}"
 
-          sudo mkdir -p /home/runner/.local/share/containers
+          PODSTORE=/home/runner/.local/share/containers
+          sudo mkdir -p "${PODSTORE}"
           sudo lvcreate -L 32GiB -n "${LV2_NAME}" "${VG0_NAME}" -ay
           sudo mkfs.btrfs -L "${LV2_NAME}" -M -m single --force "${LV2_PATH}"
-          sudo mount -o defaults,noatime,compress=zstd,discard=sync "${LV2_PATH}" /home/runner/.local/share/containers
+          sudo mount -o defaults,noatime,compress=zstd,discard=sync "${LV2_PATH}" "${PODSTORE}"
+          sudo chown -R "$WORKSPACE_OWNER" "${PODSTORE}"
 
           LV3_NAME=sysrootlv
           LV3_PATH="/dev/mapper/${VG0_NAME}-${LV3_NAME}"
@@ -164,6 +166,8 @@ jobs:
             --sign-by-sigstore-private-key=cosign.key \
             "$(podman image list --digests --format json | jq -r '.[0].Id')" \
             "${IMAGE_REF}"-zstchd
+
+          df -h
 
       - name: Print outputs
         run: |
