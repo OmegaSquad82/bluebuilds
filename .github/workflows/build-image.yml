@@ -147,7 +147,7 @@ jobs:
             --username ${{ env.REGISTRY_USERNAME }} \
             --password ${{ env.REGISTRY_PASSWORD }}
 
-          podman pull "${IMAGE_REF}"
+          podman pull "${IMAGE_REF}" || (df -h && exit 125)
           podman images --digests
 
           podman push \
