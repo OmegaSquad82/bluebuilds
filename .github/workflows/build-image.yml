@@ -66,6 +66,7 @@ jobs:
           LV_NAME=buildlv
           LV_PATH="/dev/mapper/${VG_NAME}-${LV_NAME}"
 
+          cd ~
           sudo umount "${LV_PATH}"
           sudo mkdir -p /btrfsroot /home/runner/.local/share/containers /var/lib/containers /sysroot
 
@@ -77,7 +78,6 @@ jobs:
           for subvolume in containers homestorge ostreestor aworkspace; do
             sudo btrfs subvolume create "$subvolume"
           fi
-          cd ~
 
           # https://github.com/containers/podman/blob/main/troubleshooting.md#11-changing-the-location-of-the-graphroot-leads-to-permission-denied
           sudo mount -o subvol=containers,noatime,compress=zstd,discard=sync "${LV_PATH}" /var/lib/containers
