@@ -151,14 +151,15 @@ jobs:
           EOF
 
           podman login ghcr.io \
-            --username ${{ env.REGISTRY_USERNAME }} \
-            --password ${{ env.REGISTRY_PASSWORD }}
+            --username "${{ env.REGISTRY_USERNAME }}" \
+            --password "${{ env.REGISTRY_PASSWORD }}"
 
           podman pull "${IMAGE_REF}" || (df -h && exit 125)
           podman images --digests
 
           podman push \
             --remove-signatures \
+            --compression-level=6 \
             --compression-format=zstd:chunked \
             --sign-by-sigstore-private-key=cosign.key \
             "$(podman image list --digests --format json | jq -r '.[0].Id')" \
