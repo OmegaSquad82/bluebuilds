@@ -10,6 +10,7 @@ modules:
   - from-file: configs/systemfiles.yml
   - from-file: configs/zram-generator.yml
 
+  - from-file: configs/kargs.yml
   - from-file: configs/clatd.yml
   - from-file: configs/power.yml
   - from-file: configs/fonts.yml

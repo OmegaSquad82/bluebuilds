@@ -12,6 +12,7 @@ modules:
 
   - from-file: configs/hhd.yml
   - from-file: configs/sshd.yml
+  - from-file: configs/kargs.yml
   - from-file: configs/clatd.yml
   - from-file: configs/fonts.yml
   - from-file: configs/podman.yml
