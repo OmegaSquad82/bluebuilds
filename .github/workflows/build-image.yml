@@ -65,20 +65,39 @@ jobs:
           LV1_PATH="/dev/mapper/${VG0_NAME}-${LV1_NAME}"
 
           sudo umount "${LV1_PATH}"
-          sudo lvresize -L 48GiB "${LV1_PATH}" --force
+          sudo lvresize -L 32GiB "${LV1_PATH}" --force
 
           # https://github.com/radxa/armbian-compile-action/commit/82fe40188f2f3b4dbd4ae8fb9c64f49f117085c7
           sudo mkfs.btrfs -L "${LV1_NAME}" -M -m single --force "${LV1_PATH}"
           sudo mount -o defaults,noatime,compress=zstd,discard=sync "${LV1_PATH}" "${GITHUB_WORKSPACE}"
           sudo chown -R "$WORKSPACE_OWNER" "${GITHUB_WORKSPACE}"
 
-          LV2_NAME=sysroot
+          LV2_NAME=containers
           LV2_PATH="/dev/mapper/${VG0_NAME}-${LV2_NAME}"
 
-          sudo mkdir -p /"${LV2_NAME}"
-          sudo lvcreate -L 48GiB -n "${LV2_NAME}" "${VG0_NAME}" -ay
+          if [[ -d /var/lib/containers ]]; then
+            sudo mv /var/lib/containers /var/lib/containers.bak
+          fi
+
+          sudo mkdir -p /var/lib/containers
+          sudo semanage fcontext -a -e /var/lib/containers.bak /var/lib/containers
+          sudo restorecon -R -v /var/lib/containers
+
+          sudo lvcreate -L 32GiB -n "${LV2_NAME}" "${VG0_NAME}" -ay
           sudo mkfs.btrfs -L "${LV2_NAME}" -M -m single --force "${LV2_PATH}"
-          sudo mount -o defaults,noatime,compress=zstd,discard=sync "${LV2_PATH}" /"${LV2_NAME}"
+          sudo mount -o defaults,noatime,compress=zstd,discard=sync "${LV2_PATH}" /var/lib/containers
+
+          if [[ -d /var/lib/containers.bak ]]; then
+            sudo mv /var/lib/containers.bak/* /var/lib/containers/
+          fi
+
+          LV3_NAME=sysroot
+          LV3_PATH="/dev/mapper/${VG0_NAME}-${LV3_NAME}"
+
+          sudo mkdir -p /"${LV3_NAME}"
+          sudo lvcreate -L 32GiB -n "${LV3_NAME}" "${VG0_NAME}" -ay
+          sudo mkfs.btrfs -L "${LV3_NAME}" -M -m single --force "${LV3_PATH}"
+          sudo mount -o defaults,noatime,compress=zstd,discard=sync "${LV3_PATH}" /"${LV3_NAME}"
 
           sudo mount | grep btrfs
           lsblk
