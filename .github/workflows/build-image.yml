@@ -45,7 +45,6 @@ jobs:
         uses: easimon/maximize-build-space@master
         with:
           overprovision-lvm: true
-          swap-size-mb: 1024
           remove-android: true
           remove-codeql: true
           remove-docker-images: true
@@ -54,7 +53,7 @@ jobs:
       - name: Compress critical paths
         shell: bash
         run: |
-          set -euxo pipefail
+          set -euo pipefail
 
           # https://github.com/easimon/maximize-build-space/issues/23
           # https://github.com/easimon/maximize-build-space/pull/37
