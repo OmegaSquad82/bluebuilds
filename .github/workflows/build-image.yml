@@ -77,7 +77,7 @@ jobs:
           cd /btrfsroot
           for subvolume in containers homestorge ostreestor aworkspace; do
             sudo btrfs subvolume create "$subvolume"
-          fi
+          done
 
           # https://github.com/containers/podman/blob/main/troubleshooting.md#11-changing-the-location-of-the-graphroot-leads-to-permission-denied
           sudo mount -o subvol=containers,noatime,compress=zstd,discard=sync "${LV_PATH}" /var/lib/containers
