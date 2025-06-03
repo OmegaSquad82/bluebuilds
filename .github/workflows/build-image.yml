@@ -65,7 +65,7 @@ jobs:
           LV1_PATH="/dev/mapper/${VG0_NAME}-${LV1_NAME}"
 
           sudo umount "${LV1_PATH}"
-          sudo lvresize -L 64GiB "${LV1_PATH}" --force
+          sudo lvresize -L 48GiB "${LV1_PATH}" --force
 
           # https://github.com/radxa/armbian-compile-action/commit/82fe40188f2f3b4dbd4ae8fb9c64f49f117085c7
           sudo mkfs.btrfs -L "${LV1_NAME}" -M -m single --force "${LV1_PATH}"
@@ -76,9 +76,13 @@ jobs:
           LV2_PATH="/dev/mapper/${VG0_NAME}-${LV2_NAME}"
 
           sudo mkdir -p /"${LV2_NAME}"
-          sudo lvcreate -L 32GiB -n "${LV2_NAME}" "${VG0_NAME}" -ay
+          sudo lvcreate -L 48GiB -n "${LV2_NAME}" "${VG0_NAME}" -ay
           sudo mkfs.btrfs -L "${LV2_NAME}" -M -m single --force "${LV2_PATH}"
           sudo mount -o defaults,noatime,compress=zstd,discard=sync "${LV2_PATH}" /"${LV2_NAME}"
+
+          sudo mount | grep btrfs
+          lsblk
+          df -h
 
       - name: Checkout codeZ
         uses: actions/checkout@v4
