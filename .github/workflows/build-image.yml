@@ -45,54 +45,52 @@ jobs:
         uses: easimon/maximize-build-space@master
         with:
           overprovision-lvm: true
+          swap-size-mb: 1024
           remove-android: true
           remove-codeql: true
           remove-docker-images: true
           remove-dotnet: true
           remove-haskell: true
-      - name: Compress build space
+      - name: Compress critical paths
         shell: bash
         run: |
           set -euxo pipefail
-          cd ~
 
           # https://github.com/easimon/maximize-build-space/issues/23
           # https://github.com/easimon/maximize-build-space/pull/37
           WORKSPACE_OWNER="$(stat -c '%U:%G' "${GITHUB_WORKSPACE}")"
-          VG0_NAME=buildvg
+          HOMESPACE_OWNER="$(stat -c '%U:%G' "${HOME}")"
 
-          LV1_NAME=buildlv
-          LV1_PATH="/dev/mapper/${VG0_NAME}-${LV1_NAME}"
+          VG_NAME=buildvg
+          LV_NAME=buildlv
+          LV_PATH="/dev/mapper/${VG_NAME}-${LV_NAME}"
 
-          sudo umount "${LV1_PATH}"
-          sudo lvresize -L 32GiB "${LV1_PATH}" --force
+          cd ~
+          sudo umount "${LV_PATH}"
+          sudo mkdir -p /btrfsrootvol /home/runner/.local/share/containers /var/lib/containers /sysroot
 
           # https://github.com/radxa/armbian-compile-action/commit/82fe40188f2f3b4dbd4ae8fb9c64f49f117085c7
-          sudo mkfs.btrfs -L "${LV1_NAME}" -M -m single --force "${LV1_PATH}"
-          sudo mount -o defaults,noatime,compress=zstd,discard=sync "${LV1_PATH}" "${GITHUB_WORKSPACE}"
+          sudo mkfs.btrfs -L "${LV_NAME}" -M -m single --force "${LV_PATH}"
+          sudo mount -o defaults,noatime,compress=zstd:1,discard=sync "${LV_PATH}" /btrfsrootvol
+
+          cd /btrfsrootvol
+          for subvolume in containers homestorge ostreestor aworkspace; do
+            sudo btrfs subvolume create "$subvolume"
+          done
+
+          # https://github.com/containers/podman/blob/main/troubleshooting.md#11-changing-the-location-of-the-graphroot-leads-to-permission-denied
+          sudo mount -o subvol=containers,noatime,compress=zstd:1,discard=sync "${LV_PATH}" /var/lib/containers
+          sudo mount -o subvol=homestorge,noatime,compress=zstd:1,discard=sync "${LV_PATH}" /home/runner/.local/share/containers
+          sudo mount -o subvol=ostreestor,noatime,compress=zstd:1,discard=sync "${LV_PATH}" /sysroot
+          sudo mount -o subvol=aworkspace,noatime,compress=zstd:1,discard=sync "${LV_PATH}" "${GITHUB_WORKSPACE}"
+
           sudo chown -R "$WORKSPACE_OWNER" "${GITHUB_WORKSPACE}"
-
-          LV2_NAME=containerlv
-          LV2_PATH="/dev/mapper/${VG0_NAME}-${LV2_NAME}"
-
-          PODSTORE=/home/runner/.local/share/containers
-          sudo mkdir -p "${PODSTORE}"
-          sudo lvcreate -L 32GiB -n "${LV2_NAME}" "${VG0_NAME}" -ay
-          sudo mkfs.btrfs -L "${LV2_NAME}" -M -m single --force "${LV2_PATH}"
-          sudo mount -o defaults,noatime,compress=zstd,discard=sync "${LV2_PATH}" "${PODSTORE}"
-          sudo chown -R "$WORKSPACE_OWNER" "${PODSTORE}"
-
-          LV3_NAME=sysrootlv
-          LV3_PATH="/dev/mapper/${VG0_NAME}-${LV3_NAME}"
-
-          sudo mkdir -p /sysroot
-          sudo lvcreate -L 32GiB -n "${LV3_NAME}" "${VG0_NAME}" -ay
-          sudo mkfs.btrfs -L "${LV3_NAME}" -M -m single --force "${LV3_PATH}"
-          sudo mount -o defaults,noatime,compress=zstd,discard=sync "${LV3_PATH}" /sysroot
+          sudo chown -R "$HOMESPACE_OWNER" /home/runner/.local/share/containers
 
           sudo mount | grep btrfs
           lsblk
-          df -h
+
+      - run: df -h
 
       - name: Checkout codeZ
         uses: actions/checkout@v4
@@ -103,8 +101,7 @@ jobs:
             echo 'IS_DEFAULT=true'>$GITHUB_ENV
           fi
 
-      - id: build
-        name: Build Custom Image
+      - name: Build Custom Image
         uses: blue-build/github-action@v1.8.1
         with:
           cosign_private_key: ${{ secrets.SIGNING_SECRET }}
@@ -115,6 +112,8 @@ jobs:
           registry_token: ${{ github.token }}
           # build_args: |
           #   --compression-format zstd:chunked
+
+      - run: df -h
 
       # This is something the community worked on for quite some time
       #   but it likely will improve the efficiency of transfers;
@@ -133,8 +132,7 @@ jobs:
       #   https://github.com/blue-build/cli/issues/112
       #   https://github.com/containers/bootc/issues/20
       #   https://github.com/containers/bootc/issues/963
-      - id: recmp
-        name: Recompress to zstd:chunked
+      - name: Recompress latest from gzip to zstd:chunked
         run: |
           set -euo pipefail
 
@@ -167,9 +165,4 @@ jobs:
             "$(podman image list --digests --format json | jq -r '.[0].Id')" \
             "${IMAGE_REF}"-zstchd
 
-          df -h
-
-      - name: Print outputs
-        run: |
-          echo '${{ toJSON(steps.build.outputs) }}' | jq .
-          echo '${{ toJSON(steps.recmp.outputs) }}' | jq .
+      - run: df -h
