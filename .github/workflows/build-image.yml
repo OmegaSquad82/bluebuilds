@@ -67,13 +67,13 @@ jobs:
 
           cd ~
           sudo umount "${LV_PATH}"
-          sudo mkdir -p /btrfsroot /home/runner/.local/share/containers /var/lib/containers /sysroot
+          sudo mkdir -p /btrfsrootvol /home/runner/.local/share/containers /var/lib/containers /sysroot
 
           # https://github.com/radxa/armbian-compile-action/commit/82fe40188f2f3b4dbd4ae8fb9c64f49f117085c7
           sudo mkfs.btrfs -L "${LV_NAME}" -M -m single --force "${LV_PATH}"
-          sudo mount -o defaults,noatime,compress=zstd:1,discard=sync "${LV_PATH}" /btrfsroot
+          sudo mount -o defaults,noatime,compress=zstd:1,discard=sync "${LV_PATH}" /btrfsrootvol
 
-          cd /btrfsroot
+          cd /btrfsrootvol
           for subvolume in containers homestorge ostreestor aworkspace; do
             sudo btrfs subvolume create "$subvolume"
           done
