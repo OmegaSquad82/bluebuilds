@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.10.1](https://github.com/OmegaSquad82/bluebuilds/compare/v1.10.0...v1.10.1) (2025-06-03)
+
+
+### Bug Fixes
+
+* increase compression level of zstd:chunked from 3 to 6 ([70d7c16](https://github.com/OmegaSquad82/bluebuilds/commit/70d7c1644d8242075b622a365a58f40d05d5f5f7))
+* increase compression level of zstd:chunked from 3 to 6 ([8e302b6](https://github.com/OmegaSquad82/bluebuilds/commit/8e302b658eaa08b56081284ba37b7faa1b562f3a))
+
 ## [1.10.0](https://github.com/OmegaSquad82/bluebuilds/compare/v1.9.0...v1.10.0) (2025-06-03)
 
 
