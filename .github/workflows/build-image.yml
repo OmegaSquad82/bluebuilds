@@ -4,7 +4,6 @@ on:
   push:
     paths-ignore:
       - "**/release-please.yml"
-      - "**/recompress-latest.yml"
       - "**/vulnerability-scan.yml"
       - "**/composition-analysis.yml"
       - "**.md"
@@ -13,8 +12,8 @@ on:
       - "renovate.json"
   schedule:
     - cron:
-        "10 06 * * 1,3,5" # build at 06:10 UTC on Mon, Wed, Fr
-        # (30 minutes after last ublue images start building)
+        "25 06 * * 1,3,5" # build at 06:10 UTC on Mon, Wed, Fr
+        # (45 minutes after last ublue images start building)
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref || github.run_id }}
@@ -22,6 +21,9 @@ concurrency:
 
 env:
   IS_DEFAULT: false
+  REGISTRY_USERNAME: ${{ github.actor }}
+  REGISTRY_PASSWORD: ${{ github.token }}
+  REGISTRY_IMG_PATH: ghcr.io/${{ github.repository_owner }}
 
 jobs:
   imagebuild:
@@ -48,25 +50,49 @@ jobs:
           remove-docker-images: true
           remove-dotnet: true
           remove-haskell: true
-      - name: Convert to compressed filesystem
+      - name: Compress build space
         shell: bash
         run: |
-          set -eux pipefail
+          set -euxo pipefail
+          cd ~
 
           # https://github.com/easimon/maximize-build-space/issues/23
           # https://github.com/easimon/maximize-build-space/pull/37
           WORKSPACE_OWNER="$(stat -c '%U:%G' "${GITHUB_WORKSPACE}")"
-          VG_NAME=buildvg
-          LV_NAME="/dev/mapper/${VG_NAME}-buildlv"
+          VG0_NAME=buildvg
 
-          cd ~
-          sudo umount "${LV_NAME}"
+          LV1_NAME=buildlv
+          LV1_PATH="/dev/mapper/${VG0_NAME}-${LV1_NAME}"
+
+          sudo umount "${LV1_PATH}"
+          sudo lvresize -L 32GiB "${LV1_PATH}" --force
 
           # https://github.com/radxa/armbian-compile-action/commit/82fe40188f2f3b4dbd4ae8fb9c64f49f117085c7
-          sudo mkfs.btrfs -L buildlv -M -m single --force "${LV_NAME}"
-          sudo mount -o defaults,noatime,compress=zstd:1,discard=sync "${LV_NAME}" "${GITHUB_WORKSPACE}"
-
+          sudo mkfs.btrfs -L "${LV1_NAME}" -M -m single --force "${LV1_PATH}"
+          sudo mount -o defaults,noatime,compress=zstd,discard=sync "${LV1_PATH}" "${GITHUB_WORKSPACE}"
           sudo chown -R "$WORKSPACE_OWNER" "${GITHUB_WORKSPACE}"
+
+          LV2_NAME=containerlv
+          LV2_PATH="/dev/mapper/${VG0_NAME}-${LV2_NAME}"
+
+          PODSTORE=/home/runner/.local/share/containers
+          sudo mkdir -p "${PODSTORE}"
+          sudo lvcreate -L 32GiB -n "${LV2_NAME}" "${VG0_NAME}" -ay
+          sudo mkfs.btrfs -L "${LV2_NAME}" -M -m single --force "${LV2_PATH}"
+          sudo mount -o defaults,noatime,compress=zstd,discard=sync "${LV2_PATH}" "${PODSTORE}"
+          sudo chown -R "$WORKSPACE_OWNER" "${PODSTORE}"
+
+          LV3_NAME=sysrootlv
+          LV3_PATH="/dev/mapper/${VG0_NAME}-${LV3_NAME}"
+
+          sudo mkdir -p /sysroot
+          sudo lvcreate -L 32GiB -n "${LV3_NAME}" "${VG0_NAME}" -ay
+          sudo mkfs.btrfs -L "${LV3_NAME}" -M -m single --force "${LV3_PATH}"
+          sudo mount -o defaults,noatime,compress=zstd,discard=sync "${LV3_PATH}" /sysroot
+
+          sudo mount | grep btrfs
+          lsblk
+          df -h
 
       - name: Checkout codeZ
         uses: actions/checkout@v4
@@ -77,7 +103,8 @@ jobs:
             echo 'IS_DEFAULT=true'>$GITHUB_ENV
           fi
 
-      - name: Build Custom Image
+      - id: build
+        name: Build Custom Image
         uses: blue-build/github-action@v1.8.1
         with:
           cosign_private_key: ${{ secrets.SIGNING_SECRET }}
@@ -86,3 +113,63 @@ jobs:
           rechunk: ${{ env.IS_DEFAULT }}
           recipe: recipe-${{ matrix.package }}.yml
           registry_token: ${{ github.token }}
+          # build_args: |
+          #   --compression-format zstd:chunked
+
+      # This is something the community worked on for quite some time
+      #   but it likely will improve the efficiency of transfers;
+      #    this was made to workaround the fact that blue-build
+      #     does not yet support zstd:chunked and it depends
+      #      on bootc/rpm-ostree having implemented this,
+      #       which according to my tests is now good.
+      #
+      # Changetracker
+      #   https://fedoraproject.org/wiki/Changes/zstd:chunked
+      #   https://github.com/containers/storage/pull/775
+      # Documentation
+      #   https://bootc-dev.github.io/bootc/filesystem-storage.html
+      #   https://eu-os.eu/goals#goals # interesting new project
+      # Projectstuffz
+      #   https://github.com/blue-build/cli/issues/112
+      #   https://github.com/containers/bootc/issues/20
+      #   https://github.com/containers/bootc/issues/963
+      - id: recmp
+        name: Recompress to zstd:chunked
+        run: |
+          set -euo pipefail
+
+          echo "${{ secrets.SIGNING_SECRET }}" >cosign.key
+          IMAGE_REF=${REGISTRY_IMG_PATH@L}/${{ matrix.package }}:latest
+
+          # https://github.com/containers/image/issues/1613#issuecomment-1188923320
+          # https://github.com/containers/image/blob/main/docs/containers-registries.d.5.md#individual-configuration-sections
+          PODMAN_CONFDIR="$HOME/.config/containers/registries.d/"
+          PODMAN_CONFIG="${PODMAN_CONFDIR}/registries.yaml"
+
+          mkdir -p "${PODMAN_CONFDIR}"
+          echo "creating: ${PODMAN_CONFIG}"
+          tee "${PODMAN_CONFIG}" <<EOF
+          default-docker:
+            use-sigstore-attachments: true
+          EOF
+
+          podman login ghcr.io \
+            --username ${{ env.REGISTRY_USERNAME }} \
+            --password ${{ env.REGISTRY_PASSWORD }}
+
+          podman pull "${IMAGE_REF}" || (df -h && exit 125)
+          podman images --digests
+
+          podman push \
+            --remove-signatures \
+            --compression-format=zstd:chunked \
+            --sign-by-sigstore-private-key=cosign.key \
+            "$(podman image list --digests --format json | jq -r '.[0].Id')" \
+            "${IMAGE_REF}"-zstchd
+
+          df -h
+
+      - name: Print outputs
+        run: |
+          echo '${{ toJSON(steps.build.outputs) }}' | jq .
+          echo '${{ toJSON(steps.recmp.outputs) }}' | jq .
