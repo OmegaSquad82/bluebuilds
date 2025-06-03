@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.10.0](https://github.com/OmegaSquad82/bluebuilds/compare/v1.9.0...v1.10.0) (2025-06-03)
+
+
+### Features
+
+* recompress directly after building an image ([f9a0a55](https://github.com/OmegaSquad82/bluebuilds/commit/f9a0a550090d1289f23e978c742a1db6133ec68e))
+
+
+### Bug Fixes
+
+* Compress critical paths use a single, compressed btrfs filesystem ([2a6dfb2](https://github.com/OmegaSquad82/bluebuilds/commit/2a6dfb28d1e07981ce1cec2e4d3337ce6bcfb682))
+* give ublue/bazzite more time ([f9a0a55](https://github.com/OmegaSquad82/bluebuilds/commit/f9a0a550090d1289f23e978c742a1db6133ec68e))
+* pipefail in shells of build-image.yml ([f9a0a55](https://github.com/OmegaSquad82/bluebuilds/commit/f9a0a550090d1289f23e978c742a1db6133ec68e))
+
 ## [1.9.0](https://github.com/OmegaSquad82/bluebuilds/compare/v1.8.7...v1.9.0) (2025-05-25)
 
 
