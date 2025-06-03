@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.10.2](https://github.com/OmegaSquad82/bluebuilds/compare/v1.10.1...v1.10.2) (2025-06-03)
+
+
+### Bug Fixes
+
+* re-introduce kargs via bootc and blue-build ([7b970fa](https://github.com/OmegaSquad82/bluebuilds/commit/7b970fa1440ad283286f52a66054fde901c4f40a))
+* re-introduce kargs via bootc and blue-build ([31a1a82](https://github.com/OmegaSquad82/bluebuilds/commit/31a1a8254f374904ef9b4f2f98b6a62a47626182))
+
 ## [1.10.1](https://github.com/OmegaSquad82/bluebuilds/compare/v1.10.0...v1.10.1) (2025-06-03)
 
 
