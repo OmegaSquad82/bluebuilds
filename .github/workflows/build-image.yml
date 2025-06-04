@@ -141,7 +141,7 @@ jobs:
           IMAGE_REF=${REGISTRY_IMG_PATH@L}/${{ matrix.package }}:latest
 
           # https://github.com/containers/podman/issues/5049#issuecomment-1348628646
-          sudo chown -R "$HOMESPACE_OWNER" /run/user/"$USER"
+          sudo chown -R "$HOMESPACE_OWNER" /run/user/"$UID"
           loginctl enable-linger "$USER"
 
           podman login ghcr.io \
