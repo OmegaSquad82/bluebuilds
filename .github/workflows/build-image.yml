@@ -41,6 +41,7 @@ jobs:
           - carbonatcyanotrichit
           - flaviramea
     steps:
+      - run: id
       - name: Maximize build space
         uses: easimon/maximize-build-space@master
         with:
@@ -66,7 +67,7 @@ jobs:
 
           cd ~
           sudo umount "${LV_PATH}"
-          sudo mkdir -p /btrfsrootvol /home/runner/.local/share/containers /var/lib/containers /sysroot
+          sudo mkdir -p /btrfsrootvol "${HOME}"/.local/share/containers /var/lib/containers /sysroot
 
           # https://github.com/radxa/armbian-compile-action/commit/82fe40188f2f3b4dbd4ae8fb9c64f49f117085c7
           sudo mkfs.btrfs -L "${LV_NAME}" -M -m single --force "${LV_PATH}"
@@ -79,12 +80,12 @@ jobs:
 
           # https://github.com/containers/podman/blob/main/troubleshooting.md#11-changing-the-location-of-the-graphroot-leads-to-permission-denied
           sudo mount -o subvol=containers,noatime,compress=zstd:1,discard=sync "${LV_PATH}" /var/lib/containers
-          sudo mount -o subvol=homestorge,noatime,compress=zstd:1,discard=sync "${LV_PATH}" /home/runner/.local/share/containers
+          sudo mount -o subvol=homestorge,noatime,compress=zstd:1,discard=sync "${LV_PATH}" "${HOME}"/.local/share/containers
           sudo mount -o subvol=ostreestor,noatime,compress=zstd:1,discard=sync "${LV_PATH}" /sysroot
           sudo mount -o subvol=aworkspace,noatime,compress=zstd:1,discard=sync "${LV_PATH}" "${GITHUB_WORKSPACE}"
 
           sudo chown -R "$WORKSPACE_OWNER" "${GITHUB_WORKSPACE}"
-          sudo chown -R "$HOMESPACE_OWNER" /home/runner/.local/share/containers
+          sudo chown -R "$HOMESPACE_OWNER" "${HOME}"/.local/share/containers
 
           sudo mount | grep btrfs
           lsblk
@@ -135,13 +136,12 @@ jobs:
         run: |
           set -euo pipefail
 
+          HOMESPACE_OWNER="$(stat -c '%U:%G' "${HOME}")"
           echo "${{ secrets.SIGNING_SECRET }}" >cosign.key
           IMAGE_REF=${REGISTRY_IMG_PATH@L}/${{ matrix.package }}:latest
 
-          id
-
           # https://github.com/containers/podman/issues/5049#issuecomment-1348628646
-          rm -rf ~/.local/share/containers/
+          sudo chown -R "$HOMESPACE_OWNER" /run/user/"$USER"
           loginctl enable-linger "$USER"
 
           podman login ghcr.io \
