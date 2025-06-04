@@ -138,6 +138,16 @@ jobs:
           echo "${{ secrets.SIGNING_SECRET }}" >cosign.key
           IMAGE_REF=${REGISTRY_IMG_PATH@L}/${{ matrix.package }}:latest
 
+          # https://github.com/containers/podman/issues/5049#issuecomment-1348628646
+          loginctl enable-linger "$USER"
+
+          podman login ghcr.io \
+            --username "${{ env.REGISTRY_USERNAME }}" \
+            --password "${{ env.REGISTRY_PASSWORD }}"
+
+          podman pull "${IMAGE_REF}" || (df -h && exit 125)
+          podman images --digests
+
           # https://github.com/containers/image/issues/1613#issuecomment-1188923320
           # https://github.com/containers/image/blob/main/docs/containers-registries.d.5.md#individual-configuration-sections
           PODMAN_CONFDIR="$HOME/.config/containers/registries.d/"
@@ -149,16 +159,6 @@ jobs:
           default-docker:
             use-sigstore-attachments: true
           EOF
-
-          # https://github.com/containers/podman/issues/5049#issuecomment-1348628646
-          loginctl enable-linger "$USER"
-
-          podman login ghcr.io \
-            --username "${{ env.REGISTRY_USERNAME }}" \
-            --password "${{ env.REGISTRY_PASSWORD }}"
-
-          podman pull "${IMAGE_REF}" || (df -h && exit 125)
-          podman images --digests
 
           podman push \
             --remove-signatures \
