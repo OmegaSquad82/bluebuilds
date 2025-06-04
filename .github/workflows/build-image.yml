@@ -150,6 +150,9 @@ jobs:
             use-sigstore-attachments: true
           EOF
 
+          # https://github.com/containers/podman/issues/5049#issuecomment-1348628646
+          loginctl enable-linger "$USER"
+
           podman login ghcr.io \
             --username "${{ env.REGISTRY_USERNAME }}" \
             --password "${{ env.REGISTRY_PASSWORD }}"
