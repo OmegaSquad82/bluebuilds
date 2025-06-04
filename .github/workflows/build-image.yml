@@ -165,7 +165,6 @@ jobs:
 
           podman push \
             --remove-signatures \
-            --compression-level=9 \
             --compression-format=zstd:chunked \
             --sign-by-sigstore-private-key=cosign.key \
             "$(podman image list --digests --format json | jq -r '.[0].Id')" \
