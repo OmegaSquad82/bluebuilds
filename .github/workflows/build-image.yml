@@ -115,7 +115,7 @@ jobs:
 
       - run: df -h
 
-      - name: podman login ghcr.io
+      - name: Run podman login ghcr.io
         run: |
           set -euo pipefail
 
@@ -129,7 +129,8 @@ jobs:
             --username "${{ env.REGISTRY_USERNAME }}" \
             --password "${{ env.REGISTRY_PASSWORD }}"
 
-      - run: podman pull "${REGISTRY_IMG_PATH@L}/${{ matrix.package }}"
+      - name: Run podman pull ghcr.io/${{ github.repository_owner }}/${{ matrix.package }}
+        run: podman pull "${REGISTRY_IMG_PATH@L}/${{ matrix.package }}"
       - run: podman images --digests
 
       # This is something the community worked on for quite some time
