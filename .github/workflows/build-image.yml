@@ -138,7 +138,10 @@ jobs:
           echo "${{ secrets.SIGNING_SECRET }}" >cosign.key
           IMAGE_REF=${REGISTRY_IMG_PATH@L}/${{ matrix.package }}:latest
 
+          id
+
           # https://github.com/containers/podman/issues/5049#issuecomment-1348628646
+          rm -rf ~/.local/share/containers/
           loginctl enable-linger "$USER"
 
           podman login ghcr.io \
