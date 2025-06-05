@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.10.5](https://github.com/OmegaSquad82/bluebuilds/compare/v1.10.4...v1.10.5) (2025-06-05)
+
+
+### Bug Fixes
+
+* add registry username+password, again ([a4d3d1f](https://github.com/OmegaSquad82/bluebuilds/commit/a4d3d1fc7ed2eb6391b51254f267801e28326be1))
+* add some bailout primitive to image reference task ([808e536](https://github.com/OmegaSquad82/bluebuilds/commit/808e536ca9615ebb2115dd69e67d5798fb32b416))
+* boolean evaluation is tricky? ([3d852c0](https://github.com/OmegaSquad82/bluebuilds/commit/3d852c06c1f5543b44ac03f6b36565e59ccedd14))
+* clumsily pull latest from remote although image is in /var/lib/containers/storage ([b284a3b](https://github.com/OmegaSquad82/bluebuilds/commit/b284a3bf6be068ab8fb60d665dc5fa9b9ed30e24))
+* clumsily pull latest from remote although image is in /var/lib/containers/storage ([5ccec30](https://github.com/OmegaSquad82/bluebuilds/commit/5ccec30289510c8b6c7d9a5fb101667dba116eb8))
+* improve redirections into gh env ([d28777b](https://github.com/OmegaSquad82/bluebuilds/commit/d28777bbf9fb42d6c2ca0f3be0b01842e7dca3b0))
+* instead of falling back to rootful podman, simply check if the correct image was found. ([35bdcc4](https://github.com/OmegaSquad82/bluebuilds/commit/35bdcc4877b819f8e75df8b45c01355019170a88))
+* missing $ and changed to full repo name ([d4ecef1](https://github.com/OmegaSquad82/bluebuilds/commit/d4ecef10e09b757b4fc2bc989d5d845dde961e8a))
+* need to refresh the image listing ([591225f](https://github.com/OmegaSquad82/bluebuilds/commit/591225f047e01ce23f6b2251e4de10c79cdb132d))
+* reclaim /run/user/$uid ([551c14b](https://github.com/OmegaSquad82/bluebuilds/commit/551c14b0ef21122a46539d57a5fac633be5ec513))
+* self inflicted shenanigans with gh env ;c) ([7d49595](https://github.com/OmegaSquad82/bluebuilds/commit/7d49595af4bdfd20e934d012b713a53e6c66c70a))
+* seperate subvolumes again (cus' podman does NOT support this use case!) ([60bf4b7](https://github.com/OmegaSquad82/bluebuilds/commit/60bf4b7abf8dfb3090ae99fe033f4bac42fdb31d))
+* support rootless and rootful podman operation ([8d0e71d](https://github.com/OmegaSquad82/bluebuilds/commit/8d0e71db1065b19fe77c1b444fa4f41087dbe48e))
+* try to reduce normal build time by not maximizing_build_space when rechunk'ing ([abce30a](https://github.com/OmegaSquad82/bluebuilds/commit/abce30a9b7ebc386fb95aeb923ec81926ea11e15))
+* typo led me to use native jq syntax. ^^ ([181086e](https://github.com/OmegaSquad82/bluebuilds/commit/181086e06729cc702a0feefbc5e3d42f8b51363c))
+* use system container storage subvolume for non-root account and display number of locally available images, print first name of most recent image in local store. ([955745b](https://github.com/OmegaSquad82/bluebuilds/commit/955745b4fe1e618c176457af32c96484d440b6ee))
+
 ## [1.10.4](https://github.com/OmegaSquad82/bluebuilds/compare/v1.10.3...v1.10.4) (2025-06-05)
 
 
