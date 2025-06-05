@@ -20,6 +20,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
+  IMAGE_REF:
   IS_DEFAULT: false
   REGISTRY_USERNAME: ${{ github.actor }}
   REGISTRY_PASSWORD: ${{ github.token }}
@@ -90,7 +91,7 @@ jobs:
           sudo mount | grep btrfs
           lsblk
 
-      - run: df -h
+      - run: df -h && du -sh /* 2>/dev/null || true
 
       - name: Checkout codeZ
         uses: actions/checkout@v4
@@ -113,7 +114,33 @@ jobs:
           # build_args: |
           #   --compression-format zstd:chunked
 
-      - run: df -h
+      - run: df -h && du -sh /* 2>/dev/null || true
+
+      - run: podman info
+      - name: Run podman login ghcr.io
+        run: |
+          set -euo pipefail
+
+          HOMESPACE_OWNER="$(stat -c '%U:%G' "${HOME}")"
+
+          # https://github.com/containers/podman/issues/5049#issuecomment-1348628646
+          sudo chown -R "$HOMESPACE_OWNER" /run/user/"$UID"
+          loginctl enable-linger "$USER"
+
+          podman login ghcr.io \
+            --username "${{ env.REGISTRY_USERNAME }}" \
+            --password "${{ env.REGISTRY_PASSWORD }}"
+
+      # https://github.com/orgs/community/discussions/10553#discussioncomment-11066950
+
+      - name: Construct an image reference for ghcr.io
+        run: echo "IMAGE_REF=${REGISTRY_IMG_PATH@L}/${{ matrix.package }}" >>$GITHUB_ENV
+
+      - name: Run podman pull ${{ env.IMAGE_REF }}
+        run: podman pull ${{ env.IMAGE_REF }}
+      - name: Run podman history ${{ env.IMAGE_REF }}
+        run: podman history ${{ env.IMAGE_REF }}
+      - run: podman images --digests
 
       # This is something the community worked on for quite some time
       #   but it likely will improve the efficiency of transfers;
@@ -136,20 +163,7 @@ jobs:
         run: |
           set -euo pipefail
 
-          HOMESPACE_OWNER="$(stat -c '%U:%G' "${HOME}")"
           echo "${{ secrets.SIGNING_SECRET }}" >cosign.key
-          IMAGE_REF=${REGISTRY_IMG_PATH@L}/${{ matrix.package }}:latest
-
-          # https://github.com/containers/podman/issues/5049#issuecomment-1348628646
-          sudo chown -R "$HOMESPACE_OWNER" /run/user/"$UID"
-          loginctl enable-linger "$USER"
-
-          podman login ghcr.io \
-            --username "${{ env.REGISTRY_USERNAME }}" \
-            --password "${{ env.REGISTRY_PASSWORD }}"
-
-          podman pull "${IMAGE_REF}" || (df -h && exit 125)
-          podman images --digests
 
           # https://github.com/containers/image/issues/1613#issuecomment-1188923320
           # https://github.com/containers/image/blob/main/docs/containers-registries.d.5.md#individual-configuration-sections
@@ -168,6 +182,6 @@ jobs:
             --compression-format=zstd:chunked \
             --sign-by-sigstore-private-key=cosign.key \
             "$(podman image list --digests --format json | jq -r '.[0].Id')" \
-            "${IMAGE_REF}"-zstchd
+            "${{ env.IMAGE_REF }}":latest-zstchd
 
-      - run: df -h
+      - run: df -h && du -sh /* 2>/dev/null || true
