@@ -22,7 +22,6 @@ concurrency:
 env:
   HOMESPACE_OWNER:
   IS_DEFAULT: false
-  PODMAN: podman
   REGISTRY_USERNAME: ${{ github.actor }}
   REGISTRY_PASSWORD: ${{ github.token }}
   REGISTRY_IMG_PATH: ghcr.io/${{ github.repository_owner }}
@@ -99,10 +98,8 @@ jobs:
       - name: Check if on default (main) or test (rechunk) branch to rechunk it
         if: github.ref_name == github.event.repository.default_branch || github.ref_name == 'rechunk'
         run: echo 'IS_DEFAULT=true' >"$GITHUB_ENV"
-      - if: env.IS_DEFAULT
-        run: echo 'PODMAN=sudo podman' >"$GITHUB_ENV"
 
-      - run: ${{ env.PODMAN }} info
+      - run: podman info
       - name: Build Custom Image
         uses: blue-build/github-action@v1.8.1
         with:
@@ -116,27 +113,29 @@ jobs:
           registry_token: ${{ github.token }}
           squash: true
           use_cache: false
-      - run: ${{ env.PODMAN }} images
+      - run: podman images
 
       # https://github.com/orgs/community/discussions/10553#discussioncomment-11066950
       - run: echo "IMGREP=${REGISTRY_IMG_PATH@L}/${{ matrix.package }}" >"$GITHUB_ENV"
       - name: Construct references to built image
         run: |
           set -euo pipefail
-
+          podman image list --format json > images.json
           echo -n "Number of locally available images: "
-          if ${{ env.PODMAN }} image list --format json | jq -e 'if length == 0 then length else length|halt_error end'; then
-            sudo chown -R "$(stat -c '%U:%G' "${HOME}")" /run/user/"$UID"
+          if jq -e 'if length == 0 then length else length|halt_error end' images.json; then
             echo "WARNING: pulling ${IMGREP}"
-            ${{ env.PODMAN }} pull ${IMGREP}
+            podman pull ${IMGREP}
+          elif [[ $(jq -r '.[0].Names[0]' images.json) ~= ${IMGREP} ]]; then
+            echo 'INFO: found in rootless podman repository'
           else
-            echo "INFO: $(${{ env.PODMAN }} image list --format json | jq -r '.[0].Names[0]')"
+            echo "ERROR: $(jq -r '.[0].Names[0]' images.json)"
+            exit 125
           fi
 
-          echo "IMGDIG=$(${{ env.PODMAN }} image list --format json | jq -r '.[0].Digest')" >"$GITHUB_ENV"
-          echo "IMG_ID=$(${{ env.PODMAN }} image list --format json | jq -r '.[0].Id')" >"$GITHUB_ENV"
+          echo "IMGDIG=$(jq -r '.[0].Digest' images.json)" >"$GITHUB_ENV"
+          echo "IMG_ID=$(jq -r '.[0].Id' images.json)" >"$GITHUB_ENV"
 
-      - run: ${{ env.PODMAN }} history ${{ env.IMGREP }}@${{ env.IMGDIG }}
+      - run: podman history ${{ env.IMGREP }}@${{ env.IMGDIG }}
 
       # This is something the community worked on for quite some time
       #   but it likely will improve the efficiency of transfers;
@@ -163,20 +162,17 @@ jobs:
 
           # https://github.com/containers/image/issues/1613#issuecomment-1188923320
           # https://github.com/containers/image/blob/main/docs/containers-registries.d.5.md#individual-configuration-sections
-            TARGET=/root
           PODMAN_CONFDIR="$HOME/.config/containers/registries.d"
-          ROOTPOD_CONFDIR=/root/.config/containers/registries.d
           PODMAN_CONFIG="${PODMAN_CONFDIR}/registries.yaml"
 
           mkdir -p "${PODMAN_CONFDIR}"
-          sudo mkdir -p "${ROOTPOD_CONFDIR}"
           echo "creating: ${PODMAN_CONFIG}"
-          tee "${PODMAN_CONFIG}" <<EOF | sudo tee "${ROOTPOD_CONFDIR}"/registries.yaml 
+          tee "${PODMAN_CONFIG}" <<EOF
           default-docker:
             use-sigstore-attachments: true
           EOF
 
-          ${{ env.PODMAN }} push \
+          podman push \
             --remove-signatures \
             --compression-format=zstd:chunked \
             --sign-by-sigstore-private-key=cosign.key \
