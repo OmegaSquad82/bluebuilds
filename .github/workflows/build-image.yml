@@ -98,9 +98,9 @@ jobs:
 
       - name: Check if on default (main) or test (rechunk) branch to rechunk it
         if: github.ref_name == github.event.repository.default_branch || github.ref_name == 'rechunk'
-        run: echo 'IS_DEFAULT=true'>"$GITHUB_ENV"
+        run: echo 'IS_DEFAULT=true' >"$GITHUB_ENV"
       - if: env.IS_DEFAULT
-        run: echo 'PODMAN=sudo podman'>>"$GITHUB_ENV"
+        run: echo 'PODMAN=sudo podman' >"$GITHUB_ENV"
 
       - run: ${{ env.PODMAN }} info
       - name: Build Custom Image
@@ -119,7 +119,7 @@ jobs:
       - run: ${{ env.PODMAN }} images
 
       # https://github.com/orgs/community/discussions/10553#discussioncomment-11066950
-      - run: echo "IMGREP=${REGISTRY_IMG_PATH@L}/${{ matrix.package }}" >>"$GITHUB_ENV"
+      - run: echo "IMGREP=${REGISTRY_IMG_PATH@L}/${{ matrix.package }}" >"$GITHUB_ENV"
       - name: Construct references to built image
         run: |
           set -euo pipefail
@@ -133,8 +133,8 @@ jobs:
             echo "INFO: $(${{ env.PODMAN }} image list --format json | jq -r '.[0].Names[0]')"
           fi
 
-          echo "IMGDIG=$(${{ env.PODMAN }} image list --format json | jq -r '.[0].Digest')" >>"$GITHUB_ENV"
-          echo "IMG_ID=$(${{ env.PODMAN }} image list --format json | jq -r '.[0].Id')" >>"$GITHUB_ENV"
+          echo "IMGDIG=$(${{ env.PODMAN }} image list --format json | jq -r '.[0].Digest')" >"$GITHUB_ENV"
+          echo "IMG_ID=$(${{ env.PODMAN }} image list --format json | jq -r '.[0].Id')" >"$GITHUB_ENV"
 
       - run: ${{ env.PODMAN }} history ${{ env.IMGREP }}@${{ env.IMGDIG }}
 
