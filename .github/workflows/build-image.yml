@@ -79,15 +79,16 @@ jobs:
           sudo mount -o defaults,noatime,compress=zstd:1,discard=sync "${LV_PATH}" /btrfsrootvol
 
           cd /btrfsrootvol
-          for subvolume in containers homestorge ostreestor aworkspace; do
+          for subvolume in containers ostreeroot mywrkspace; do
             sudo btrfs subvolume create "$subvolume"
           done
 
           # https://github.com/containers/podman/blob/main/troubleshooting.md#11-changing-the-location-of-the-graphroot-leads-to-permission-denied
           sudo mount -o subvol=containers,noatime,compress=zstd:1,discard=sync "${LV_PATH}" /var/lib/containers
-          sudo mount -o subvol=homestorge,noatime,compress=zstd:1,discard=sync "${LV_PATH}" "${HOME}"/.local/share/containers
-          sudo mount -o subvol=ostreestor,noatime,compress=zstd:1,discard=sync "${LV_PATH}" /sysroot
-          sudo mount -o subvol=aworkspace,noatime,compress=zstd:1,discard=sync "${LV_PATH}" "${GITHUB_WORKSPACE}"
+          sudo mount -o subvol=containers,noatime,compress=zstd:1,discard=sync "${LV_PATH}" "${HOME}"/.local/share/containers
+
+          sudo mount -o subvol=ostreeroot,noatime,compress=zstd:1,discard=sync "${LV_PATH}" /sysroot
+          sudo mount -o subvol=mywrkspace,noatime,compress=zstd:1,discard=sync "${LV_PATH}" "${GITHUB_WORKSPACE}"
 
           sudo chown -R "$WORKSPACE_OWNER" "${GITHUB_WORKSPACE}"
 
@@ -123,9 +124,12 @@ jobs:
       - run: echo "IMGREP=${REGISTRY_IMG_PATH@L}/${{ matrix.package }}" >>"$GITHUB_ENV"
       - name: Construct references to built image
         run: |
-          if podman image list --format json | jq -e 'if (. | length) == 0 then halt_error(1) else length end'; then
-            echo "WARNING: no local images found, pulling ${IMGREP}"
+          echo -n "Number of locally available images: "
+          if podman image list --format json | jq -e 'if length == 0 then length else length|halt_error end'; then
+            echo "WARNING: pulling ${IMGREP}"
             podman pull ${IMGREP}
+          else
+            echo "INFO: $(podman image list --format json | jq -r '.[0].Names[0]')"
           fi
 
           echo "IMGDIG=$(podman image list --format json | jq -r '.[0].Digest')" >>"$GITHUB_ENV"
