@@ -91,6 +91,7 @@ jobs:
           lsblk
 
       - run: df -h
+      - run: du -sh /* 2>/dev/null
 
       - name: Checkout codeZ
         uses: actions/checkout@v4
@@ -114,6 +115,7 @@ jobs:
           #   --compression-format zstd:chunked
 
       - run: df -h
+      - run: du -sh /* 2>/dev/null
 
       - name: Run podman login ghcr.io
         run: |
@@ -131,6 +133,8 @@ jobs:
 
       - name: Run podman pull ghcr.io/${{ github.repository_owner }}/${{ matrix.package }}
         run: podman pull "${REGISTRY_IMG_PATH@L}/${{ matrix.package }}"
+      - name: Run podman image history ghcr.io/${{ github.repository_owner }}/${{ matrix.package }}
+        run: podman image history "${REGISTRY_IMG_PATH@L}/${{ matrix.package }}"
       - run: podman images --digests
 
       # This is something the community worked on for quite some time
@@ -176,3 +180,4 @@ jobs:
             "${REGISTRY_IMG_PATH@L}/${{ matrix.package }}":latest-zstchd
 
       - run: df -h
+      - run: du -sh /* 2>/dev/null
