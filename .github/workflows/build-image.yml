@@ -91,8 +91,7 @@ jobs:
           sudo mount | grep btrfs
           lsblk
 
-      - run: df -h
-      - run: du -sh /* 2>/dev/null
+      - run: df -h && du -sh /* 2>/dev/null || true
 
       - name: Checkout codeZ
         uses: actions/checkout@v4
@@ -115,8 +114,7 @@ jobs:
           # build_args: |
           #   --compression-format zstd:chunked
 
-      - run: df -h
-      - run: du -sh /* 2>/dev/null
+      - run: df -h && du -sh /* 2>/dev/null || true
 
       - run: podman info
       - name: Run podman login ghcr.io
@@ -186,5 +184,4 @@ jobs:
             "$(podman image list --digests --format json | jq -r '.[0].Id')" \
             "${{ env.IMAGE_REF }}":latest-zstchd
 
-      - run: df -h
-      - run: du -sh /* 2>/dev/null
+      - run: df -h && du -sh /* 2>/dev/null || true
