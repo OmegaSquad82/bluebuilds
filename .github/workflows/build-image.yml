@@ -163,14 +163,11 @@ jobs:
             use-sigstore-attachments: true
           EOF
 
-          podman login ghcr.io \
-            --username "${{ env.REGISTRY_USERNAME }}" \
-            --password "${{ env.REGISTRY_PASSWORD }}"
-
           podman push \
             --remove-signatures \
             --compression-format=zstd:chunked \
             --sign-by-sigstore-private-key=cosign.key \
-            ${{ env.IMG_ID }} ${{ github.ref_name }}-zstchd
+            ${{ env.IMG_ID }} \
+            ${{ env.IMGREP }}:${{ github.ref_name }}-zstchd
 
       - run: df -h
