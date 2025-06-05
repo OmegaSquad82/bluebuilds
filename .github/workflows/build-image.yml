@@ -137,7 +137,7 @@ jobs:
           fi
 
           echo "IMGDIG=$(jq -r '.[0].Digest' images.json)" >"$GITHUB_ENV"
-          echo "IMG_ID=$(jq -r '.[0].Id' images.json)" >"$GITHUB_ENV"
+          echo "IMG_ID=$(jq -r '.[0].Id' images.json)" >>"$GITHUB_ENV"
 
       - run: podman history ${{ env.IMGREP }}@${{ env.IMGDIG }}
 
