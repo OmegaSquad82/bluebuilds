@@ -22,6 +22,8 @@ concurrency:
 env:
   HOMESPACE_OWNER:
   IS_DEFAULT: false
+  REGISTRY_USERNAME: ${{ github.actor }}
+  REGISTRY_PASSWORD: ${{ github.token }}
   REGISTRY_IMG_PATH: ghcr.io/${{ github.repository_owner }}
   IMGREP:
   IMGDIG:
