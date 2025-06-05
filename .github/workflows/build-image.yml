@@ -50,11 +50,6 @@ jobs:
         uses: easimon/maximize-build-space@master
         with:
           overprovision-lvm: true
-          remove-android: true
-          remove-codeql: true
-          remove-docker-images: true
-          remove-dotnet: true
-          remove-haskell: true
 
       - name: Compress critical paths
         shell: bash
@@ -79,15 +74,16 @@ jobs:
           sudo mount -o defaults,noatime,compress=zstd:1,discard=sync "${LV_PATH}" /btrfsrootvol
 
           cd /btrfsrootvol
-          for subvolume in containers homestorge ostreestor aworkspace; do
+          for subvolume in containers homstorage ostreeroot mywrkspace; do
             sudo btrfs subvolume create "$subvolume"
           done
 
           # https://github.com/containers/podman/blob/main/troubleshooting.md#11-changing-the-location-of-the-graphroot-leads-to-permission-denied
           sudo mount -o subvol=containers,noatime,compress=zstd:1,discard=sync "${LV_PATH}" /var/lib/containers
-          sudo mount -o subvol=homestorge,noatime,compress=zstd:1,discard=sync "${LV_PATH}" "${HOME}"/.local/share/containers
-          sudo mount -o subvol=ostreestor,noatime,compress=zstd:1,discard=sync "${LV_PATH}" /sysroot
-          sudo mount -o subvol=aworkspace,noatime,compress=zstd:1,discard=sync "${LV_PATH}" "${GITHUB_WORKSPACE}"
+          sudo mount -o subvol=homstorage,noatime,compress=zstd:1,discard=sync "${LV_PATH}" "${HOME}"/.local/share/containers
+
+          sudo mount -o subvol=ostreeroot,noatime,compress=zstd:1,discard=sync "${LV_PATH}" /sysroot
+          sudo mount -o subvol=mywrkspace,noatime,compress=zstd:1,discard=sync "${LV_PATH}" "${GITHUB_WORKSPACE}"
 
           sudo chown -R "$WORKSPACE_OWNER" "${GITHUB_WORKSPACE}"
 
@@ -101,7 +97,7 @@ jobs:
 
       - name: Check if on default (main) or test (rechunk) branch to rechunk it
         if: github.ref_name == github.event.repository.default_branch || github.ref_name == 'rechunk'
-        run: echo 'IS_DEFAULT=true'>$GITHUB_ENV
+        run: echo 'IS_DEFAULT=true' >"$GITHUB_ENV"
 
       - run: podman info
       - name: Build Custom Image
@@ -110,7 +106,7 @@ jobs:
           # it does not do with :chunked, yet!
           build_opts: --compression-format zstd
           cosign_private_key: ${{ secrets.SIGNING_SECRET }}
-          maximize_build_space: ${{ env.IS_DEFAULT }}
+          maximize_build_space: false
           pr_event_number: ${{ github.event.number }}
           rechunk: ${{ env.IS_DEFAULT }}
           recipe: recipe-${{ matrix.package }}.yml
@@ -120,20 +116,37 @@ jobs:
       - run: podman images
 
       # https://github.com/orgs/community/discussions/10553#discussioncomment-11066950
-      - name: Construct image references
+      - run: echo "IMGREP=${REGISTRY_IMG_PATH@L}/${{ matrix.package }}" >"$GITHUB_ENV"
+      - name: Construct references to built image
         run: |
-          echo "IMGREP=${REGISTRY_IMG_PATH@L}/${{ matrix.package }}" >>"$GITHUB_ENV"
-          echo "IMGDIG=$(podman image list --format json | jq -r '.[0].Digest')" >>"$GITHUB_ENV"
-          echo "IMG_ID=$(podman image list --format json | jq -r '.[0].Id')" >>"$GITHUB_ENV"
+          set -euo pipefail
+
+          podman image list --format json > images.json
+
+          echo -n "Number of locally available images: "
+          if jq -e 'if length == 0 then length else length|halt_error end' images.json; then
+            sudo chown -R "$(stat -c '%U:%G' "${HOME}")" /run/user/"$UID"
+            echo "WARNING: pulling ${IMGREP}"
+            podman pull ${IMGREP}
+            podman image list --format json | jq . | tee images.json
+          elif jq -e 'if .[0].Names[0] | contains("${{ env.IMGREP }}") then halt else ""|halt_error end' images.json; then
+            echo 'INFO: found in rootless podman repository'
+          else
+            echo "ERROR: $(jq -r '.[0].Names[0]' images.json)"
+            exit 125
+          fi
+
+          echo "IMGDIG=$(jq -r '.[0].Digest' images.json)" >"$GITHUB_ENV"
+          echo "IMG_ID=$(jq -r '.[0].Id' images.json)" >>"$GITHUB_ENV"
 
       - run: podman history ${{ env.IMGREP }}@${{ env.IMGDIG }}
 
       # This is something the community worked on for quite some time
-      #   but it likely will improve the efficiency of transfers;
-      #    this was made to workaround the fact that blue-build
-      #     does not yet support zstd:chunked and it depends
-      #      on bootc/rpm-ostree having implemented this,
-      #       which according to my tests is now good.
+      #    but it likely will improve the efficiency of transfers;
+      #      this was made to workaround the fact that bluebuild
+      #        doesn't yet support zstd:chunked and it depends
+      #          on bootc/rpm-ostree having implemented this
+      #            which according to my tests is now good
       #
       # Changetracker
       #   https://fedoraproject.org/wiki/Changes/zstd:chunked
@@ -145,7 +158,7 @@ jobs:
       #   https://github.com/blue-build/cli/issues/112
       #   https://github.com/containers/bootc/issues/20
       #   https://github.com/containers/bootc/issues/963
-      - name: Recompress it to ${{ env.IMGREP }}:${{ github.ref_name }}-zstchd
+      - name: Recompress it to zstd:chunked as ${{ env.IMGREP }}:${{ github.ref_name }}-zstchd
         run: |
           set -euo pipefail
 
