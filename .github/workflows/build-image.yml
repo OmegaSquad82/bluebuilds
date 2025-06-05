@@ -120,9 +120,14 @@ jobs:
       - run: podman images
 
       # https://github.com/orgs/community/discussions/10553#discussioncomment-11066950
-      - name: Construct image references
+      - run: echo "IMGREP=${REGISTRY_IMG_PATH@L}/${{ matrix.package }}" >>"$GITHUB_ENV"
+      - name: Construct references to built image
         run: |
-          echo "IMGREP=${REGISTRY_IMG_PATH@L}/${{ matrix.package }}" >>"$GITHUB_ENV"
+          if podman image list --format json | jq -e 'if (. | length) == 0 then halt_error(1) else length end'; then
+            echo "WARNING: no local images found, pulling ${IMGREP}"
+            podman pull ${IMGREP}
+          fi
+
           echo "IMGDIG=$(podman image list --format json | jq -r '.[0].Digest')" >>"$GITHUB_ENV"
           echo "IMG_ID=$(podman image list --format json | jq -r '.[0].Id')" >>"$GITHUB_ENV"
 
