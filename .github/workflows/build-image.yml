@@ -95,7 +95,7 @@ jobs:
           sudo mount | grep btrfs
           lsblk
 
-      - run: df -h && du -sh /* 2>/dev/null || true
+      - run: podman info
 
       - name: Check if on default (main) or test (rechunk) branch to rechunk it
         run: |
@@ -103,6 +103,7 @@ jobs:
             echo 'IS_DEFAULT=true'>$GITHUB_ENV
           fi
 
+      - run: df -h && du -sh /* 2>/dev/null || true
       - name: Build Custom Image
         uses: blue-build/github-action@v1.8.1
         with:
@@ -114,7 +115,6 @@ jobs:
           registry_token: ${{ github.token }}
           # build_args: |
           #   --compression-format zstd:chunked
-
       - run: df -h && du -sh /* 2>/dev/null || true
 
       - name: Run podman login ghcr.io
@@ -132,7 +132,6 @@ jobs:
       - name: Run podman history ${{ env.IMAGE_REF }}
         run: podman history ${{ env.IMAGE_REF }}
       - run: podman images --digests
-      - run: podman info
 
       # This is something the community worked on for quite some time
       #   but it likely will improve the efficiency of transfers;
