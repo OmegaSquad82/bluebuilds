@@ -100,10 +100,8 @@ jobs:
       - run: df -h
 
       - name: Check if on default (main) or test (rechunk) branch to rechunk it
-        run: |
-          if [[ '${{ github.ref_name }}' == '${{ github.event.repository.default_branch }}' || '${{ github.ref_name }}' == 'rechunk' ]]; then
-            echo 'IS_DEFAULT=true'>$GITHUB_ENV
-          fi
+        if: github.ref_name == github.event.repository.default_branch || github.ref_name == 'rechunk'
+        run: echo 'IS_DEFAULT=true'>$GITHUB_ENV
 
       - run: podman info
       - name: Build Custom Image
@@ -122,7 +120,7 @@ jobs:
       - run: podman images
 
       # https://github.com/orgs/community/discussions/10553#discussioncomment-11066950
-      - name: Construct image references for Podman
+      - name: Construct image references
         run: |
           echo "IMGREP=${REGISTRY_IMG_PATH@L}/${{ matrix.package }}" >>"$GITHUB_ENV"
           echo "IMGDIG=$(podman image list --format json | jq -r '.[0].Digest')" >>"$GITHUB_ENV"
@@ -147,7 +145,7 @@ jobs:
       #   https://github.com/blue-build/cli/issues/112
       #   https://github.com/containers/bootc/issues/20
       #   https://github.com/containers/bootc/issues/963
-      - name: Recompress it to ${{ env.IMGREP }}:chunked
+      - name: Recompress it to ${{ env.IMGREP }}:${{ github.ref_name }}-zstchd
         run: |
           set -euo pipefail
 
@@ -169,6 +167,6 @@ jobs:
             --remove-signatures \
             --compression-format=zstd:chunked \
             --sign-by-sigstore-private-key=cosign.key \
-            "${{ env.IMG_ID }}" "${{ env.IMGREP }}":chunked
+            ${{ env.IMG_ID }} ${{ github.ref_name }}-zstchd
 
       - run: df -h
