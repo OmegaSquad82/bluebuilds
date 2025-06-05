@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.10.4](https://github.com/OmegaSquad82/bluebuilds/compare/v1.10.3...v1.10.4) (2025-06-05)
+
+
+### Bug Fixes
+
+* images referenced by digest are delimited by @ ([9bf51fe](https://github.com/OmegaSquad82/bluebuilds/commit/9bf51fe660977cb4501f23800d7672254f995b47))
+* leftover task name after image repo variable ([9a72010](https://github.com/OmegaSquad82/bluebuilds/commit/9a72010fab1d9b5568c2faaba111ce76f08727cb))
+* re-introduce proper podman login ghcr.io ([063bd10](https://github.com/OmegaSquad82/bluebuilds/commit/063bd1052e9cf0c0568ace766f95ee5886c6a685))
+* remove clumsy debugging stuff ([8b1c2e4](https://github.com/OmegaSquad82/bluebuilds/commit/8b1c2e4283ab516751c022105606c0e11203bf6f))
+* remove superfluous podman login after push ([7568d2a](https://github.com/OmegaSquad82/bluebuilds/commit/7568d2a40893b961429dc57b06c4bf9001384c16))
+* squash image and compress it with Podman in bluebuild CLI ([0cf7f17](https://github.com/OmegaSquad82/bluebuilds/commit/0cf7f17958598f5bbcdccdb01e6d7aa814c7ffcf))
+* squash image when using rechunk ([7eb4e26](https://github.com/OmegaSquad82/bluebuilds/commit/7eb4e268f066800d5c573399940d54d0eb6e6d81))
+* superfluous pull and recompress freshly built image instead of latest ([60e2797](https://github.com/OmegaSquad82/bluebuilds/commit/60e27976640c399baf54afdd0e06964683e6780f))
+* tried to push into wrong repository ([ca21d33](https://github.com/OmegaSquad82/bluebuilds/commit/ca21d33994bbf45329e2a3f5579421b8ccb48d69))
+* try to compress via prodman ([7eb4e26](https://github.com/OmegaSquad82/bluebuilds/commit/7eb4e268f066800d5c573399940d54d0eb6e6d81))
+* use image digest for retrieving its history ([a6bee65](https://github.com/OmegaSquad82/bluebuilds/commit/a6bee65da2c1b1b69d57ede669999728d1d34f39))
+* use ref_name to construct the tag ([72f1d42](https://github.com/OmegaSquad82/bluebuilds/commit/72f1d42c910defa4264b12febeade24a4205dfb3))
+
 ## [1.10.3](https://github.com/OmegaSquad82/bluebuilds/compare/v1.10.2...v1.10.3) (2025-06-05)
 
 
