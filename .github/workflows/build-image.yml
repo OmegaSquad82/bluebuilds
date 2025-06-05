@@ -20,11 +20,14 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  IMAGE_REF:
+  HOMESPACE_OWNER:
   IS_DEFAULT: false
   REGISTRY_USERNAME: ${{ github.actor }}
   REGISTRY_PASSWORD: ${{ github.token }}
   REGISTRY_IMG_PATH: ghcr.io/${{ github.repository_owner }}
+  IMGREP:
+  IMGDIG:
+  IMG_ID:
 
 jobs:
   imagebuild:
@@ -52,6 +55,7 @@ jobs:
           remove-docker-images: true
           remove-dotnet: true
           remove-haskell: true
+
       - name: Compress critical paths
         shell: bash
         run: |
@@ -86,61 +90,43 @@ jobs:
           sudo mount -o subvol=aworkspace,noatime,compress=zstd:1,discard=sync "${LV_PATH}" "${GITHUB_WORKSPACE}"
 
           sudo chown -R "$WORKSPACE_OWNER" "${GITHUB_WORKSPACE}"
-          sudo chown -R "$HOMESPACE_OWNER" "${HOME}"/.local/share/containers
+
+          # https://github.com/containers/podman/issues/5049#issuecomment-1348628646
+          sudo chown -R "$HOMESPACE_OWNER" "${HOME}"/.local/share/containers /run/user/"$UID"
 
           sudo mount | grep btrfs
           lsblk
 
-      - run: df -h && du -sh /* 2>/dev/null || true
-
-      - name: Checkout codeZ
-        uses: actions/checkout@v4
+      - run: df -h
 
       - name: Check if on default (main) or test (rechunk) branch to rechunk it
-        run: |
-          if [[ '${{ github.ref_name }}' == '${{ github.event.repository.default_branch }}' || '${{ github.ref_name }}' == 'rechunk' ]]; then
-            echo 'IS_DEFAULT=true'>$GITHUB_ENV
-          fi
+        if: github.ref_name == github.event.repository.default_branch || github.ref_name == 'rechunk'
+        run: echo 'IS_DEFAULT=true'>$GITHUB_ENV
 
+      - run: podman info
       - name: Build Custom Image
         uses: blue-build/github-action@v1.8.1
         with:
+          # it does not do with :chunked, yet!
+          build_opts: --compression-format zstd
           cosign_private_key: ${{ secrets.SIGNING_SECRET }}
           maximize_build_space: ${{ env.IS_DEFAULT }}
           pr_event_number: ${{ github.event.number }}
           rechunk: ${{ env.IS_DEFAULT }}
           recipe: recipe-${{ matrix.package }}.yml
           registry_token: ${{ github.token }}
-          # build_args: |
-          #   --compression-format zstd:chunked
-
-      - run: df -h && du -sh /* 2>/dev/null || true
-
-      - run: podman info
-      - name: Run podman login ghcr.io
-        run: |
-          set -euo pipefail
-
-          HOMESPACE_OWNER="$(stat -c '%U:%G' "${HOME}")"
-
-          # https://github.com/containers/podman/issues/5049#issuecomment-1348628646
-          sudo chown -R "$HOMESPACE_OWNER" /run/user/"$UID"
-          loginctl enable-linger "$USER"
-
-          podman login ghcr.io \
-            --username "${{ env.REGISTRY_USERNAME }}" \
-            --password "${{ env.REGISTRY_PASSWORD }}"
+          squash: true
+          use_cache: false
+      - run: podman images
 
       # https://github.com/orgs/community/discussions/10553#discussioncomment-11066950
+      - name: Construct image references
+        run: |
+          echo "IMGREP=${REGISTRY_IMG_PATH@L}/${{ matrix.package }}" >>"$GITHUB_ENV"
+          echo "IMGDIG=$(podman image list --format json | jq -r '.[0].Digest')" >>"$GITHUB_ENV"
+          echo "IMG_ID=$(podman image list --format json | jq -r '.[0].Id')" >>"$GITHUB_ENV"
 
-      - name: Construct an image reference for ghcr.io
-        run: echo "IMAGE_REF=${REGISTRY_IMG_PATH@L}/${{ matrix.package }}" >>$GITHUB_ENV
-
-      - name: Run podman pull ${{ env.IMAGE_REF }}
-        run: podman pull ${{ env.IMAGE_REF }}
-      - name: Run podman history ${{ env.IMAGE_REF }}
-        run: podman history ${{ env.IMAGE_REF }}
-      - run: podman images --digests
+      - run: podman history ${{ env.IMGREP }}@${{ env.IMGDIG }}
 
       # This is something the community worked on for quite some time
       #   but it likely will improve the efficiency of transfers;
@@ -159,7 +145,7 @@ jobs:
       #   https://github.com/blue-build/cli/issues/112
       #   https://github.com/containers/bootc/issues/20
       #   https://github.com/containers/bootc/issues/963
-      - name: Recompress latest from gzip to zstd:chunked
+      - name: Recompress it to ${{ env.IMGREP }}:${{ github.ref_name }}-zstchd
         run: |
           set -euo pipefail
 
@@ -181,7 +167,7 @@ jobs:
             --remove-signatures \
             --compression-format=zstd:chunked \
             --sign-by-sigstore-private-key=cosign.key \
-            "$(podman image list --digests --format json | jq -r '.[0].Id')" \
-            "${{ env.IMAGE_REF }}":latest-zstchd
+            ${{ env.IMG_ID }} \
+            ${{ env.IMGREP }}:${{ github.ref_name }}-zstchd
 
-      - run: df -h && du -sh /* 2>/dev/null || true
+      - run: df -h
