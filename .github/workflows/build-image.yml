@@ -125,7 +125,7 @@ jobs:
           if jq -e 'if length == 0 then length else length|halt_error end' images.json; then
             echo "WARNING: pulling ${IMGREP}"
             podman pull ${IMGREP}
-          elif [[ $(jq -r '.[0].Names[0]' images.json) ~= ${IMGREP} ]]; then
+          elif jq -e 'if .[0].Names[0] | contains("{{ matrix.package }}") then halt else ""|halt_error end' images.json; then
             echo 'INFO: found in rootless podman repository'
           else
             echo "ERROR: $(jq -r '.[0].Names[0]' images.json)"
