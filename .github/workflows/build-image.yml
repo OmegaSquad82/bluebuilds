@@ -126,6 +126,7 @@ jobs:
             sudo chown -R "$(stat -c '%U:%G' "${HOME}")" /run/user/"$UID"
             echo "WARNING: pulling ${IMGREP}"
             podman pull ${IMGREP}
+            podman image list --format json > images.json
           elif jq -e 'if .[0].Names[0] | contains("${{ env.IMGREP }}") then halt else ""|halt_error end' images.json; then
             echo 'INFO: found in rootless podman repository'
           else
