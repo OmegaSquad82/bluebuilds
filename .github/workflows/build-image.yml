@@ -20,11 +20,12 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  IMAGE_REF:
+  HOMESPACE_OWNER:
   IS_DEFAULT: false
   REGISTRY_USERNAME: ${{ github.actor }}
   REGISTRY_PASSWORD: ${{ github.token }}
   REGISTRY_IMG_PATH: ghcr.io/${{ github.repository_owner }}
+  IMAGE_REF:
 
 jobs:
   imagebuild:
@@ -60,7 +61,7 @@ jobs:
           # https://github.com/easimon/maximize-build-space/issues/23
           # https://github.com/easimon/maximize-build-space/pull/37
           WORKSPACE_OWNER="$(stat -c '%U:%G' "${GITHUB_WORKSPACE}")"
-          HOMESPACE_OWNER="$(stat -c '%U:%G' "${HOME}")"
+          HOMESPACE_OWNER="$(stat -c '%U:%G' "${HOME}")" | tee >>"$GITHUB_ENV"
 
           VG_NAME=buildvg
           LV_NAME=buildlv
@@ -93,9 +94,6 @@ jobs:
 
       - run: df -h && du -sh /* 2>/dev/null || true
 
-      - name: Checkout codeZ
-        uses: actions/checkout@v4
-
       - name: Check if on default (main) or test (rechunk) branch to rechunk it
         run: |
           if [[ '${{ github.ref_name }}' == '${{ github.event.repository.default_branch }}' || '${{ github.ref_name }}' == 'rechunk' ]]; then
@@ -116,15 +114,12 @@ jobs:
 
       - run: df -h && du -sh /* 2>/dev/null || true
 
-      - run: podman info
       - name: Run podman login ghcr.io
         run: |
           set -euo pipefail
 
-          HOMESPACE_OWNER="$(stat -c '%U:%G' "${HOME}")"
-
           # https://github.com/containers/podman/issues/5049#issuecomment-1348628646
-          sudo chown -R "$HOMESPACE_OWNER" /run/user/"$UID"
+          sudo chown -R "${{ env.HOMESPACE_OWNER }}" /run/user/"$UID"
           loginctl enable-linger "$USER"
 
           podman login ghcr.io \
@@ -132,7 +127,6 @@ jobs:
             --password "${{ env.REGISTRY_PASSWORD }}"
 
       # https://github.com/orgs/community/discussions/10553#discussioncomment-11066950
-
       - name: Construct an image reference for ghcr.io
         run: echo "IMAGE_REF=${REGISTRY_IMG_PATH@L}/${{ matrix.package }}" >>$GITHUB_ENV
 
@@ -141,6 +135,7 @@ jobs:
       - name: Run podman history ${{ env.IMAGE_REF }}
         run: podman history ${{ env.IMAGE_REF }}
       - run: podman images --digests
+      - run: podman info
 
       # This is something the community worked on for quite some time
       #   but it likely will improve the efficiency of transfers;
