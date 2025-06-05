@@ -163,6 +163,10 @@ jobs:
             use-sigstore-attachments: true
           EOF
 
+          podman login ghcr.io \
+            --username "${{ env.REGISTRY_USERNAME }}" \
+            --password "${{ env.REGISTRY_PASSWORD }}"
+
           podman push \
             --remove-signatures \
             --compression-format=zstd:chunked \
