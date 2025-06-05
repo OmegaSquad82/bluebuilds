@@ -123,6 +123,7 @@ jobs:
           podman image list --format json > images.json
           echo -n "Number of locally available images: "
           if jq -e 'if length == 0 then length else length|halt_error end' images.json; then
+            sudo chown -R "$(stat -c '%U:%G' "${HOME}")" /run/user/"$UID"
             echo "WARNING: pulling ${IMGREP}"
             podman pull ${IMGREP}
           elif jq -e 'if .[0].Names[0] | contains("${{ env.IMGREP }}") then halt else ""|halt_error end' images.json; then
