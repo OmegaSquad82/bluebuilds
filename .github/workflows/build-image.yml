@@ -104,6 +104,7 @@ jobs:
           fi
 
       - run: df -h && du -sh /* 2>/dev/null || true
+        if: ${{ ! env.IS_DEFAULT }}
       - name: Build Custom Image
         uses: blue-build/github-action@v1.8.1
         with:
@@ -113,10 +114,11 @@ jobs:
           rechunk: ${{ env.IS_DEFAULT }}
           recipe: recipe-${{ matrix.package }}.yml
           registry_token: ${{ github.token }}
-          # build_args: |
-          #   --compression-format zstd:chunked
+          squash: ${{ env.IS_DEFAULT }}
+          build_opts: |
+            --compression-format zstd:chunked
       - run: df -h && du -sh /* 2>/dev/null || true
-
+        if: ${{ ! env.IS_DEFAULT }}
       - name: Run podman login ghcr.io
         run: |
           podman login ghcr.io \
@@ -176,3 +178,4 @@ jobs:
             "${{ env.IMAGE_REF }}":latest-zstchd
 
       - run: df -h && du -sh /* 2>/dev/null || true
+        if: ${{ ! env.IS_DEFAULT }}
