@@ -125,13 +125,12 @@ jobs:
       # https://github.com/orgs/community/discussions/10553#discussioncomment-11066950
       - name: Construct image references for Podman
         run: |
-          echo "IMGREP=${REGISTRY_IMG_PATH@L}/${{ matrix.package }}" >>"$GITHUB_ENV"                - name: Get image ID
+          echo "IMGREP=${REGISTRY_IMG_PATH@L}/${{ matrix.package }}" >>"$GITHUB_ENV"
           echo "IMGTAG=$(podman image list --digests --format json | jq -r '.[0].Tag')" >>"$GITHUB_ENV"
           echo "IMGDIG=$(podman image list --digests --format json | jq -r '.[0].Digest')" >>"$GITHUB_ENV"
           echo "IMG_ID=$(podman image list --digests --format json | jq -r '.[0].Id')" >>"$GITHUB_ENV"
 
-      - name: Run podman history ${{ env.IMGREP }}:${{ env.IMGTAG }}
-        run: podman history ${{ env.IMGREP }}:${{ env.IMGDIG }}
+      - run: podman history ${{ env.IMGREP }}:${{ env.IMGTAG }}
 
       # This is something the community worked on for quite some time
       #   but it likely will improve the efficiency of transfers;
@@ -150,7 +149,7 @@ jobs:
       #   https://github.com/blue-build/cli/issues/112
       #   https://github.com/containers/bootc/issues/20
       #   https://github.com/containers/bootc/issues/963
-      - name: Recompress to zstd:chunked
+      - name: Recompress it to ${{ env.IMGREP }}:chunked
         run: |
           set -euo pipefail
 
