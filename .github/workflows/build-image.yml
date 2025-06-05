@@ -22,8 +22,6 @@ concurrency:
 env:
   HOMESPACE_OWNER:
   IS_DEFAULT: false
-  REGISTRY_USERNAME: ${{ github.actor }}
-  REGISTRY_PASSWORD: ${{ github.token }}
   REGISTRY_IMG_PATH: ghcr.io/${{ github.repository_owner }}
   IMGREP:
   IMGDIG:
@@ -79,13 +77,13 @@ jobs:
           sudo mount -o defaults,noatime,compress=zstd:1,discard=sync "${LV_PATH}" /btrfsrootvol
 
           cd /btrfsrootvol
-          for subvolume in containers ostreeroot mywrkspace; do
+          for subvolume in containers homstorage ostreeroot mywrkspace; do
             sudo btrfs subvolume create "$subvolume"
           done
 
           # https://github.com/containers/podman/blob/main/troubleshooting.md#11-changing-the-location-of-the-graphroot-leads-to-permission-denied
           sudo mount -o subvol=containers,noatime,compress=zstd:1,discard=sync "${LV_PATH}" /var/lib/containers
-          sudo mount -o subvol=containers,noatime,compress=zstd:1,discard=sync "${LV_PATH}" "${HOME}"/.local/share/containers
+          sudo mount -o subvol=homstorage,noatime,compress=zstd:1,discard=sync "${LV_PATH}" "${HOME}"/.local/share/containers
 
           sudo mount -o subvol=ostreeroot,noatime,compress=zstd:1,discard=sync "${LV_PATH}" /sysroot
           sudo mount -o subvol=mywrkspace,noatime,compress=zstd:1,discard=sync "${LV_PATH}" "${GITHUB_WORKSPACE}"
@@ -156,7 +154,7 @@ jobs:
       #   https://github.com/blue-build/cli/issues/112
       #   https://github.com/containers/bootc/issues/20
       #   https://github.com/containers/bootc/issues/963
-      - name: Recompress it to ${{ env.IMGREP }}:${{ github.ref_name }}-zstchd
+      - name: Recompress it to zstd:chunked as ${{ env.IMGREP }}:${{ github.ref_name }}-zstchd
         run: |
           set -euo pipefail
 
