@@ -124,13 +124,6 @@ jobs:
           use_cache: false
 
       - run: podman images --digests
-        if: env.IS_DEFAULT == 'false'
-
-      # - name: Run podman login ghcr.io
-      #   run: |
-      #     podman login ghcr.io \
-      #       --username "${{ env.REGISTRY_USERNAME }}" \
-      #       --password "${{ env.REGISTRY_PASSWORD }}"
 
       # https://github.com/orgs/community/discussions/10553#discussioncomment-11066950
       - name: Construct image references for Podman
