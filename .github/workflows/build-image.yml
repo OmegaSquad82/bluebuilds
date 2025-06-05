@@ -142,11 +142,11 @@ jobs:
       - run: podman history ${{ env.IMGREP }}@${{ env.IMGDIG }}
 
       # This is something the community worked on for quite some time
-      #   but it likely will improve the efficiency of transfers;
-      #    this was made to workaround the fact that blue-build
-      #     does not yet support zstd:chunked and it depends
-      #      on bootc/rpm-ostree having implemented this,
-      #       which according to my tests is now good.
+      #    but it likely will improve the efficiency of transfers;
+      #      this was made to workaround the fact that bluebuild
+      #        doesn't yet support zstd:chunked and it depends
+      #          on bootc/rpm-ostree having implemented this
+      #            which according to my tests is now good
       #
       # Changetracker
       #   https://fedoraproject.org/wiki/Changes/zstd:chunked
