@@ -124,6 +124,8 @@ jobs:
       - run: echo "IMGREP=${REGISTRY_IMG_PATH@L}/${{ matrix.package }}" >>"$GITHUB_ENV"
       - name: Construct references to built image
         run: |
+          set -euo pipefail
+
           echo -n "Number of locally available images: "
           if podman image list --format json | jq -e 'if length == 0 then length else length|halt_error end'; then
             echo "WARNING: pulling ${IMGREP}"
