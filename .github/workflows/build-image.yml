@@ -53,6 +53,7 @@ jobs:
           remove-docker-images: true
           remove-dotnet: true
           remove-haskell: true
+
       - name: Compress critical paths
         shell: bash
         run: |
@@ -61,7 +62,7 @@ jobs:
           # https://github.com/easimon/maximize-build-space/issues/23
           # https://github.com/easimon/maximize-build-space/pull/37
           WORKSPACE_OWNER="$(stat -c '%U:%G' "${GITHUB_WORKSPACE}")"
-          HOMESPACE_OWNER="$(stat -c '%U:%G' "${HOME}")" | tee >>"$GITHUB_ENV"
+          HOMESPACE_OWNER="$(stat -c '%U:%G' "${HOME}")"
 
           VG_NAME=buildvg
           LV_NAME=buildlv
@@ -87,7 +88,9 @@ jobs:
           sudo mount -o subvol=aworkspace,noatime,compress=zstd:1,discard=sync "${LV_PATH}" "${GITHUB_WORKSPACE}"
 
           sudo chown -R "$WORKSPACE_OWNER" "${GITHUB_WORKSPACE}"
-          sudo chown -R "$HOMESPACE_OWNER" "${HOME}"/.local/share/containers
+
+          # https://github.com/containers/podman/issues/5049#issuecomment-1348628646
+          sudo chown -R "$HOMESPACE_OWNER" "${HOME}"/.local/share/containers /run/user/"$UID"
 
           sudo mount | grep btrfs
           lsblk
@@ -116,12 +119,6 @@ jobs:
 
       - name: Run podman login ghcr.io
         run: |
-          set -euo pipefail
-
-          # https://github.com/containers/podman/issues/5049#issuecomment-1348628646
-          sudo chown -R "${{ env.HOMESPACE_OWNER }}" /run/user/"$UID"
-          loginctl enable-linger "$USER"
-
           podman login ghcr.io \
             --username "${{ env.REGISTRY_USERNAME }}" \
             --password "${{ env.REGISTRY_PASSWORD }}"
