@@ -99,7 +99,7 @@ jobs:
       - name: Check if on default (main) or test (rechunk) branch to rechunk it
         if: github.ref_name == github.event.repository.default_branch || github.ref_name == 'rechunk'
         run: echo 'IS_DEFAULT=true'>"$GITHUB_ENV"
-      - if: env.IS_DEFAULT == true
+      - if: env.IS_DEFAULT
         run: echo 'PODMAN=sudo podman'>>"$GITHUB_ENV"
 
       - run: ${{ env.PODMAN }} info
