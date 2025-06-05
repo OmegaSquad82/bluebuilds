@@ -104,7 +104,7 @@ jobs:
           fi
 
       - run: podman info
-        if: ${{ ! env.IS_DEFAULT }}
+        if: ${{ env.IS_DEFAULT == false }}
 
       - name: Build Custom Image
         uses: blue-build/github-action@v1.8.1
