@@ -128,7 +128,7 @@ jobs:
           echo "IMGDIG=$(podman image list --format json | jq -r '.[0].Digest')" >>"$GITHUB_ENV"
           echo "IMG_ID=$(podman image list --format json | jq -r '.[0].Id')" >>"$GITHUB_ENV"
 
-      - run: podman history ${{ env.IMGREP }}:${{ env.IMGDIG }}
+      - run: podman history ${{ env.IMGREP }}@${{ env.IMGDIG }}
 
       # This is something the community worked on for quite some time
       #   but it likely will improve the efficiency of transfers;
