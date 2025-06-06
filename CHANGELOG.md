@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.11.0](https://github.com/OmegaSquad82/bluebuilds/compare/v1.10.5...v1.11.0) (2025-06-06)
+
+
+### Features
+
+* try to improve build time but risk storage filling up ([68c992a](https://github.com/OmegaSquad82/bluebuilds/commit/68c992aadf98a98b775a660a72fd030c8b5c7403))
+* try to improve build time but risk storage filling up ([cfaabf3](https://github.com/OmegaSquad82/bluebuilds/commit/cfaabf3f34eabb645217aa7a5313b77dd7f74caa))
+
 ## [1.10.5](https://github.com/OmegaSquad82/bluebuilds/compare/v1.10.4...v1.10.5) (2025-06-05)
 
 
