@@ -71,7 +71,7 @@ jobs:
 
           # https://github.com/radxa/armbian-compile-action/commit/82fe40188f2f3b4dbd4ae8fb9c64f49f117085c7
           sudo mkfs.btrfs -L "${LV_NAME}" -M -m single --force "${LV_PATH}"
-          sudo mount -o defaults,noatime,compress=zstd:1,discard=sync "${LV_PATH}" /btrfsrootvol
+          sudo mount -o defaults,noatime,compress=zstd:1,discard=async "${LV_PATH}" /btrfsrootvol
 
           cd /btrfsrootvol
           for subvolume in containers homstorage ostreeroot mywrkspace; do
@@ -79,11 +79,11 @@ jobs:
           done
 
           # https://github.com/containers/podman/blob/main/troubleshooting.md#11-changing-the-location-of-the-graphroot-leads-to-permission-denied
-          sudo mount -o subvol=containers,noatime,compress=zstd:1,discard=sync "${LV_PATH}" /var/lib/containers
-          sudo mount -o subvol=homstorage,noatime,compress=zstd:1,discard=sync "${LV_PATH}" "${HOME}"/.local/share/containers
+          sudo mount -o subvol=containers,noatime,compress=zstd:1,discard=async "${LV_PATH}" /var/lib/containers
+          sudo mount -o subvol=homstorage,noatime,compress=zstd:1,discard=async "${LV_PATH}" "${HOME}"/.local/share/containers
 
-          sudo mount -o subvol=ostreeroot,noatime,compress=zstd:1,discard=sync "${LV_PATH}" /sysroot
-          sudo mount -o subvol=mywrkspace,noatime,compress=zstd:1,discard=sync "${LV_PATH}" "${GITHUB_WORKSPACE}"
+          sudo mount -o subvol=ostreeroot,noatime,compress=zstd:1,discard=async "${LV_PATH}" /sysroot
+          sudo mount -o subvol=mywrkspace,noatime,compress=zstd:1,discard=async "${LV_PATH}" "${GITHUB_WORKSPACE}"
 
           sudo chown -R "$WORKSPACE_OWNER" "${GITHUB_WORKSPACE}"
 
