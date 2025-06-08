@@ -106,7 +106,7 @@ jobs:
         run: echo 'IS_RECHUNK=true' >"$GITHUB_ENV"
 
       - name: Run hhd-dev/rechunk after build?
-        if: var.IS_DEFAULT || var.IS_RECHUNK
+        if: env.IS_DEFAULT || env.IS_RECHUNK
         run: echo 'DO_RECHUNK=true' >"$GITHUB_ENV"
 
       - run: podman info
