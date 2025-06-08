@@ -22,6 +22,8 @@ concurrency:
 env:
   HOMESPACE_OWNER:
   IS_DEFAULT: false
+  IS_RECHUNK: false
+  DO_RECHUNK: false
   REGISTRY_USERNAME: ${{ github.actor }}
   REGISTRY_PASSWORD: ${{ github.token }}
   REGISTRY_IMG_PATH: ghcr.io/${{ github.repository_owner }}
@@ -95,9 +97,17 @@ jobs:
 
       - run: df -h
 
-      - name: Check if on default (main) or test (rechunk) branch to rechunk it
-        if: github.ref_name == github.event.repository.default_branch || github.ref_name == 'rechunk'
+      - name: On default (main) branch?
+        if: github.ref_name == github.event.repository.default_branch
         run: echo 'IS_DEFAULT=true' >"$GITHUB_ENV"
+
+      - name: On test (rechunk) branch?
+        if: github.ref_name == 'rechunk'
+        run: echo 'IS_RECHUNK=true' >"$GITHUB_ENV"
+
+      - name: Run hhd-dev/rechunk after build?
+        if: var.IS_DEFAULT || var.IS_RECHUNK
+        run: echo 'DO_RECHUNK=true' >"$GITHUB_ENV"
 
       - run: podman info
       - name: Build Custom Image
@@ -108,7 +118,7 @@ jobs:
           cosign_private_key: ${{ secrets.SIGNING_SECRET }}
           maximize_build_space: false
           pr_event_number: ${{ github.event.number }}
-          rechunk: ${{ env.IS_DEFAULT }}
+          rechunk: ${{ env.DO_RECHUNK }}
           recipe: recipe-${{ matrix.package }}.yml
           registry_token: ${{ github.token }}
           squash: true
@@ -176,11 +186,19 @@ jobs:
             use-sigstore-attachments: true
           EOF
 
-          podman push \
-            --remove-signatures \
-            --compression-format=zstd:chunked \
-            --sign-by-sigstore-private-key=cosign.key \
-            ${{ env.IMG_ID }} \
-            ${{ env.IMGREP }}:${{ github.ref_name }}-zstchd
+          push_refs=('${{ github.ref_name }}')
+
+          if [[ '${{ env.IS_DEFAULT }}' == 'true' ]]; then
+            push_refs+=('latest')
+          fi
+
+          for ref_name in "${push_refs[@]}" ; do
+            podman push \
+              --remove-signatures \
+              --compression-format=zstd:chunked \
+              --sign-by-sigstore-private-key=cosign.key \
+              ${{ env.IMG_ID }} \
+              ${{ env.IMGREP }}:"${ref_name}"-zstchd
+          done
 
       - run: df -h
