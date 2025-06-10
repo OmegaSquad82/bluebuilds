@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.11.1](https://github.com/OmegaSquad82/bluebuilds/compare/v1.11.0...v1.11.1) (2025-06-10)
+
+
+### Bug Fixes
+
+* create latest-zstchd tag when on main branch ([e07e2cc](https://github.com/OmegaSquad82/bluebuilds/commit/e07e2ccf4e8b03a546cfaa0861cb3832c5ccb81a))
+* create latest-zstchd tag when on main branch ([c21b61f](https://github.com/OmegaSquad82/bluebuilds/commit/c21b61f99dec26f77e70d20a82d4bf0ee0933adc))
+* ENVironment not VARs in gh actions ... ([132efcb](https://github.com/OmegaSquad82/bluebuilds/commit/132efcb4e669089c1ffb3afdd1645a975468e880))
+* no additional tags by pushing again ([c6d10b3](https://github.com/OmegaSquad82/bluebuilds/commit/c6d10b31474b096a6cb13285d54d3eacc9098986))
+
 ## [1.11.0](https://github.com/OmegaSquad82/bluebuilds/compare/v1.10.5...v1.11.0) (2025-06-06)
 
 
