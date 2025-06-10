@@ -189,7 +189,7 @@ jobs:
           push_refs=('${{ github.ref_name }}')
 
           if [[ '${{ env.IS_DEFAULT }}' == 'true' ]]; then
-            push_refs+=('latest')
+            # FIXME push_refs+=('latest')
           fi
 
           for ref_name in "${push_refs[@]}" ; do
