@@ -22,7 +22,7 @@ modules:
 
   - type: rpm-ostree
     remove:
-      - firefox
+     # - firefox
       - firefox-langpacks
 
   - type: signing
