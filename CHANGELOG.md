@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.11.2](https://github.com/OmegaSquad82/bluebuilds/compare/v1.11.1...v1.11.2) (2025-06-13)
+
+
+### Bug Fixes
+
+* keep firefox for Selenium benchmarks ([0260874](https://github.com/OmegaSquad82/bluebuilds/commit/0260874671c127cb35a6e428b21aabac218a1e37))
+
 ## [1.11.1](https://github.com/OmegaSquad82/bluebuilds/compare/v1.11.0...v1.11.1) (2025-06-10)
 
 
