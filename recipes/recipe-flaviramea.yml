@@ -21,6 +21,8 @@ modules:
   - from-file: configs/homebrew.yml
 
   - type: rpm-ostree
+    install:
+      - phoronix-test-suite
     remove:
      # - firefox
       - firefox-langpacks
