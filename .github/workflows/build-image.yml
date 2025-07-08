@@ -135,8 +135,9 @@ jobs:
 
           echo -n "Number of locally available images: "
           if jq -e 'if length == 0 then length else length|halt_error end' images.json; then
+            sudo apt install -y systemd-container >/dev/null # podman scp needs machinectl
             sudo chown -R "$(stat -c '%U:%G' "${HOME}")" /run/user/"$UID"
-            echo "WARNING: pulling ${IMGREP}"
+            echo "WARNING: copying ${IMGREP}"
             podman image scp ${IMGREP} $USER@localhost::
             podman image list --format json | jq . | tee images.json
           elif jq -e 'if .[0].Names[0] | contains("${{ env.IMGREP }}") then halt else ""|halt_error end' images.json; then
