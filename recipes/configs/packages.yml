@@ -5,6 +5,7 @@ modules:
     install:
       - byobu
       - htop
+      - k3b
       - kitty
       - neovim
       - rmlint
