@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.11.3](https://github.com/OmegaSquad82/bluebuilds/compare/v1.11.2...v1.11.3) (2025-07-08)
+
+
+### Bug Fixes
+
+* add phoronix-test-suite ([33ffa09](https://github.com/OmegaSquad82/bluebuilds/commit/33ffa097a1c15ccb320a766771818216b6850c7b))
+* add phoronix-test-suite ([108bc20](https://github.com/OmegaSquad82/bluebuilds/commit/108bc207572be131339f3777e683062cd57b6bc7))
+
 ## [1.11.2](https://github.com/OmegaSquad82/bluebuilds/compare/v1.11.1...v1.11.2) (2025-06-13)
 
 
