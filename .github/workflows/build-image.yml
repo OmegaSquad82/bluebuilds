@@ -123,7 +123,7 @@ jobs:
           registry_token: ${{ github.token }}
           squash: true
           use_cache: false
-      - run: podman images
+      - run: podman images && sudo podman images
 
       # https://github.com/orgs/community/discussions/10553#discussioncomment-11066950
       - run: echo "IMGREP=${REGISTRY_IMG_PATH@L}/${{ matrix.package }}" >"$GITHUB_ENV"
