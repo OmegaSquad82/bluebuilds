@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.12.0](https://github.com/OmegaSquad82/bluebuilds/compare/v1.11.3...v1.12.0) (2025-07-09)
+
+
+### Features
+
+* Update libation.yml ([cdc5f87](https://github.com/OmegaSquad82/bluebuilds/commit/cdc5f87182b47d009b4ca3bbfd299068c27876d6))
+
+
+### Bug Fixes
+
+* install cdrskin for k3b ([720bc61](https://github.com/OmegaSquad82/bluebuilds/commit/720bc6127c0af90847082927a9d3d6f824f8cc39))
+* use correct computing architecture for Libation ... ([2be600f](https://github.com/OmegaSquad82/bluebuilds/commit/2be600fadacaea24edafad01dcd13d5833005426))
+
 ## [1.11.3](https://github.com/OmegaSquad82/bluebuilds/compare/v1.11.2...v1.11.3) (2025-07-08)
 
 
