@@ -4,6 +4,7 @@ modules:
       - https://copr.fedorainfracloud.org/coprs/rodoma92/rmlint/repo/fedora-%OS_VERSION%/rodoma92-rmlint-fedora-%OS_VERSION%.repo
     install:
       - byobu
+      - cdrskin
       - htop
       - k3b
       - kitty
