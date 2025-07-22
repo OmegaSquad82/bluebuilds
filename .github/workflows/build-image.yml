@@ -111,7 +111,7 @@ jobs:
 
       - run: podman info
       - name: Build Custom Image
-        uses: blue-build/github-action@v1.8.2
+        uses: blue-build/github-action@v1.8.3
         with:
           # it does not do with :chunked, yet!
           build_opts: --compression-format zstd
