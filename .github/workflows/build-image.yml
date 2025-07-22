@@ -122,34 +122,33 @@ jobs:
           recipe: recipe-${{ matrix.package }}.yml
           registry_token: ${{ github.token }}
           squash: true
-          use_cache: false
-      - run: podman images
+      # - run: podman images
 
       # https://github.com/orgs/community/discussions/10553#discussioncomment-11066950
-      - run: echo "IMGREP=${REGISTRY_IMG_PATH@L}/${{ matrix.package }}" >"$GITHUB_ENV"
-      - name: Construct references to built image
-        run: |
-          set -euo pipefail
+      # - run: echo "IMGREP=${REGISTRY_IMG_PATH@L}/${{ matrix.package }}" >"$GITHUB_ENV"
+      # - name: Construct references to built image
+      #   run: |
+      #     set -euo pipefail
 
-          podman image list --format json > images.json
+      #     podman image list --format json > images.json
 
-          echo -n "Number of locally available images: "
-          if jq -e 'if length == 0 then length else length|halt_error end' images.json; then
-            sudo chown -R "$(stat -c '%U:%G' "${HOME}")" /run/user/"$UID"
-            echo "WARNING: pulling ${IMGREP}"
-            podman pull ${IMGREP}
-            podman image list --format json | jq . | tee images.json
-          elif jq -e 'if .[0].Names[0] | contains("${{ env.IMGREP }}") then halt else ""|halt_error end' images.json; then
-            echo 'INFO: found in rootless podman repository'
-          else
-            echo "ERROR: $(jq -r '.[0].Names[0]' images.json)"
-            exit 125
-          fi
+      #     echo -n "Number of locally available images: "
+      #     if jq -e 'if length == 0 then length else length|halt_error end' images.json; then
+      #       sudo chown -R "$(stat -c '%U:%G' "${HOME}")" /run/user/"$UID"
+      #       echo "WARNING: pulling ${IMGREP}"
+      #       podman pull ${IMGREP}
+      #       podman image list --format json | jq . | tee images.json
+      #     elif jq -e 'if .[0].Names[0] | contains("${{ env.IMGREP }}") then halt else ""|halt_error end' images.json; then
+      #       echo 'INFO: found in rootless podman repository'
+      #     else
+      #       echo "ERROR: $(jq -r '.[0].Names[0]' images.json)"
+      #       exit 125
+      #     fi
 
-          echo "IMGDIG=$(jq -r '.[0].Digest' images.json)" >"$GITHUB_ENV"
-          echo "IMG_ID=$(jq -r '.[0].Id' images.json)" >>"$GITHUB_ENV"
+      #     echo "IMGDIG=$(jq -r '.[0].Digest' images.json)" >"$GITHUB_ENV"
+      #     echo "IMG_ID=$(jq -r '.[0].Id' images.json)" >>"$GITHUB_ENV"
 
-      - run: podman history ${{ env.IMGREP }}@${{ env.IMGDIG }}
+      # - run: podman history ${{ env.IMGREP }}@${{ env.IMGDIG }}
 
       # This is something the community worked on for quite some time
       #    but it likely will improve the efficiency of transfers;
@@ -168,38 +167,38 @@ jobs:
       #   https://github.com/blue-build/cli/issues/112
       #   https://github.com/containers/bootc/issues/20
       #   https://github.com/containers/bootc/issues/963
-      - name: Recompress it to zstd:chunked as ${{ env.IMGREP }}:${{ github.ref_name }}-zstchd
-        run: |
-          set -euo pipefail
+      # - name: Recompress it to zstd:chunked as ${{ env.IMGREP }}:${{ github.ref_name }}-zstchd
+      #   run: |
+      #     set -euo pipefail
 
-          echo "${{ secrets.SIGNING_SECRET }}" >cosign.key
+      #     echo "${{ secrets.SIGNING_SECRET }}" >cosign.key
 
-          # https://github.com/containers/image/issues/1613#issuecomment-1188923320
-          # https://github.com/containers/image/blob/main/docs/containers-registries.d.5.md#individual-configuration-sections
-          PODMAN_CONFDIR="$HOME/.config/containers/registries.d"
-          PODMAN_CONFIG="${PODMAN_CONFDIR}/registries.yaml"
+      #     # https://github.com/containers/image/issues/1613#issuecomment-1188923320
+      #     # https://github.com/containers/image/blob/main/docs/containers-registries.d.5.md#individual-configuration-sections
+      #     PODMAN_CONFDIR="$HOME/.config/containers/registries.d"
+      #     PODMAN_CONFIG="${PODMAN_CONFDIR}/registries.yaml"
 
-          mkdir -p "${PODMAN_CONFDIR}"
-          echo "creating: ${PODMAN_CONFIG}"
-          tee "${PODMAN_CONFIG}" <<EOF
-          default-docker:
-            use-sigstore-attachments: true
-          EOF
+      #     mkdir -p "${PODMAN_CONFDIR}"
+      #     echo "creating: ${PODMAN_CONFIG}"
+      #     tee "${PODMAN_CONFIG}" <<EOF
+      #     default-docker:
+      #       use-sigstore-attachments: true
+      #     EOF
 
-          push_refs=('${{ github.ref_name }}')
+      #     push_refs=('${{ github.ref_name }}')
 
-          # FIXME
-          # if [[ '${{ env.IS_DEFAULT }}' == 'true' ]]; then
-          #  push_refs+=('latest')
-          # fi
+      #     # FIXME
+      #     # if [[ '${{ env.IS_DEFAULT }}' == 'true' ]]; then
+      #     #  push_refs+=('latest')
+      #     # fi
 
-          for ref_name in "${push_refs[@]}" ; do
-            podman push \
-              --remove-signatures \
-              --compression-format=zstd:chunked \
-              --sign-by-sigstore-private-key=cosign.key \
-              ${{ env.IMG_ID }} \
-              ${{ env.IMGREP }}:"${ref_name}"-zstchd
-          done
+      #     for ref_name in "${push_refs[@]}" ; do
+      #       podman push \
+      #         --remove-signatures \
+      #         --compression-format=zstd:chunked \
+      #         --sign-by-sigstore-private-key=cosign.key \
+      #         ${{ env.IMG_ID }} \
+      #         ${{ env.IMGREP }}:"${ref_name}"-zstchd
+      #     done
 
-      - run: df -h
+      # - run: df -h
