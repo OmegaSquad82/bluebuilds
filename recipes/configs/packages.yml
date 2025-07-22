@@ -6,6 +6,7 @@ modules:
       - byobu
       - cdrskin
       - htop
+      - hw-probe
       - k3b
       - kitty
       - neovim
