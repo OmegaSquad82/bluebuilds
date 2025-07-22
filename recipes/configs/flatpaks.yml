@@ -9,6 +9,7 @@ modules:
         - io.gitlab.librewolf-community
         - org.keepassxc.KeePassXC
         - org.libreoffice.LibreOffice
+        - org.linux_hardware.hw-probe
         - org.signal.Signal
       remove:
         - org.mozilla.firefox
