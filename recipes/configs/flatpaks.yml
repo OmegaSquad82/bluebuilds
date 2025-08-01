@@ -1,14 +1,14 @@
 modules:
   - type: default-flatpaks
     configurations:
-      notify: true
-      scope: system
-      install:
-        - com.synology.SynologyDrive
-        - io.github.flattool.Warehouse
-        - io.github.ungoogled_software.ungoogled_chromium
-        - io.gitlab.librewolf-community
-        - org.keepassxc.KeePassXC
-        - org.libreoffice.LibreOffice
-        - org.linux_hardware.hw-probe
-        - org.signal.Signal
+      - notify: true
+        scope: system
+        install:
+          - com.synology.SynologyDrive
+          - io.github.flattool.Warehouse
+          - io.github.ungoogled_software.ungoogled_chromium
+          - io.gitlab.librewolf-community
+          - org.keepassxc.KeePassXC
+          - org.libreoffice.LibreOffice
+          - org.linux_hardware.hw-probe
+          - org.signal.Signal
