@@ -1,6 +1,7 @@
 modules:
   - type: default-flatpaks
-    notify: true
-    system:
-      install:
-        - io.github.ilya_zlobintsev.LACT
+    configurations:
+    - notify: true
+      system:
+        install:
+          - io.github.ilya_zlobintsev.LACT
