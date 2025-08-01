@@ -1,7 +1,8 @@
 modules:
   - type: default-flatpaks
-    notify: true
-    system:
+    configurations:
+      notify: true
+      scope: system
       install:
         - com.synology.SynologyDrive
         - io.github.flattool.Warehouse
@@ -11,5 +12,3 @@ modules:
         - org.libreoffice.LibreOffice
         - org.linux_hardware.hw-probe
         - org.signal.Signal
-      remove:
-        - org.mozilla.firefox
