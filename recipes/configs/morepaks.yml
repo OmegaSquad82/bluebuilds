@@ -1,14 +1,15 @@
 modules:
   - type: default-flatpaks
-    notify: true
-    system:
-      install:
-        - app.devsuite.Ptyxis
-        - com.calibre_ebook.calibre
-        - com.logseq.Logseq
-        - com.vscodium.codium
-        - de.bund.ausweisapp.ausweisapp2
-        - io.github.dvlv.boxbuddyrs
-        - io.github.nroduit.Weasis
-        - md.obsidian.Obsidian
-        - org.fedoraproject.MediaWriter
+    configurations:
+      - notify: true
+        scope: system
+        install:
+          - app.devsuite.Ptyxis
+          - com.calibre_ebook.calibre
+          - com.logseq.Logseq
+          - com.vscodium.codium
+          - de.bund.ausweisapp.ausweisapp2
+          - io.github.dvlv.boxbuddyrs
+          - io.github.nroduit.Weasis
+          - md.obsidian.Obsidian
+          - org.fedoraproject.MediaWriter
