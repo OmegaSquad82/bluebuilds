@@ -1,8 +1,8 @@
 modules:
   - type: default-flatpaks
     configurations:
-      notify: true
-      scope: system
-      install:
-        - com.discordapp.Discord
-        - org.openrgb.OpenRGB
+      - notify: true
+        scope: system
+        install:
+          - com.discordapp.Discord
+          - org.openrgb.OpenRGB
