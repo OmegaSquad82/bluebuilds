@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.13.0](https://github.com/OmegaSquad82/bluebuilds/compare/v1.12.0...v1.13.0) (2025-08-01)
+
+
+### Features
+
+* add hw-probe ([4f141a0](https://github.com/OmegaSquad82/bluebuilds/commit/4f141a0f90233872727fae293993fb0e7c37d8e5))
+* add hw-probe ([1145cee](https://github.com/OmegaSquad82/bluebuilds/commit/1145cee6dbfd64532bb6bd07c17a262e917aba65))
+* adding fastfetch preset ([e237f99](https://github.com/OmegaSquad82/bluebuilds/commit/e237f99d90515f710d54920e7b606018bde3b5aa))
+
+
+### Bug Fixes
+
+* comment out recompression to zstd:chunked ([bf08e75](https://github.com/OmegaSquad82/bluebuilds/commit/bf08e758296606dc8d1d4e85088a389f963cb886))
+* comment out recompression to zstd:chunked ([e237f99](https://github.com/OmegaSquad82/bluebuilds/commit/e237f99d90515f710d54920e7b606018bde3b5aa))
+
 ## [1.12.0](https://github.com/OmegaSquad82/bluebuilds/compare/v1.11.3...v1.12.0) (2025-07-09)
 
 
