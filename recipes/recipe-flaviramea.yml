@@ -14,7 +14,6 @@ modules:
   - from-file: configs/clatd.yml
   - from-file: configs/power.yml
   - from-file: configs/fonts.yml
-  - from-file: configs/sshd.yml
 
   - from-file: configs/packages.yml
   - from-file: configs/flatpaks.yml
