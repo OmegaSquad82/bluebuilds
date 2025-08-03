@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.14.0](https://github.com/OmegaSquad82/bluebuilds/compare/v1.13.0...v1.14.0) (2025-08-03)
+
+
+### Features
+
+* rebase Flaviramea to a hardened baseimage ([49c6a4b](https://github.com/OmegaSquad82/bluebuilds/commit/49c6a4ba01a6706305388575997070cc3bf6b5d3))
+
 ## [1.13.0](https://github.com/OmegaSquad82/bluebuilds/compare/v1.12.0...v1.13.0) (2025-08-01)
 
 
