@@ -22,8 +22,5 @@ modules:
   - type: rpm-ostree
     install:
       - phoronix-test-suite
-    remove:
-     # - firefox
-      - firefox-langpacks
 
   - type: signing
