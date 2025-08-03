@@ -2,7 +2,7 @@
 # yaml-language-server: $schema=https://schema.blue-build.org/recipe-v1.json
 name: flaviramea
 description: My personal flavor of Fedora Sway Atomic.
-base-image: ghcr.io/ublue-os/sway-atomic-main
+base-image: ghcr.io/secureblue/sericea-main-hardened
 image-version: latest
 
 modules:
@@ -14,7 +14,6 @@ modules:
   - from-file: configs/clatd.yml
   - from-file: configs/power.yml
   - from-file: configs/fonts.yml
-  - from-file: configs/sshd.yml
 
   - from-file: configs/packages.yml
   - from-file: configs/flatpaks.yml
@@ -23,8 +22,5 @@ modules:
   - type: rpm-ostree
     install:
       - phoronix-test-suite
-    remove:
-     # - firefox
-      - firefox-langpacks
 
   - type: signing
