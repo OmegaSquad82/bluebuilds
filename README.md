@@ -8,7 +8,7 @@ See the [BlueBuild docs](https://blue-build.org/how-to/setup/) for quick setup i
 
 ## Images
 
-All images are built with a selection of common packages, flatpaks as well as some configuration.
+All images are built with a selection of common packages as well as some configuration.
 
 ### [Aubertit](https://www.mineralienatlas.de/lexikon/index.php/MineralData?lang=en&language=english&mineral=Aubertit)
 
@@ -24,72 +24,17 @@ Bazzite Deck Stable for Steam Deck clone(s).
 
 ### [Flaviramea](https://www.ecosia.org/search?tt=mzl&q=Cornus%20sericea%20Flaviramea)
 
-Fedora (Sericea/)Sway Atomic suitable for low resource footprint devices (e.g. netbooks).
+Fedora (Sericea/)Sway Atomic suitable for low resource footprint devices (e.g. netbooks) using SecureBlue as base.
 
 ## Customizations
 
 ### Podman
 
-The `podman.service` is enabled on Buttgenbachit.
+The `podman.service` should be enabled on Buttgenbachit and otherwise either disabled or masked.
 
-### Flatpaks
+### SSH Server
 
-#### All images
-
-##### install
-
-- KeepassXC
-- LibreOffice
-- LibreWolf
-- Signal
-- SynologyDrive
-- Warehouse
-
-##### uninstall
-
-- Mozilla Firefox
-
-#### Bazzite images
-
-- Discord
-- OpenRGB
-
-#### Select images
-
-- AusweisApp2
-- BoxBuddy
-- Calibre
-- Codium
-- HandHeldDaemon
-- LACT
-- Libation
-- MediaWriter
-- Obsidian
-- Ptyxis
-- Weasis
-
-### Utility packages
-
-#### All images
-
-##### install
-
-- byobu
-- htop
-- kitty
-- neovim
-
-#### Select Images
-
-##### uninstall
-
-- firefox
-
-#### Manually
-
-##### execute
-
-- `brew install pdfgrep`
+The OpenSSH Server Daemon should be enabled on all images ecept Flaviramea.
 
 ### 464XLAT for IPv6-only
 
