@@ -30,7 +30,7 @@ jobs:
           - flaviramea
     steps:
       - name: Checkout codeZ
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Construct lowercase image reference
         run: echo "IMAGE_REF=${REGISTRY_IMG_PATH@L}/${{ matrix.package }}:latest" >$GITHUB_ENV
