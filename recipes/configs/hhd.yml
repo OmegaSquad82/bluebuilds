@@ -1,12 +1,12 @@
 modules:
   - type: dnf
+    copr:
+      - hhd-dev/hhd
     install:
       packages:
-        - repo: https://copr.fedorainfracloud.org/coprs/hhd-dev/hhd/repo/fedora-%OS_VERSION%/hhd-dev-hhd-fedora-%OS_VERSION%.repo
-          packages:
-            - adjustor
-            - hhd
-            - hhd-ui
+        - adjustor
+        - hhd
+        - hhd-ui
   - type: systemd
     system:
       masked:

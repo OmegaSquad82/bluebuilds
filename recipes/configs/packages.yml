@@ -1,14 +1,11 @@
 modules:
   - type: dnf
     install:
-      packages:
-        - repo: https://copr.fedorainfracloud.org/coprs/rodoma92/rmlint/repo/fedora-%OS_VERSION%/rodoma92-rmlint-fedora-%OS_VERSION%.repo
-          packages:
-            - byobu
-            - cdrskin
-            - htop
-            - hw-probe
-            - k3b
-            - kitty
-            - neovim
-            - rmlint
+      - byobu
+      - cdrskin
+      - htop
+      - hw-probe
+      - k3b
+      - kitty
+      - neovim
+      - rmlint
