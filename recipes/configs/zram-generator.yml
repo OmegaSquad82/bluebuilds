@@ -1,7 +1,8 @@
 modules:
-  - type: rpm-ostree
+  - type: dnf
     install:
-      - zram-generator-defaults
+      packages:
+        - zram-generator-defaults
   - type: systemd
     system:
       enabled:

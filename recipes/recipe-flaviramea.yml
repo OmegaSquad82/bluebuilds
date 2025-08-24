@@ -15,8 +15,9 @@ modules:
   - from-file: configs/power.yml
   - from-file: configs/fonts.yml
 
-  - type: rpm-ostree
+  - type: dnf
     install:
-      - phoronix-test-suite
+      packages:
+        - phoronix-test-suite
 
   - type: signing
