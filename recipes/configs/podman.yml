@@ -1,7 +1,8 @@
 modules:
-  - type: rpm-ostree
+  - type: dnf
     install:
-      - podman-docker
+      packages:
+        - podman-docker
   - type: systemd
     user:
       enabled:

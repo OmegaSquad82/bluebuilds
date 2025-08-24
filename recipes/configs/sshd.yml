@@ -3,6 +3,7 @@ modules:
     system:
       enabled:
         - sshd.service
-  - type: rpm-ostree
+  - type: dnf
     install:
-      - lxqt-openssh-askpass
+      packages:
+        - lxqt-openssh-askpass

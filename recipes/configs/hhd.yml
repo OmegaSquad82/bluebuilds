@@ -1,11 +1,12 @@
 modules:
-  - type: rpm-ostree
-    repos:
-      - https://copr.fedorainfracloud.org/coprs/hhd-dev/hhd/repo/fedora-%OS_VERSION%/hhd-dev-hhd-fedora-%OS_VERSION%.repo
+  - type: dnf
     install:
-      - adjustor
-      - hhd
-      - hhd-ui
+      packages:
+        - repo: https://copr.fedorainfracloud.org/coprs/hhd-dev/hhd/repo/fedora-%OS_VERSION%/hhd-dev-hhd-fedora-%OS_VERSION%.repo
+          packages:
+            - adjustor
+            - hhd
+            - hhd-ui
   - type: systemd
     system:
       masked:

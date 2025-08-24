@@ -1,7 +1,8 @@
 modules:
-  - type: rpm-ostree
+  - type: dnf
     install:
-      - https://dl.fedoraproject.org/pub/fedora/linux/development/rawhide/Everything/x86_64/os/Packages/c/clatd-2.1.0-2.fc43.noarch.rpm
+      packages:
+        - clatd
   - type: systemd
     system:
       enabled:
