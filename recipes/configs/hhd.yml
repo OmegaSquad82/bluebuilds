@@ -1,7 +1,8 @@
 modules:
   - type: dnf
-    copr:
-      - hhd-dev/hhd
+    repos:
+      copr:
+        - hhd-dev/hhd
     install:
       packages:
         - adjustor
