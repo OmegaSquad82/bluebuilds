@@ -2,4 +2,4 @@ modules:
   - type: dnf
     install:
       packages:
-        - https://github.com/rmcrackan/Libation/releases/download/v12.4.5/Libation.12.4.5-linux-chardonnay-amd64.rpm
+        - https://github.com/rmcrackan/Libation/releases/download/v12.5.3/Libation.12.5.3-linux-chardonnay-amd64.rpm
