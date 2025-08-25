@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.15.0](https://github.com/OmegaSquad82/bluebuilds/compare/v1.14.0...v1.15.0) (2025-08-25)
+
+
+### Features
+
+* update Libation from v12.4.5 to v12.5.3 ([805129a](https://github.com/OmegaSquad82/bluebuilds/commit/805129a13930946a366796270a6e7383038a7002))
+
+
+### Bug Fixes
+
+* copr syntax in dnf module ([ca5ea4e](https://github.com/OmegaSquad82/bluebuilds/commit/ca5ea4e5d5f846207f77d4e6d5cf7ab004506a82))
+* coprs need simpler syntax in dnf module ([92d4bf3](https://github.com/OmegaSquad82/bluebuilds/commit/92d4bf3291ba8b4a2b55d9cb7b42a02212318225))
+* Migrated to dnf module ([5451d62](https://github.com/OmegaSquad82/bluebuilds/commit/5451d62e8161009e388c9b34be53cc4f781c0026))
+* Migrated to dnf module ([7f5661b](https://github.com/OmegaSquad82/bluebuilds/commit/7f5661b30a63a2787a3e52731fac1ed9a29242cc))
+* took too much from dnf module in packages ([8876442](https://github.com/OmegaSquad82/bluebuilds/commit/88764426479bef002560d0c796ab654cbbeb5fdb))
+
 ## [1.14.0](https://github.com/OmegaSquad82/bluebuilds/compare/v1.13.0...v1.14.0) (2025-08-03)
 
 
