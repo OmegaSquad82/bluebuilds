@@ -24,7 +24,7 @@ Bazzite Deck Stable for Steam Deck clone(s).
 
 ### [Flaviramea](https://www.ecosia.org/search?tt=mzl&q=Cornus%20sericea%20Flaviramea)
 
-Fedora (Sericea/)Sway Atomic suitable for low resource footprint devices (e.g. netbooks) using SecureBlue as base.
+SecureBlue Sericea suitable for low resource footprint devices (e.g. netbooks).
 
 ## Customizations
 
