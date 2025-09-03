@@ -121,7 +121,7 @@ jobs:
           rechunk: ${{ env.DO_RECHUNK }}
           recipe: recipe-${{ matrix.package }}.yml
           registry_token: ${{ github.token }}
-          retry_push_count: 1
+          retry_push_count: 0
           squash: true
       # - run: podman images
 
