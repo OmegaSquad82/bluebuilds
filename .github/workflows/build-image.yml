@@ -115,13 +115,13 @@ jobs:
         with:
           # it does not do with :chunked, yet!
           build_opts: --compression-format zstd
-          cosign_private_key: ${{ secrets.SIGNING_SECRET }}
+          cosign_private_key: "${{ secrets.SIGNING_SECRET }}"
           maximize_build_space: false
-          pr_event_number: ${{ github.event.number }}
-          rechunk: ${{ env.DO_RECHUNK }}
-          recipe: recipe-${{ matrix.package }}.yml
-          registry_token: ${{ github.token }}
-          retry_push_count: 0
+          pr_event_number: "${{ github.event.number }}"
+          rechunk: "${{ env.DO_RECHUNK }}"
+          recipe: "recipe-${{ matrix.package }}.yml"
+          registry_token: "${{ github.token }}"
+          retry_push_count: 3
           squash: true
       # - run: podman images
 
