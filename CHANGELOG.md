@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.16.0](https://github.com/OmegaSquad82/bluebuilds/compare/v1.15.0...v1.16.0) (2025-09-04)
+
+
+### Features
+
+* use retry_push_count of blue-build/github-action@v1.9.0 ([47851cf](https://github.com/OmegaSquad82/bluebuilds/commit/47851cf44239b0eed29cea86e06aa98f0f9aecb5))
+
+
+### Bug Fixes
+
+* numbers need to come in Quotes? ([ad08f55](https://github.com/OmegaSquad82/bluebuilds/commit/ad08f55ed7de6689354c02de21e6b8022637eb14))
+
 ## [1.15.0](https://github.com/OmegaSquad82/bluebuilds/compare/v1.14.0...v1.15.0) (2025-08-25)
 
 
