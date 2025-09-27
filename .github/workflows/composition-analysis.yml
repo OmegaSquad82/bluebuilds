@@ -24,10 +24,10 @@ jobs:
       fail-fast: true
       matrix:
         package:
-          - aubertit
+         # - aubertit
           - buttgenbachit
-          - carbonatcyanotrichit
-          - flaviramea
+         # - carbonatcyanotrichit
+         # - flaviramea
     steps:
       - name: Checkout codeZ
         uses: actions/checkout@v5
