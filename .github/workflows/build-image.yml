@@ -42,10 +42,10 @@ jobs:
       fail-fast: true
       matrix:
         package:
-          - aubertit
+         # - aubertit
           - buttgenbachit
-          - carbonatcyanotrichit
-          - flaviramea
+         # - carbonatcyanotrichit
+         # - flaviramea
     steps:
       - run: id
       - name: Maximize build space
