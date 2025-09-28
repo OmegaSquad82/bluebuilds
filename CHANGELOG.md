@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.16.1](https://github.com/OmegaSquad82/bluebuilds/compare/v1.16.0...v1.16.1) (2025-09-27)
+
+
+### Bug Fixes
+
+* no scanning of un-used images ([1fd6709](https://github.com/OmegaSquad82/bluebuilds/commit/1fd670983eae5cb129b3b6d01820b39df5debb6b))
+* no vuln of un-used images ([a0f3b9a](https://github.com/OmegaSquad82/bluebuilds/commit/a0f3b9a704c8ac451a2223f139de6f11f829208f))
+* stop building un-used images ([3b0ba01](https://github.com/OmegaSquad82/bluebuilds/commit/3b0ba01a7721e3b61af9e97ff1e0f2265aa9ae36))
+* stop building un-used images ([75f5635](https://github.com/OmegaSquad82/bluebuilds/commit/75f5635a8fdb02617fbff430affa1b01741a37c7))
+
 ## [1.16.0](https://github.com/OmegaSquad82/bluebuilds/compare/v1.15.0...v1.16.0) (2025-09-04)
 
 
