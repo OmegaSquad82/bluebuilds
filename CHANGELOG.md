@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.16.2](https://github.com/OmegaSquad82/bluebuilds/compare/v1.16.1...v1.16.2) (2025-10-02)
+
+
+### Bug Fixes
+
+* remove superfluous code from build workflow ([06c7f5b](https://github.com/OmegaSquad82/bluebuilds/commit/06c7f5bc9d05f1d35c1d413b88bd88b2d07488b2))
+* remove superfluous code from build workflow ([eb85ff8](https://github.com/OmegaSquad82/bluebuilds/commit/eb85ff867787f5276500f21db353f42aedb8a350))
+
 ## [1.16.1](https://github.com/OmegaSquad82/bluebuilds/compare/v1.16.0...v1.16.1) (2025-09-27)
 
 
